@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <!-- CSS only -->
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <!-- toastr 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+  <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+  <!-- 폰트어썸 아이콘 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+
+
+</head>
+<body>
+<!-- 테일윈드 불러오기 -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- 데이지 UI 불러오기 -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
+
+<nav th:replace="header/header::header"></nav>
+
+<th:block layout:fragment="content"></th:block>
+
+
+
+</body>
+</html>
