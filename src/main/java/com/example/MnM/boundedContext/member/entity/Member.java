@@ -44,6 +44,4 @@ public class Member {
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
 
-
-
 }
