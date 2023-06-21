@@ -19,7 +19,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final NumberPath<Long> age = createNumber("age", Long.class);
+    public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
@@ -27,7 +27,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath gender = createString("gender");
 
-    public final NumberPath<Long> height = createNumber("height", Long.class);
+    public final NumberPath<Integer> height = createNumber("height", Integer.class);
 
     public final StringPath hobby = createString("hobby");
 

@@ -28,8 +28,8 @@ public class MemberService {
         String password = joinForm.getPassword();
         String email = joinForm.getEmail();
         String nickname = joinForm.getNickname();
-        Long height = joinForm.getHeight();
-        Long age = joinForm.getAge();
+        Integer height = joinForm.getHeight();
+        Integer age = joinForm.getAge();
         String locate =joinForm.getLocate();
         String gender = joinForm.getGender();
         String mbti = joinForm.getMbti();
