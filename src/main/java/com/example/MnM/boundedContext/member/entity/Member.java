@@ -28,9 +28,9 @@ public class Member {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private String username; //id
+    private String userId; //id
     private String password; //pw
-    private String name; //이름
+    private String username; //이름
     private String nickname; //닉네임
     @Email
     private String email; //이메일
@@ -48,6 +48,7 @@ public class Member {
     private String hobby; //취미
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
+
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

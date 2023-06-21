@@ -39,8 +39,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath mbti = createString("mbti");
 
-    public final StringPath name = createString("name");
-
     public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
@@ -50,6 +48,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath providerType = createString("providerType");
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+
+    public final StringPath userId = createString("userId");
 
     public final StringPath username = createString("username");
 
