@@ -1,13 +1,6 @@
 spring:
   profiles:
     active: dev
-    include: secret
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3307/MnM__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
-
   jpa:
     hibernate:
       ddl-auto: create
