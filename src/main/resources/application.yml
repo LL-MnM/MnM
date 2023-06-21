@@ -14,9 +14,9 @@ spring:
 
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
+        show_sql: false
+        format_sql: false
+        use_sql_comments: false
 
 decorator:
   datasource:
