@@ -25,8 +25,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath email = createString("email");
 
-    public final BooleanPath emailVerified = createBoolean("emailVerified");
-
     public final StringPath gender = createString("gender");
 
     public final NumberPath<Long> height = createNumber("height", Long.class);
@@ -35,13 +33,13 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath interest1 = createString("interest1");
-
-    public final StringPath interest2 = createString("interest2");
+    public final StringPath introduce = createString("introduce");
 
     public final StringPath locate = createString("locate");
 
     public final StringPath mbti = createString("mbti");
+
+    public final StringPath name = createString("name");
 
     public final StringPath nickname = createString("nickname");
 
@@ -52,8 +50,6 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath providerType = createString("providerType");
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
-
-    public final StringPath userId = createString("userId");
 
     public final StringPath username = createString("username");
 
