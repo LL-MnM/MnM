@@ -35,8 +35,6 @@ public class MemberController {
     @ToString
     public static class JoinForm { //임시
         @NotBlank
-        private final Long id;
-        @NotBlank
         private final String userId; //id
         @NotBlank
         private final String password;
@@ -47,9 +45,9 @@ public class MemberController {
         @NotBlank
         private final String nickname; //닉네임
         @NotBlank
-        private final Long height; //키
+        private final Integer height; //키
         @NotBlank
-        private final Long age; //나이;
+        private final Integer age; //나이;
         @NotBlank
         private final String locate; //지역
         @NotBlank
@@ -69,7 +67,7 @@ public class MemberController {
         return "member/login";
     }
 
-    @PreAuthorize("isAnonymous()")
+    /*@PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
@@ -79,10 +77,10 @@ public class MemberController {
     public String join(@Valid JoinForm joinForm) {
         RsData<Member> joinRs = memberService.join(joinForm);
         if (joinRs.isFail()) {
-            return "redirect:/usr/member/join";
+            return "redirect:/member/join";
         }
-        return "redirect:/usr/member/login";
-    }
+        return "redirect:/member/login";
+    }*/
 
 
 }
