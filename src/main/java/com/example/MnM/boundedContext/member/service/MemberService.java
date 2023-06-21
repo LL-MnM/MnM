@@ -65,7 +65,7 @@ public class MemberService {
     }
 
 
-    private Optional<Member> findByUserId(String username) { //유저 아이디로 찾기
+    public Optional<Member> findByUserId(String username) { //유저 아이디로 찾기
         return memberRepository.findByUserId(username);
     }
 }
