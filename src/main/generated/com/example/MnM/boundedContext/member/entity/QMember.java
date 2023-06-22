@@ -50,6 +50,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath providerType = createString("providerType");
 
+    public final ListPath<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson> toLikeablePeople = this.<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson>createList("toLikeablePeople", com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson.class, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson.class, PathInits.DIRECT2);
+
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public final StringPath userId = createString("userId");
