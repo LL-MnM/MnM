@@ -6,11 +6,19 @@
 <h2 th:text="${question.subject}"></h2>
 <div th:text="${question.content}"></div>
 
+<h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+
 <form th:action="@{|/answer/create/${question.id}|}" method="POST">
     <div>
-        <span> 내용 </span>
-    <br>
-    <textarea placeholder="내용" name="content" rows="15"></textarea>
+        <span>내용</span>
+        <br>
+        <textarea placeholder="내용" name="content" rows="15"></textarea>
     </div>
-    <button type="submit"> 등록 </button>
+    <button type="submit">답변등록</button>
 </form>
+
+<div>
+    <ul>
+        <li th:each="answer : ${question.answerList}" th:text="|${answer.id}번답변 : ${answer.content}|"></li>
+    </ul>
+</div>
