@@ -53,7 +53,7 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "호감을 표시하셨습니다.", likeablePerson);
     }
-
+    @Transactional
     public RsData<LikeablePerson> cancel(LikeablePerson likeablePerson) {
         likeablePersonRepository.delete(likeablePerson); // 저장
 
