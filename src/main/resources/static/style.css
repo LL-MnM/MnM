@@ -29,10 +29,3 @@ body {
     border-top: dotted 1px #ddd;
     font-size: 1em;
 }
-textarea {
-    width:100%;
-}
-
-button[type=submit] {
-    margin-top:10px;
-}
