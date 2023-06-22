@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{layout/layout.html}">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
 </head>
-<body>
+
+
+<body layout:fragment="content" class="flex flex-col items-center justify-center">
 <div class="container my-3">
-    <h2 class="border-bottom py-2 text-dark" th:text="${question.subject}"></h2>
-    <div class="card my-3 bg-light">
+    <h2 class="border-b-2 py-2 text-dark" th:text="${question.subject}"></h2>
+    <div class="card my-3 bg-gray-100 shadow-md">
         <div class="card-body">
-            <div class="card-text text-dark" style="white-space: pre-line;" th:text="${question.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div class="badge bg-primary text-light p-2 text-start">
+            <div class="card-text text-dark whitespace-pre-line" th:text="${question.content}"></div>
+            <div class="flex justify-end">
+                <div class="bg-primary-500 text-white px-2 py-1 text-start">
                     <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
         </div>
     </div>
-    <h5 class="border-bottom my-3 py-2 text-dark"
+    <h5 class="border-b-2 my-3 py-2 text-dark"
         th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
-    <div class="card my-3 bg-light" th:each="answer : ${question.answerList}">
-        <div class="card-body">
-            <div class="card-text text-dark" style="white-space: pre-line;" th:text="${answer.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div class="badge bg-primary text-light p-2 text-start">
+    <div class="card my-3 bg-gray-100 shadow-md" th:each="answer : ${question.answerList}">
+        <div class="card-body border-t border-black">
+            <div class="card-text text-dark whitespace-pre-line" th:text="${answer.content}"></div>
+            <div class="flex justify-end">
+                <div class="bg-primary-500 text-white px-2 py-1 text-start">
                     <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
@@ -31,9 +33,11 @@
 
     <!-- 답변 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
-        <textarea name="content" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-dark my-2">
+        <textarea name="content" rows="10" class="form-control resize-none w-full p-2 shadow-md border border-gray-300 rounded-lg"></textarea>
+        <input type="submit" value="답변등록" class="btn btn-outline-primary my-2">
     </form>
 </div>
 </body>
 </html>
+
+

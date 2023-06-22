@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{layout/layout.html}">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+
 </head>
-<body>
+<body layout:fragment="content" class="flex flex-col items-center justify-center bg-white font-sans antialiased">
 <div class="container my-3">
-    <div class="row">
-        <div class="col-md-4" th:each="q, loop: ${questionList}">
-            <div class="card mb-3">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="card-title">
-                        <a th:text="${loop.count}" th:href="@{|/question/detail/${q.id}|}" class="text-white"></a> 번호
+    <div class="flex justify-end mb-3">
+        <a th:href="@{/question/create}" class="btn btn-outline-primary">질문등록</a>
+    </div>
+    <div class="grid grid-cols-1 gap-4">
+        <div class="col col-md-10" th:each="q, loop: ${questionList}">
+            <div class="p-4 my-3 bg-base-100 rounded-lg border border-black">
+                <div class="flex justify-between items-center">
+                    <h5 class="text-gray-800 md:break-words md:break-all">
+                        <a th:text="${loop.count}" th:href="@{|/question/detail/${q.id}|}" class="text-primary-500 mr-2"></a>
+                        <a th:text="${q.subject}" th:href="@{|/question/detail/${q.id}|}" class="text-gray-800"></a>
                     </h5>
-                </div>
-                <div class="card-body d-flex justify-content-between">
-                    <h5 class="card-title">
-                        <a th:text="${q.subject}" th:href="@{|/question/detail/${q.id}|}"></a>
-                    </h5>
-                    <p class="card-text">
-                        <small th:text="${#temporals.format(q.createDate, 'yy-MM-dd HH:mm')}" class="text-right"></small>
+                    <p class="text-gray-500">
+                        <small th:text="${#temporals.format(q.createDate, 'yy-MM-dd HH:mm')}"></small>
                     </p>
                 </div>
             </div>
@@ -27,3 +27,8 @@
 </div>
 </body>
 </html>
+
+
+
+
+
