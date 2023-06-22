@@ -8,7 +8,8 @@ public class MbtiTestController {
 
 	@GetMapping("/mbtiTest")
 	public String testPage() {
-		return "mbtiTest/index";
+
+		return "mbtiTest/mbti";
 	}
 
 }
