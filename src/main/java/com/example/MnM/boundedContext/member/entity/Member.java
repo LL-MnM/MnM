@@ -1,13 +1,14 @@
 package com.example.MnM.boundedContext.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -61,4 +61,25 @@ public class Member {
 
         return grantedAuthorities;
     }
+
+    @OneToMany(mappedBy = "fromMember", cascade = {CascadeType.ALL})
+    @OrderBy("id desc") // 정렬
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @Builder.Default // @Builder 가 있으면 ` = new ArrayList<>();` 가 작동하지 않는다. 그래서 이걸 붙여야 한다.
+    private List<LikeablePerson> fromLikeablePeople = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toMember", cascade = {CascadeType.ALL})
+    @OrderBy("id desc") // 정렬
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @Builder.Default // @Builder 가 있으면 ` = new ArrayList<>();` 가 작동하지 않는다. 그래서 이걸 붙여야 한다.
+    private List<LikeablePerson> toLikeablePeople = new ArrayList<>();
+
+    public void addFromLikeablePerson(LikeablePerson likeablePerson) {
+        fromLikeablePeople.add(0, likeablePerson);
+    }
+
+    public void addToLikeablePerson(LikeablePerson likeablePerson) {
+        toLikeablePeople.add(0, likeablePerson);
+    }
+
 }

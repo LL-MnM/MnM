@@ -27,7 +27,7 @@ public class NotProd {
                 )).getData();
 
                 Member member2 = memberService.join(new MemberController.JoinForm(
-                        "user3", "1234", "user2@email.com", "홍길동", "홍길동", 170, 20, "서울", "남자", "ENFP",
+                        "user3", "1234", "user2@email.com", "임꺽정", "임꺽정", 170, 20, "서울", "남자", "ENFP",
                         "운동", "안녕하세요", ""
                 )).getData();
 
