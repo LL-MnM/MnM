@@ -31,12 +31,15 @@
     <div class="col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
     </div>
     <p>15팀 MnM의 MBTI 테스트 입니다!<br>
-        아래에 있는 시작하기 버튼을 눌러 시작해주세요.</p>
+        아래에 있는 시작하기 버튼을 눌러 시작해주세요.<br><br>
+    약 1분 소요 예정</p>
     <button type="button" class="btn btn-light mt-3" onclick="js:begin()">시작하기</button>
 </section>
 <section id="qna">
     <div class="status mx-auto mt-5">
+
         <div class="statusBar"></div>
+        <div class="countStatus"></div>
     </div>
 
     <div class="qBox my-5 p-3 mx-auto"></div>
@@ -50,9 +53,11 @@
 
     </div>
     <div class="resultDesc"></div>
+    <button id="fitButton" type="button" class="btn btn-light mt-3">환상의 케미</button>
+    <a class="btn btn-light mt-3" th:href="@{/}">홈</a>
+    <button id="notFitButton" type="button" class="btn btn-light mt-3">환장의 케미</button>
 </section>
 <script src="/mbtiTest/data.js"></script>
 <script src="/mbtiTest/start.js"></script>
 </body>
-
 </html>
