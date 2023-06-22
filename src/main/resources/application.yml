@@ -13,9 +13,17 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+
         show_sql: false
         format_sql: false
         use_sql_comments: false
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+
+
 
 decorator:
   datasource:
