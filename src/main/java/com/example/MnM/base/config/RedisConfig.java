@@ -38,20 +38,9 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new StringRedisSerializer());
 
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 //        redisTemplate.setEnableTransactionSupport(true);
 
         return redisTemplate;
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-
-        return new ObjectMapper()
-                .findAndRegisterModules()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModules(new JavaTimeModule());
     }
 }

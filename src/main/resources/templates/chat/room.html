@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Chat Room</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<main layout:fragment="content" class="flex-col flex items-center justify-center">
+  <div id="messages"></div>
+  <input type="text" id="messageInput">
+  <button id="sendButton">Send</button>
+
+  <script th:inline="javascript">
+    const socket = new SockJS('http://localhost:8080/chat/connect');
+    const stompClient = Stomp.over(socket);
+
+    const roomId = /*[[${room.id}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
+
+
+    // DOM Element
+    const messages = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    stompClient.connect({}, function(frame) {
+      // 구독 설정
+      stompClient.subscribe('/sub/chat/' + roomId, function(messageOutput) {
+        showMessageOutput(JSON.parse(messageOutput.body).message);
+      });
+
+      // Send 버튼 이벤트
+      sendButton.addEventListener('click', function() {
+        sendMessage(messageInput.value);
+        messageInput.value = '';
+      });
+
+      window.addEventListener("beforeunload", function(event) {
+        stompClient.disconnect();
+      });
+    });
+
+    function sendMessage(message) {
+      stompClient.send("/pub/chat/" + roomId, {}, JSON.stringify({ 'roomId': roomId, 'message': message, 'sender': 'username' }));
+    }
+
+    function showMessageOutput(messageOutput) {
+      const response = document.createElement('p');
+      response.style.wordWrap = 'break-word';
+      response.appendChild(document.createTextNode(messageOutput));
+      messages.appendChild(response);
+      console.log("메시지 옴")
+    }
+  </script>
+</main>
+</html>
