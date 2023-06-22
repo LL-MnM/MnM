@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.member.entity;
 
+import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -10,25 +11,19 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+public class Member extends BaseEntity {
     private String userId; //id
     private String password; //pw
     private String username; //이름
@@ -36,10 +31,7 @@ public class Member {
     @Email
     private String email; //이메일
     private String providerType; //소셜로그인을 위한 제공자 타입
-    @CreatedDate
-    private LocalDateTime createdAt; //생성일
-    @LastModifiedDate
-    private LocalDateTime updatedAt; //수정일
+
     //여기까지 회원가입시 기본정보, 아래로는 개인정보
 
     private Integer height; //키
