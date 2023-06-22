@@ -41,6 +41,7 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt; //수정일
     //여기까지 회원가입시 기본정보, 아래로는 개인정보
+
     private Integer height; //키
     private Integer age; //나이;
     private String locate; //지역

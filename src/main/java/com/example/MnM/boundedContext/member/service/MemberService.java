@@ -2,6 +2,7 @@ package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.controller.MemberController;
+import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -21,19 +23,20 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public RsData<Member> join(MemberController.JoinForm joinForm) {
-        String userId = joinForm.getUserId();
-        String username = joinForm.getUsername();
-        String password = joinForm.getPassword();
-        String email = joinForm.getEmail();
-        String nickname = joinForm.getNickname();
-        Integer height = joinForm.getHeight();
-        Integer age = joinForm.getAge();
-        String locate = joinForm.getLocate();
-        String gender = joinForm.getGender();
-        String mbti = joinForm.getMbti();
-        String hobby = joinForm.getHobby();
-        String introduce = joinForm.getIntroduce();
+
+    public RsData<Member> join(MemberDto MemberDto) {
+        String userId = MemberDto.getUserId();
+        String username = MemberDto.getUsername();
+        String password = MemberDto.getPassword();
+        String email = MemberDto.getEmail();
+        String nickname = MemberDto.getNickname();
+        Integer height = MemberDto.getHeight();
+        Integer age = MemberDto.getAge();
+        String locate =MemberDto.getLocate();
+        String gender = MemberDto.getGender();
+        String mbti = MemberDto.getMbti();
+        String hobby = MemberDto.getHobby();
+        String introduce = MemberDto.getIntroduce();
 
 
         if (findByUserId(userId).isPresent()) {
@@ -57,6 +60,7 @@ public class MemberService {
                 .mbti(mbti)
                 .locate(locate)
                 .introduce(introduce)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
