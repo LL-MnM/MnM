@@ -60,7 +60,7 @@ public class MemberService {
                 .mbti(mbti)
                 .locate(locate)
                 .introduce(introduce)
-                .createdAt(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
