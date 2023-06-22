@@ -4,6 +4,7 @@ import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -22,7 +23,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member {
     @Id
