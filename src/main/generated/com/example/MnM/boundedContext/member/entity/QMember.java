@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -24,6 +25,8 @@ public class QMember extends EntityPathBase<Member> {
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final StringPath email = createString("email");
+
+    public final ListPath<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson> fromLikeablePeople = this.<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson>createList("fromLikeablePeople", com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson.class, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson.class, PathInits.DIRECT2);
 
     public final StringPath gender = createString("gender");
 
@@ -46,6 +49,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath profileImage = createString("profileImage");
 
     public final StringPath providerType = createString("providerType");
+
+    public final ListPath<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson> toLikeablePeople = this.<com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson>createList("toLikeablePeople", com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson.class, com.example.MnM.boundedContext.likeablePerson.entity.QLikeablePerson.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 

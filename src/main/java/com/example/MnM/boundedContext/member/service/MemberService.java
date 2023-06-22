@@ -4,7 +4,6 @@ import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.controller.MemberController;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,12 +29,11 @@ public class MemberService {
         String nickname = joinForm.getNickname();
         Integer height = joinForm.getHeight();
         Integer age = joinForm.getAge();
-        String locate =joinForm.getLocate();
+        String locate = joinForm.getLocate();
         String gender = joinForm.getGender();
         String mbti = joinForm.getMbti();
         String hobby = joinForm.getHobby();
         String introduce = joinForm.getIntroduce();
-
 
 
         if (findByUserId(userId).isPresent()) {
@@ -67,5 +65,9 @@ public class MemberService {
 
     public Optional<Member> findByUserId(String username) { //유저 아이디로 찾기
         return memberRepository.findByUserId(username);
+    }
+
+    public Optional<Member> findByUserName(String username) {
+        return memberRepository.findByUsername(username);
     }
 }
