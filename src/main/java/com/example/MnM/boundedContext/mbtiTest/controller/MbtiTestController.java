@@ -11,9 +11,4 @@ public class MbtiTestController {
 		return "mbtiTest/index";
 	}
 
-	@GetMapping("/mbtiInfo")
-	public String infoPage() {
-		return "mbtiTest/info";
-	}
-	// TODO: 각각 결과 페이지 만들기, 소셜미디어 공유 or 링크 공유 추가
 }
