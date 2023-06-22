@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.board.answer;
 
 
+import ch.qos.logback.core.joran.util.beans.BeanDescriptionFactory;
 import com.example.MnM.boundedContext.board.question.Question;
 import com.example.MnM.boundedContext.board.question.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class AnswerController {
     private final QuestionService questionService;
+    private final AnswerService answerService;
 
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable Integer id, @RequestParam String content) {
 
         Question question = questionService.getQuestion(id);
+
+        answerService.create(question, content);
 
         return "redirect:/question/detail/%d".formatted(id);
     }
