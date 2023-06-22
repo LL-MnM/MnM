@@ -9,7 +9,7 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 
 @RequiredArgsConstructor
-@Component
+//@Component
 public class ChatEventListener {
 
     private final SimpMessagingTemplate messagingTemplate;
