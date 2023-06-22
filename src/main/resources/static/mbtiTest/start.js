@@ -12,18 +12,35 @@ function calResult() {
 function setResult() {
     let point = calResult();
     const resultName = document.querySelector('.resultName');
-    resultName.innerText = infoList[point].name;
-
-    var resultImg = document.createElement('img');
-    const imgDiv = document.querySelector('#resultImg');
-    var imgURL = '/mbtiTest/img/image-' + point + '.png';
-    resultImg.src = imgURL;
-    resultImg.alt = point;
-    resultImg.classList.add('img-fluid');
-    imgDiv.appendChild(resultImg);
-
     const resultDesc = document.querySelector('.resultDesc');
-    resultDesc.innerHTML = infoList[point].desc;
+    const imgDiv = document.querySelector('#resultImg');
+
+    const fitButton = document.querySelector('#fitButton');
+    const notFitButton = document.querySelector('#notFitButton');
+
+    function updateResult(newPoint) {
+        resultName.innerText = infoList[newPoint].name;
+        resultDesc.innerHTML = infoList[newPoint].desc;
+
+        var resultImg = document.createElement('img');
+        var imgURL = '/mbtiTest/img/image-' + newPoint + '.png';
+        resultImg.src = imgURL;
+        resultImg.alt = newPoint;
+        resultImg.classList.add('img-fluid');
+
+        imgDiv.innerHTML = ''; // clear the existing image
+        imgDiv.appendChild(resultImg);
+    }
+
+    updateResult(point); // initial result update
+
+    fitButton.addEventListener('click', () => {
+        updateResult(infoList[point].fit[0]);
+    });
+
+    notFitButton.addEventListener('click', () => {
+        updateResult(infoList[point].notFit[0]);
+    });
 }
 
 function goResult() {
@@ -86,6 +103,8 @@ function goNext(qIdx) {
     }
     var status = document.querySelector('.statusBar');
     status.style.width = (100 / endPoint) * (qIdx + 1) + '%';
+    var countStatusNum = document.querySelector('.countStatus');
+    countStatusNum.innerHTML = (qIdx+1)+"/"+endPoint;
 }
 
 function begin() {

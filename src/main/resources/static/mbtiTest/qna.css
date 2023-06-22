@@ -40,3 +40,11 @@
     background: linear-gradient(to bottom, #febbbb 0%, #fe9090 45%, #ff5c5c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#febbbb', endColorstr='#ff5c5c', GradientType=0); /* IE6-9 */
 }
+.countStatus{
+    font-family: yg-jalnan;
+    text-align: center;
+    /* color: #868686; */
+    color : #050505;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
