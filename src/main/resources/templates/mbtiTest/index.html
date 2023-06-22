@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +24,7 @@
     </script>
 </head>
 
-<body>
+<body layout:fragment="content" class="flex-col flex items-center justify-center">
 <section id="main" class="mx-auto my-5 px-3 py-5">
     <h2>MBTI로 알아보는 연애유형</h2>
     <div class="col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
@@ -62,7 +63,7 @@
     function setShare() {
         const shareTitle = 'MBTI테스트로 연애 성향을 알아보자!';
         const shareDes = 'MBTI 테스트';
-        const shareImage = 'https://lh3.googleusercontent.com/fife/APg5EOYdJgWrix4gUDSTo-WsWpz2B_U9rUgHpXVNvP52Lrsr9jlcsx5miPjATWSE7f5q8flTVeIFhdqcKOjff45aXmSPaualmFEsOgzJoswY-OX_MKMkgJbhVqDzJJ9G_IGw4vwpf-uLjdXlHyw6kuq3x1zRxcBZ7zXtX0-m7Y4JizPMN8AJ9np2xCxrTchumO_TnChDaWwFyhgblmrvo-EHK6YbhzW9bSoO2Watwo9EljuNCfi055-z9ALtxoybL-xhPo6dzv6VuSStGy89I941icHKXraIFTQPbVy_od2egMtTmOeVilmdUSEWzGelw8cLCptn0MXAoLIIAtO3pI2sBfhNfGwbEK2dGscUKlcWCoyduQhrkY7JxYqKWsm8yzy8RxFMXPBG6K2AB-MFbL6PxP6Ah9TqnJgVAqhp3updgqjYgRdUKYPUxmEiKF4Ak4UN_IyfTOdl7UEN6jY-YkA_4QRP4xH69lHfs6RONgoYnt5c6rTr2gUhCxQcwt-AW7HARLaMUFaT61s7XgqMDYK8k4-cmimw_5vpO_3BqH7JJ70s4TQSoVFCGLUh4q64aqv5k_eQxQFN60kRIPvWdeFyIeeL-OV-6WZJuVAxyHAKdshR4fJqQEEapeH4BGnjK3mlbc5weWcRF3IrETTz8xCKuNIgYxK3Uy0W54fiIau19DYb-OMCp0B7U-R445zIwAHWNbWHY7Kg97M03jFFxx2x4vozeDA0Or6nlipW7Q3EiGdXP3uC9pGcCqRN_yzKoSl9SLdGZ6fPlCqAx2-sxrP1mOLeE534ieVsnxG1K0TFoTTHHk6U1plChwhzkuqlFrb1lQxbXcPO1F2K64j27CGp02GWtL8Gc1d7c2rbXwb2hdZcOKTNUxF7pvayuReXeOs-gA2WqJp2i6CQUHyas_1SXH_N0tfw6wjJbRSk5kDpK6UOXgk7k-8N4se-2z5j8KrPOEWMYzUkNlRwFTdrJKTGmBetbhuYSLXGTj7_4RcPclK4eKcmbZIBzFzCuCsUb3W3-8_T5XgjY5rliC2LLshkyxqkKim_aCKXVC3QODJsQ8ddIksTsLVMYm70HcsVdQ3ne6JOGXzQuPhWxZTtgNzirvTPvqcQRWuVSxp87qB9Ds4FrfODpk14EWKyTXjxhKfXETZgP7bNxheFvmDskbzvpvzteGvohv21OsQKJC1rnKJAxZYBGkLY3KJlPI5cGxR7oIJdv2FCHEPfCfxX-DFG9rppOffMYc5U0l_wVfeCmOUqId0GM3CReU0CsO19_NOfxexhwoWPWBHBRE7EAJt1pcldEl5Ej9WnlDRwkGHGEIE7G9OH1NS9Ij49JUklAVEXeuTdOBBJGNOddwwUExcisXcFdkqR5FiUd2rD-DL0iagpkzNuXesHovhD404yliTI-psw_Q01BxegOs5YNNQF2xlEygq3r3T7VoETEpwVIvvZaSRCU6kNxH0CrzdaiadqLiQPDT8koVblpxfkgAyOp4VNqrkmvoZ7EzSv7fVZfCLfoxnSzwHp2HkqIDapd3VnDioSc_m-M2pLVhh_JKx2lLdVKJBu7Gj0zxZ6laoV3YbN4g=w1920-h937';
+        const shareImage = 'http://16types.glam.am/eca09143b05ae30f7254e5c6d60d398f.png';
         const shareURL = 'http://localhost:8080/';
         Kakao.Link.sendDefault({
             objectType: 'feed',

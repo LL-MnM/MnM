@@ -62,7 +62,7 @@ function addAnswer(answerText, qIdx, idx) {
     var answer = document.createElement('button');
     answer.classList.add('answerList');
     answer.classList.add('my-3');
-    answer.classList.add('py-3');
+    answer.classList.add('p-3');
     answer.classList.add('mx-auto');
     answer.classList.add('fadeIn');
 
@@ -104,7 +104,7 @@ function goNext(qIdx) {
     var status = document.querySelector('.statusBar');
     status.style.width = (100 / endPoint) * (qIdx + 1) + '%';
     var countStatusNum = document.querySelector('.countStatus');
-    countStatusNum.innerHTML = (qIdx+1)+"/"+endPoint;
+    countStatusNum.innerHTML = (qIdx + 1) + "/" + endPoint;
 }
 
 function begin() {
