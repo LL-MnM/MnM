@@ -13,10 +13,10 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-
         show_sql: false
         format_sql: false
         use_sql_comments: false
+        default_batch_fetch_size: 200
 
   data:
     redis:
