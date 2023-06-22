@@ -16,8 +16,15 @@ public class MessageController {
 
     @MessageMapping("/chat/{roomId}")
     @SendTo("/sub/chat/{roomId}")
-    public ChatMessageDto sendMessage(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+    public ChatMessageDto sendManyToMany(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+        chatService.saveChat(roomId, messageDto);
+        return messageDto;
+    }
 
+    @MessageMapping("/chatOne/{roomId}")
+    @SendTo("/single/chat/{roomId}")
+    public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+        chatService.saveChat(roomId, messageDto);
         return messageDto;
     }
 }
