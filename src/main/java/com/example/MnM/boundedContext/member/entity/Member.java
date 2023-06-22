@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -30,6 +31,7 @@ public class Member {
     private Long id;
     private String userId; //id
     private String password; //pw
+    @Setter
     private String username; //이름
     private String nickname; //닉네임
     @Email
