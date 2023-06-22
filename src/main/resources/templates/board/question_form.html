@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{layout/layout.html}">
+<head>
+</head>
+
+<body>
+
+<div layout:fragment="content" class="container">
+
+    <h5 class="my-3 border-b-2 pb-2">질문등록</h5>
+
+    <form th:action="@{/question/create}" method="post">
+        <div class="mb-3">
+            <label for="subject" class="form-label">제목</label>
+            <input type="text" name="subject" id="subject" class="form-control border border-gray-300 p-2 rounded-lg">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea name="content" id="content" class="form-control resize-none border border-gray-300 p-2 rounded-lg" rows="10"></textarea>
+        </div>
+        <input type="submit" value="저장하기" class="btn btn-outline-primary my-2">
+    </form>
+</div>
+
+</body>
+
+</html>
