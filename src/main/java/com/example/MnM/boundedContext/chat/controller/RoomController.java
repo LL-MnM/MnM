@@ -22,7 +22,7 @@ public class RoomController {
     private final Rq rq;
 
     @GetMapping("/rooms")
-    public String first(Model model) {
+    public String roomList(Model model) {
         List<ChatRoom> rooms = roomService.findAll();
         model.addAttribute("rooms",rooms);
 
@@ -34,7 +34,7 @@ public class RoomController {
 //        Long roomId = roomService.createRoom(rq.getMember().getUsername());
         Long roomId = roomService.createRoom();
         model.addAttribute("roomId",roomId);
-        return "redirect:/chat/rooms";
+        return rq.redirectWithMsg("/chat/rooms","채팅 방이 생성되었습니다.");
     }
 
     @GetMapping("/room/{roomId}")
