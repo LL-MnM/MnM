@@ -30,7 +30,7 @@ stompClient.connect({}, function(frame) {
     });
 
     window.addEventListener("beforeunload", function(event) {
-        stompClient.disconnect();
+        // stompClient.disconnect();
     });
 });
 
@@ -85,3 +85,38 @@ function showMessageOutput(messageData) {
     // 스크롤을 최신 메시지 위치로 이동합니다.
     messages.scrollTop = messages.scrollHeight;
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    // 모달 토글 버튼을 모두 선택합니다.
+    const toggleButtons = document.querySelectorAll('[data-modal-toggle]');
+
+    toggleButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // data-modal-toggle 속성에서 대상 모달의 id를 가져옵니다.
+            const targetModalId = button.getAttribute('data-modal-toggle');
+            const targetModal = document.getElementById(targetModalId);
+
+            // 현재 모달의 표시 상태를 확인하고 토글합니다.
+            if (targetModal.classList.contains('hidden')) {
+                targetModal.classList.remove('hidden');
+            } else {
+                targetModal.classList.add('hidden');
+            }
+        });
+    });
+
+    const closeButton = document.querySelector('#closeButton');
+    const enterButton = document.querySelector('#enterButton');
+    const exitButton = document.querySelector('#exitButton');
+
+    closeButton.addEventListener('click', () => {
+        window.location.href = 'http://localhost:8080/chat/rooms';
+    });
+    exitButton.addEventListener('click', (navigateAway => {
+        window.location.href = 'http://localhost:8080/chat/rooms';
+    }));
+    enterButton.addEventListener('click', () => {
+        const modal = document.querySelector('#exit');
+        modal.classList.add('hidden');
+    });
+});
