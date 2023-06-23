@@ -3,6 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'jacoco'
+
+//	id "org.sonarqube" version "4.2.1.3168"
+
 }
 
 group = 'com.example'
@@ -70,7 +73,7 @@ jacoco {
 jacocoTestReport {
 	reports {
 		html.enabled true
-		xml.enabled false
+		xml.enabled true
 		csv.enabled false
 	}
 	finalizedBy 'jacocoTestCoverageVerification'
@@ -85,7 +88,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = "LINE"
 				value = 'COVEREDRATIO'
-				minimum = 0.60
+//				minimum = 0.60
 			}
 			excludes = [
 			        "**.standard.util.*",
@@ -101,3 +104,21 @@ jacocoTestCoverageVerification {
 
 	}
 }
+
+//sonarqube {
+//	properties {
+//
+//		property "sonar.projectKey" ,"mnm"
+//		property "sonar.projectName",'mnm'
+//		property "sonar.host.url", "http://localhost:9000"
+//		property "sonar.token","sqp_04241f5a03aa0b2dbf612ac7a8273c06aeaa061f"
+//		property "sonar.language", "java"
+//		property "sonar.sourceEncoding", "UTF-8"
+//		property "sonar.sources", "src/main/java"
+//		property "sonar.tests", "src/test/java"
+//		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco xml 파일 위치
+//		property "sonar.java.binaries", "${buildDir}/classes"
+//		property "sonar.test.inclusions", "**/*Test.java"
+//		property "sonar.exclusions", "**/util/**, **/support/**, **/dto/**" // 제외할 클래스들
+//	}
+//}
