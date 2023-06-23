@@ -5,7 +5,7 @@
 
 </head>
 
-<body layout:fragment="content" class="flex flex-col items-center justify-center bg-white font-sans antialiased">
+<<body layout:fragment="content" class="flex flex-col items-center justify-center bg-white font-sans antialiased">
 <div class="container my-3">
     <table class="table w-full">
         <thead class="bg-Dark text-black">
@@ -20,6 +20,11 @@
             <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="w-4/6">
                 <a th:text="${q.subject}" th:href="@{|/question/detail/${q.id}|}" class="text-primary-500"></a>
+                <span class="text-danger small ms-2"
+                      th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
+                <span class="text-danger small ms-2"
+                      th:if="${#lists.size(q.answerList) > 0}"
+                      th:text="${#lists.size(q.answerList)}"></span>
             </td>
             <td class="w-1/6 text-gray-500">
                 <small th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}"></small>
