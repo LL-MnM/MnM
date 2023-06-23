@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.board.question;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,5 +23,14 @@ public class QuestionService {
         if (oq.isPresent() == false) throw new DataNotFoundException("question not found");
 
         return oq.get();
+    }
+    public Question create(String subject, String content) {
+        Question q = new Question();
+        q.setSubject(subject);
+        q.setContent(content);
+        q.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q);
+
+        return q;
     }
 }
