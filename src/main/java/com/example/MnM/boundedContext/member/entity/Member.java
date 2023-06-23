@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -23,6 +24,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 public class Member extends BaseEntity {
     private String userId; //id
     private String password; //pw
@@ -42,6 +44,15 @@ public class Member extends BaseEntity {
     private String hobby; //취미
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
+
+    private boolean deleted = Boolean.FALSE; //soft delete
+
+    public Member(String userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password =password;
+    }
+
 
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() {

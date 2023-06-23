@@ -74,4 +74,12 @@ public class MemberService {
     public Optional<Member> findByUserName(String username) {
         return memberRepository.findByUsername(username);
     }
+
+    public Member saveMember(Member member){
+        return memberRepository.save(member);
+    }
+
+    public void deleteMember(Member member){
+        memberRepository.delete(member);
+    }
 }

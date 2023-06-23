@@ -24,14 +24,14 @@ public class NotProd {
 
                 Member member1 = memberService.join(new MemberDto(
                         "user1", "1234", "user1@email.com", "홍길동", "홍길동", 170, 20, "서울", "남자", "ENFP",
-                        "운동", "안녕하세요", ""
+                        "운동", "안녕하세요", "", Boolean.FALSE
                 )).getData();
 
 
                 Member member2 = memberService.join(new MemberDto(
                         "user3", "1234", "user2@email.com", "임꺽정", "임꺽정", 170, 20, "서울", "남자", "ENFP",
 
-                        "운동", "안녕하세요", ""
+                        "운동", "안녕하세요", "", Boolean.FALSE
                 )).getData();
 
                 //임의로 회원 생성
