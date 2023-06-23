@@ -17,14 +17,17 @@ spring:
         format_sql: false
         use_sql_comments: false
         default_batch_fetch_size: 200
+    defer-datasource-initialization: true
+
 
   data:
     redis:
       host: 127.0.0.1
       port: 6379
       database: 0
-
-
+  sql:
+    init:
+      mode: always
 decorator:
   datasource:
     p6spy:
