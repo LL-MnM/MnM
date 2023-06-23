@@ -1,0 +1,2 @@
+INSERT INTO member (age,create_date,deleted,email,gender,height,hobby,introduce,locate,mbti,modify_date,nickname,password,profile_image,provider_type,user_id,username)
+VALUES (20,'2023-06-24T01:15:54',false,'user2@email.com','남자',170,'운동','안녕하세요','서울','ENFP','2023-06-24T01:15:54','임꺽정','{bcrypt}$2a$10$p2RfN34zGPnclC1gYwGGaenHWcQIMQda2fVoa.BcPk2cXseHMbSa2',NULL,NULL,'user3','임꺽정');
