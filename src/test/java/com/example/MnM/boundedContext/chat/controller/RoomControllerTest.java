@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +36,9 @@ class RoomControllerTest {
     MockMvc mvc;
 
     @DisplayName("채팅 방 목록")
+    @WithUserDetails("user1")
     @Test
-    void rooms() throws Exception {
+    void showRoomList() throws Exception {
         mvc.perform(get("/chat/rooms"))
                 .andExpect(handler().handlerType(RoomController.class))
                 .andExpect(handler().methodName("roomList"))
@@ -46,6 +48,7 @@ class RoomControllerTest {
 
 
     @DisplayName("채팅 방 생성")
+    @WithUserDetails("user1")
     @Test
     void createRoom() throws Exception {
         mvc.perform(post("/chat/create/room")
@@ -59,6 +62,7 @@ class RoomControllerTest {
     }
 
     @DisplayName("채팅 방 입장")
+    @WithUserDetails("user1")
     @Test
     void enterRoom() throws Exception {
 
@@ -71,7 +75,6 @@ class RoomControllerTest {
                 .andExpect(model().attributeExists("room"))
                 .andExpect(view().name("chat/room"))
                 .andExpect(status().is2xxSuccessful());
-
     }
 
 
