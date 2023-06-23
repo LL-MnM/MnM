@@ -48,7 +48,7 @@ class BoardApplicationTests {
     @Test
     void testJpa1() {
         List<Question> all = this.questionRepository.findAll();
-        assertEquals(2, all.size());
+        assertEquals(102, all.size());
 
         Question q = all.get(0);
         assertEquals("MnM가 무엇인가요?", q.getSubject());
@@ -101,12 +101,12 @@ class BoardApplicationTests {
     // 데이터 삭제
     @Test
     void testJpa7() {
-        assertEquals(2, this.questionRepository.count());
+        assertEquals(102, this.questionRepository.count());
         Optional<Question> oq = this.questionRepository.findById(1);
         assertTrue(oq.isPresent());
         Question q = oq.get();
         this.questionRepository.delete(q);
-        assertEquals(1, this.questionRepository.count());
+        assertEquals(101, this.questionRepository.count());
     }
 
     // 답변 데이터 생성 후 저장하기

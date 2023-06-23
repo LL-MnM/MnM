@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -13,8 +16,11 @@ import lombok.RequiredArgsConstructor;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        return questionRepository.findAll();
+    public Page<Question> getList(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        return questionRepository.findAll(pageable);
     }
 
     public Question getQuestion(Integer id) {

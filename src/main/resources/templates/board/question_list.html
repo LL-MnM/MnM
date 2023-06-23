@@ -6,11 +6,15 @@
 </head>
 <body layout:fragment="content" class="flex flex-col items-center justify-center bg-white font-sans antialiased">
 <div class="container my-3">
+    <table class="table">
+        <htead></htead>
+    </table>
+
     <div class="flex justify-end mb-3">
         <a th:href="@{/question/create}" class="btn btn-outline-primary">질문등록</a>
     </div>
     <div class="grid grid-cols-1 gap-4">
-        <div class="col col-md-10" th:each="q, loop: ${questionList}">
+        <div class="col col-md-10" th:each="q, loop: ${paging}">
             <div class="p-4 my-3 bg-base-100 rounded-lg border border-black">
                 <div class="flex justify-between items-center">
                     <h5 class="text-gray-800 md:break-words md:break-all">
