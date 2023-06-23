@@ -10,33 +10,36 @@ import lombok.*;
 @Getter
 @ToString
 @Setter
+@RequiredArgsConstructor
 public class MemberDto {
 
-    @NotEmpty
+    @NotBlank
     private String userId; //id
-    @NotEmpty
+    @NotBlank
     private String password;
-    @NotEmpty
+    @NotBlank
     private String email;
-    @NotEmpty
+    @NotBlank
     private String username; //이름
-    @NotEmpty
+    @NotBlank
     private String nickname; //닉네임
     @Positive
     private Integer height; //키
     @Positive
     private Integer age; //나이;
-    @NotEmpty
+    @NotBlank
     private String locate; //지역
-    @NotEmpty
+    @NotBlank
     private String gender; //성별
-    @NotEmpty
+    @NotBlank
     private String mbti; //mbti
-    @NotEmpty
+    @NotBlank
     private String hobby; //취미
-    @NotEmpty
+    @NotBlank
     private String introduce; //자기소개
 
     private String profileImage;
+
+    private boolean deleted;
 
 }
