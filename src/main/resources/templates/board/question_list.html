@@ -17,7 +17,7 @@
         </thead>
         <tbody>
         <tr th:each="q, loop: ${paging}">
-            <td class="w-1/6 text-center" th:text="${loop.count}"></td>
+            <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="w-4/6">
                 <a th:text="${q.subject}" th:href="@{|/question/detail/${q.id}|}" class="text-primary-500"></a>
             </td>
