@@ -37,7 +37,7 @@
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-red-700" />
             </div>
 
-            <textarea th:field="*{content}" rows="10" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full"></textarea>
+            <textarea required maxlength="200" placeholder="200자 이하" th:field="*{content}" rows="10" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full"></textarea>
             <input type="submit" value="답변등록" class="btn bg-blue-600 text-white px-5 py-2 rounded-lg my-2">
         </form>
     </div>
