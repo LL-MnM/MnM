@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.board.question;
 import java.util.List;
 
+import com.example.MnM.boundedContext.board.answer.AnswerForm;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,11 @@ public class QuestionController {
         return "board/question_list";
     }
     @GetMapping("/question/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question question = questionService.getQuestion(id);
 
         model.addAttribute("question", question);
+        model.addAttribute("answerForm",answerForm);
 
         return "board/question_detail";
     }

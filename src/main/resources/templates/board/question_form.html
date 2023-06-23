@@ -14,12 +14,10 @@
         </div>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
-            <input type="text" class="form-control border rounded-lg p-2 bg-gray-100 w-full" th:field="*{subject}">
-        </div>
+            <input autocomplete="off" required maxlength="100" placeholder="제목(100자 이하)" type="text" class="form-control" th:field="*{subject}">        </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea  class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full" rows="10" th:field="*{content}"></textarea>
-        </div>
+            <textarea required maxlength="200" placeholder="내용(200자 이하)" class="form-control" rows="10" th:field="*{content}"></textarea>        </div>
         <input type="submit" value="저장하기" class="btn bg-blue-600 text-white px-5 py-2 rounded-lg my-2">
     </form>
 </div>
