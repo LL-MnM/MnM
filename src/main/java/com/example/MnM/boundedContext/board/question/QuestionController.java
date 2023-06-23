@@ -4,6 +4,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,18 @@ public class QuestionController {
         return "board/question_detail";
     }
     @GetMapping("question/create")
-    public String questionCreate() {
+    public String questionCreate(Model model) {
+        model.addAttribute("questionForm", new QuestionForm());
+
         return "board/question_form";
     }
 
     @PostMapping("question/create")
-    public String questionCreate(@Valid QuestionForm questionForm) {
+    public String questionCreate(@Valid QuestionForm questionForm , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "board/question_form";
+        }
+
 
         questionService.create(questionForm.getSubject() , questionForm.getContent());
 
