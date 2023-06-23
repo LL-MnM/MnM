@@ -8,16 +8,19 @@
 
     <h5 class="my-3 border-b-2 pb-2">질문등록</h5>
 
-    <form th:action="@{/question/create}" method="post" class="w-full max-w-lg mx-auto">
+    <form th:action="@{/question/create}" method="post" th:object="${questionForm}" class="w-full max-w-lg mx-auto">
+        <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-red-700" />
+        </div>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
-            <input type="text" name="subject" id="subject" class="form-control border rounded-lg p-2 bg-gray-100 w-full">
+            <input type="text" name="subject" id="subject" class="form-control border rounded-lg p-2 bg-gray-100 w-full" th:value="${questionForm.subject}">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea name="content" id="content" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full" rows="10"></textarea>
+            <textarea name="content" id="content" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full" rows="10" th:text="${questionForm.content}"></textarea>
         </div>
-        <input type="submit" value="저장하기" class="btn btn-outline-primary my-2">
+        <input type="submit" value="저장하기" class="btn bg-blue-600 text-white px-5 py-2 rounded-lg my-2">
     </form>
 </div>
 </body>
