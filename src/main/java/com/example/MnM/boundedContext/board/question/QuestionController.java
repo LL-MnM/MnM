@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,4 +30,16 @@ public class QuestionController {
 
         return "board/question_detail";
     }
+    @GetMapping("question/create")
+    public String questionCreate() {
+        return "board/question_form";
+    }
+
+    @PostMapping("question/create")
+    public String questionCreate(String subject, String content) {
+        questionService.create(subject, content);
+
+        return "redirect:/question/list";
+    }
 }
+
