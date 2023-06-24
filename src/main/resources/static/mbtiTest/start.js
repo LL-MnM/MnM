@@ -3,6 +3,8 @@ const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
 const endPoint = 12;
 const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let prevAnswers = [];
+let qIdx = 0;
 
 function calResult() {
     var result = select.indexOf(Math.max(...select));
@@ -88,6 +90,8 @@ function addAnswer(answerText, qIdx, idx) {
                 select[target[i]] += 1;
             }
 
+            prevAnswers.push({qIdx, answer: idx});
+
             for (let i = 0; i < children.length; i++) {
                 children[i].style.display = 'none';
             }
@@ -104,6 +108,8 @@ function goNext(qIdx) {
 
     var q = document.querySelector('.qBox');
     q.innerHTML = qnaList[qIdx].q;
+    var answerBox = document.querySelector('.answerBox');
+    answerBox.innerHTML = '';  // Reset the answer box
     for (let i in qnaList[qIdx].a) {
         addAnswer(qnaList[qIdx].a[i].answer, qIdx, i);
     }
@@ -111,7 +117,26 @@ function goNext(qIdx) {
     status.style.width = (100 / endPoint) * (qIdx + 1) + '%';
     var countStatusNum = document.querySelector('.countStatus');
     countStatusNum.innerHTML = (qIdx + 1) + "/" + endPoint;
+
+    var backButton = document.querySelector('#backButton');
+    if (qIdx === 0) {
+        backButton.style.display = 'none';
+    } else {
+        backButton.style.display = 'block';
+    }
 }
+
+backButton.addEventListener('click', function () {
+    if (prevAnswers.length === 0) {
+        return;
+    }
+    const lastAnswer = prevAnswers.pop();
+    const target = qnaList[lastAnswer.qIdx].a[lastAnswer.answer].type;
+    for (let i = 0; i < target.length; i++) {
+        select[target[i]] -= 1;
+    }
+    goNext(lastAnswer.qIdx);
+});
 
 function begin() {
     main.style.WebkitAnimation = "fadeOut 1s";
@@ -123,7 +148,8 @@ function begin() {
             main.style.display = "none";
             qna.style.display = "block";
         }, 450)
-        let qIdx = 0;
+        qIdx = 0;
+        prevAnswers = [];
         goNext(qIdx);
     }, 450);
 
