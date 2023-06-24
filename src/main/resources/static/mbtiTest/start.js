@@ -34,12 +34,18 @@ function setResult() {
 
     updateResult(point); // initial result update
 
+    var currentPoint = point;
+
     fitButton.addEventListener('click', () => {
-        updateResult(infoList[point].fit[0]);
+        let nextPoint = infoList[currentPoint].fit[0];
+        updateResult(nextPoint);
+        currentPoint = nextPoint;  // update the currentPoint after the result is updated
     });
 
     notFitButton.addEventListener('click', () => {
-        updateResult(infoList[point].notFit[0]);
+        let nextPoint = infoList[currentPoint].notFit[0];
+        updateResult(nextPoint);
+        currentPoint = nextPoint;  // update the currentPoint after the result is updated
     });
 }
 
