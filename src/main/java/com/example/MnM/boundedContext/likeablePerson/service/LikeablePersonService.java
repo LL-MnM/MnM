@@ -76,8 +76,7 @@ public class LikeablePersonService {
             return RsData.of("F-3", "호감을 수정할 멤버가 존재하지 않습니다.");
         }
         LikeablePerson likeablePerson = likeablePersonOptional.get();
-        likeablePerson.getToMember().setUsername(username);
-
+        likeablePerson.getToMember().changeUsername(username);
         return RsData.of("S-1", "호감상대를 변경하셨습니다.", likeablePerson);
     }
 }
