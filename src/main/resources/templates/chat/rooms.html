@@ -34,7 +34,7 @@
           createUser
         </td>
         <td class="px-6 py-4 text-right text-center flex-grow">
-          <a class="btn btn-primary" th:href="@{/chat/room/{id}(id=${room.uniqueId})}">[[${room.name}]]</a>
+          <a class="btn btn-primary" th:href="@{/chat/room/{id}(id=${room.getSecretId})}">[[${room.name}]]</a>
         </td>
       </tr>
       </tbody>

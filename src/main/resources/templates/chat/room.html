@@ -86,8 +86,9 @@
 
 
   <script th:inline="javascript">
-    const username = "hello";
-    const roomId = /*[[${room.uniqueId}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
+    const username = /*[[${room.createUser}]]*/ null;
+    const roomId = /*[[${room.secretId}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
+    const userId = /*[[${room.createUserId}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
     </script>
   <script th:src="@{/js/room.js}"></script>
 

@@ -16,9 +16,10 @@ public class RoomEventListener {
     @EventListener(DeleteRoomDto.class)
     public void deleteRoom(DeleteRoomDto dto) {
         String roomId = dto.getRoomId();
-        String username = dto.getUsername();
 
-        if (roomService.isRoomOwner(roomId, username)) {
+        Long userId = dto.getUserId();
+
+        if (roomService.isRoomOwner(roomId, userId)) {
             roomService.deleteRoom(roomId);
         } else {
             throw new NotOwnerRoomException("방 삭제 권한이 없습니다.");

@@ -13,46 +13,46 @@ const sendButton = document.getElementById('sendButton');
 
 const headers = {
     'username': username,
-    'roomId': roomId
+    'roomId': roomId,
+    'userId': userId
 };
-stompClient.connect(headers, function(frame) {
+stompClient.connect(headers, function (frame) {
     // 구독 설정
-    stompClient.subscribe('/sub/chat/' + roomId, function(messageOutput) {
+    stompClient.subscribe('/sub/chat/' + roomId, function (messageOutput) {
         showMessageOutput(JSON.parse(messageOutput.body));
-    },headers);
-    sendMessage(`${username}님이 입장하셨습니다.`,"ENTER");
+    }, headers);
+    sendMessage(`${username}님이 입장하셨습니다.`, "ENTER");
 
     // Send 버튼 이벤트
-    sendButton.addEventListener('click', function() {
-        sendMessage(messageInput.value,"SEND");
+    sendButton.addEventListener('click', function () {
+        sendMessage(messageInput.value, "SEND");
         messageInput.value = '';
     });
 
-    messageInput.addEventListener('keydown', function(event) {
+    messageInput.addEventListener('keydown', function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
             sendButton.click();
         }
     });
 
-    window.addEventListener("beforeunload", function(event) {
+    window.addEventListener("beforeunload", function (event) {
         stompClient.disconnect();
     });
 });
 
-function sendMessage(message,status) {
+function sendMessage(message, status) {
     stompClient.send("/pub/chat/" + roomId, {},
         JSON.stringify({
             'roomId': roomId,
             'message': message,
             'sender': username,
-            'status':status
+            'senderId': userId,
+            'status': status
         }));
 }
 
 function showMessageOutput(messageData) {
-    console.log("my message");
-    console.log(messageData);
     if (messageData.status === "EXIT") {
         stompClient.disconnect();
         window.location.href = 'http://localhost:8080/chat/rooms'; // 홈으로 이동
@@ -69,13 +69,15 @@ function showMessageOutput(messageData) {
     const textElement = document.createElement('div');
     textElement.classList.add('flex', 'flex-col', 'space-y-2', 'text-xs', 'max-w-xs', 'mx-2', 'items-start');
     spanElement.classList.add('px-4', 'py-2', 'rounded-lg', 'inline-block');
-    console.log(messageData.message);
+
     spanElement.textContent = messageData.message;
     // <div className="w-6 h-6 rounded-full order-2">hello</div>
     const senderElement = document.createElement('div');
     senderElement.textContent = messageData.sender;
     senderElement.classList.add('w-6', 'h-6', 'rounded-full');
 
+    console.log("username:"+username);
+    console.log("messageData:"+messageData.sender);
     if (messageData.sender === username) {
         detailsElement.classList.add('flex', 'items-end', 'justify-end');
         textElement.classList.add('order-1', 'items-end');
@@ -101,12 +103,12 @@ function showMessageOutput(messageData) {
     messages.scrollTop = messages.scrollHeight;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // 모달 토글 버튼을 모두 선택합니다.
     const toggleButtons = document.querySelectorAll('[data-modal-toggle]');
 
-    toggleButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+    toggleButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
             // data-modal-toggle 속성에서 대상 모달의 id를 가져옵니다.
             const targetModalId = button.getAttribute('data-modal-toggle');
             const targetModal = document.getElementById(targetModalId);
@@ -139,21 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
     function exitRoom() {
         let formData = new FormData();
 
-        formData.append("username",username);
-        formData.append("roomId",roomId);
+        formData.append("username", username);
+        formData.append("roomId", roomId);
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-        fetch("/chat/room/delete",{
-            method:"DELETE",
-            headers:{
+        fetch("/chat/room/delete", {
+            method: "DELETE",
+            headers: {
                 "Content-Type": "application/json",
                 [csrfHeader]: csrfToken
             },
             body: formData
-        }).then(r =>  {
+        }).then(r => {
             if (r.status === 200) {
-                sendMessage(`${username}님이 나갔습니다.`,"EXIT");
+                sendMessage(`${username}님이 나갔습니다.`, "EXIT");
                 window.location.href = 'http://localhost:8080/chat/rooms';
             }
         });
