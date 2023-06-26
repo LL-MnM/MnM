@@ -20,15 +20,21 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public static final QQuestion question = new QQuestion("question");
 
+    public final com.example.MnM.boundedContext.board.QBaseEntity _super = new com.example.MnM.boundedContext.board.QBaseEntity(this);
+
     public final ListPath<com.example.MnM.boundedContext.board.answer.Answer, com.example.MnM.boundedContext.board.answer.QAnswer> answerList = this.<com.example.MnM.boundedContext.board.answer.Answer, com.example.MnM.boundedContext.board.answer.QAnswer>createList("answerList", com.example.MnM.boundedContext.board.answer.Answer.class, com.example.MnM.boundedContext.board.answer.QAnswer.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final StringPath subject = createString("subject");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateDate = _super.updateDate;
 
     public QQuestion(String variable) {
         super(Question.class, forVariable(variable));
