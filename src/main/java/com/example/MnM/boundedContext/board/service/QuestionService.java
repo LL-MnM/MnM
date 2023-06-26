@@ -1,8 +1,11 @@
-package com.example.MnM.boundedContext.board.question;
+package com.example.MnM.boundedContext.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
+import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.board.repository.QuestionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

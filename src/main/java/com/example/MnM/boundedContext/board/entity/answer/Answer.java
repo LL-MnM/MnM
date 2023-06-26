@@ -1,6 +1,6 @@
-package com.example.MnM.boundedContext.board.answer;
+package com.example.MnM.boundedContext.board.entity.answer;
 
-import com.example.MnM.boundedContext.board.question.Question;
+import com.example.MnM.boundedContext.board.entity.question.Question;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,9 @@
-package com.example.MnM.boundedContext.board.answer;
+package com.example.MnM.boundedContext.board.service;
 
 
-import com.example.MnM.boundedContext.board.question.Question;
+import com.example.MnM.boundedContext.board.entity.answer.Answer;
+import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.board.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,9 @@
 package com.example.MnM.Board;
 
-import com.example.MnM.boundedContext.board.answer.AnswerRepository;
-import com.example.MnM.boundedContext.board.question.Question;
-import com.example.MnM.boundedContext.board.question.QuestionRepository;
-import com.example.MnM.boundedContext.board.question.QuestionService;
+import com.example.MnM.boundedContext.board.repository.AnswerRepository;
+import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.board.repository.QuestionRepository;
+import com.example.MnM.boundedContext.board.service.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

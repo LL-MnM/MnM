@@ -1,4 +1,6 @@
-package com.example.MnM.boundedContext.board.question;
+package com.example.MnM.boundedContext.board.repository;
+
+import com.example.MnM.boundedContext.board.entity.question.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

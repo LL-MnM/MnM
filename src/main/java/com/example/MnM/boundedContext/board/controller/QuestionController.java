@@ -1,7 +1,9 @@
-package com.example.MnM.boundedContext.board.question;
-import java.util.List;
+package com.example.MnM.boundedContext.board.controller;
 
-import com.example.MnM.boundedContext.board.answer.AnswerForm;
+import com.example.MnM.boundedContext.board.entity.answer.AnswerForm;
+import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.board.entity.question.QuestionForm;
+import com.example.MnM.boundedContext.board.service.QuestionService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
