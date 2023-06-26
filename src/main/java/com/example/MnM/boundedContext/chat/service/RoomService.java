@@ -24,20 +24,19 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Long createRoom() {
+    public String createRoom() {
         String roomSecretId = UUID.randomUUID().toString();
 
         ChatRoom room = roomRepository.save(ChatRoom.builder()
                 .uniqueId(roomSecretId)
-                .createUser(roomSecretId)
+                .createUser("hello")
                 .name(roomSecretId)
                 .build());
 
         Long roomId = room.getId();
         redisTemplate.opsForList().rightPush("rooms", roomId);
 
-        return roomId;
-
+        return room.getUniqueId();
     }
 
     public void deleteRoom(String roomId) {
@@ -52,5 +51,10 @@ public class RoomService {
     public ChatRoom findBySecretId(String roomId) {
         return roomRepository.findByUniqueId(roomId)
                 .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
+    }
+
+    public boolean isRoomOwner(String roomId, String username) {
+        ChatRoom chatRoom = findBySecretId(roomId);
+        return chatRoom.getCreateUser().equals(username);
     }
 }

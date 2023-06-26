@@ -10,16 +10,21 @@ const messages = document.getElementById('messages');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 
-stompClient.connect({}, function(frame) {
+
+const headers = {
+    'username': username,
+    'roomId': roomId
+};
+stompClient.connect(headers, function(frame) {
     // 구독 설정
     stompClient.subscribe('/sub/chat/' + roomId, function(messageOutput) {
         showMessageOutput(JSON.parse(messageOutput.body));
-    });
-    sendMessage(`${username}님이 입장하셨습니다.`);
+    },headers);
+    sendMessage(`${username}님이 입장하셨습니다.`,"ENTER");
 
     // Send 버튼 이벤트
     sendButton.addEventListener('click', function() {
-        sendMessage(messageInput.value);
+        sendMessage(messageInput.value,"SEND");
         messageInput.value = '';
     });
 
@@ -31,20 +36,29 @@ stompClient.connect({}, function(frame) {
     });
 
     window.addEventListener("beforeunload", function(event) {
-        // stompClient.disconnect();
+        stompClient.disconnect();
     });
 });
 
-function sendMessage(message) {
+function sendMessage(message,status) {
     stompClient.send("/pub/chat/" + roomId, {},
         JSON.stringify({
             'roomId': roomId,
             'message': message,
-            'sender': username
+            'sender': username,
+            'status':status
         }));
 }
 
 function showMessageOutput(messageData) {
+    console.log("my message");
+    console.log(messageData);
+    if (messageData.status === "EXIT") {
+        stompClient.disconnect();
+        window.location.href = 'http://localhost:8080/chat/rooms'; // 홈으로 이동
+        return;
+    }
+
     // 메시지를 담을 chat-message div를 생성합니다.
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message');
@@ -111,13 +125,37 @@ document.addEventListener("DOMContentLoaded", function() {
     const exitButton = document.querySelector('#exitButton');
 
     closeButton.addEventListener('click', () => {
-        window.location.href = 'http://localhost:8080/chat/rooms';
+        const modal = document.querySelector('#exit');
+        modal.classList.add('hidden');
     });
     exitButton.addEventListener('click', (navigateAway => {
-        window.location.href = 'http://localhost:8080/chat/rooms';
+        exitRoom();
     }));
     enterButton.addEventListener('click', () => {
         const modal = document.querySelector('#exit');
         modal.classList.add('hidden');
     });
+
+    function exitRoom() {
+        let formData = new FormData();
+
+        formData.append("username",username);
+        formData.append("roomId",roomId);
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch("/chat/room/delete",{
+            method:"DELETE",
+            headers:{
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            },
+            body: formData
+        }).then(r =>  {
+            if (r.status === 200) {
+                sendMessage(`${username}님이 나갔습니다.`,"EXIT");
+                window.location.href = 'http://localhost:8080/chat/rooms';
+            }
+        });
+    }
 });
