@@ -1,15 +1,17 @@
 package com.example.MnM.boundedContext.chat.controller;
 
 import com.example.MnM.base.rq.Rq;
+import com.example.MnM.boundedContext.chat.dto.ChatRoomDto;
+import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
 import com.example.MnM.boundedContext.chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,9 +34,9 @@ public class RoomController {
     @PostMapping("/create/room")
     public String createRoom(Model model) {
 //        Long roomId = roomService.createRoom(rq.getMember().getUsername());
-        Long roomId = roomService.createRoom();
+        String roomId = roomService.createRoom();
         model.addAttribute("roomId",roomId);
-        return rq.redirectWithMsg("/chat/rooms","채팅 방이 생성되었습니다.");
+        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId),"채팅 방이 생성되었습니다.");
     }
 
     @GetMapping("/room/{roomId}")
@@ -46,6 +48,22 @@ public class RoomController {
         return "chat/room";
     }
 
+    @DeleteMapping("/room/delete")
+    public ResponseEntity<String> deleteRoom(DeleteRoomDto deleteRoomDto) {
+
+//        Long memberId = rq.getMember().getId();
+//
+//        if (!isRoomOwner(deleteRoomDto, memberId)) {
+//            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+//        }
+
+        roomService.deleteRoom(deleteRoomDto.getRoomId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+//    private boolean isRoomOwner(DeleteRoomDto deleteRoomDto, Long memberId) {
+//        return deleteRoomDto.getUserId().equals(memberId);
+//    }
 
 
 }
