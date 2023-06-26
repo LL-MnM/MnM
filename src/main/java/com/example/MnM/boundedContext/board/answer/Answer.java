@@ -1,15 +1,11 @@
 package com.example.MnM.boundedContext.board.answer;
 
-
-
-
 import com.example.MnM.boundedContext.board.question.Question;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 import java.time.LocalDateTime;
-
 
 @Getter
 @Entity
