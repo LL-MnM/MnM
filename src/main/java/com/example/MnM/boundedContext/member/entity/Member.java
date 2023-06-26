@@ -58,10 +58,10 @@ public class Member extends BaseEntity {
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        grantedAuthorities.add(new SimpleGrantedAuthority("member"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 
-        if ("admin".equals(username)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
+        if ("admin".equals(userId)) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
         }
 
         return grantedAuthorities;
