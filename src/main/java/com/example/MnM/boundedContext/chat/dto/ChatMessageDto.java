@@ -14,4 +14,8 @@ public class ChatMessageDto {
     private String sender;
     private String message;
     private ChatStatus status;
+
+    public void isNotOwner() {
+        status = ChatStatus.SEND;
+    }
 }
