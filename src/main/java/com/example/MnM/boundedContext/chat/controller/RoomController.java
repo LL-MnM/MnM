@@ -38,9 +38,9 @@ public class RoomController {
     }
 
     @GetMapping("/room/{roomId}")
-    public String entranceRoom(Model model, @PathVariable Long roomId) {
+    public String entranceRoom(Model model, @PathVariable String roomId) {
 
-        ChatRoom room = roomService.findById(roomId);
+        ChatRoom room = roomService.findBySecretId(roomId);
         model.addAttribute("room",room);
 
         return "chat/room";

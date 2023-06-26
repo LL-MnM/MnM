@@ -15,6 +15,7 @@ stompClient.connect({}, function(frame) {
     stompClient.subscribe('/sub/chat/' + roomId, function(messageOutput) {
         showMessageOutput(JSON.parse(messageOutput.body));
     });
+    sendMessage(`${username}님이 입장하셨습니다.`);
 
     // Send 버튼 이벤트
     sendButton.addEventListener('click', function() {
