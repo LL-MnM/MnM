@@ -37,10 +37,9 @@ public class QuestionService {
     }
     public Question create(String subject, String content) {
         Question q = new Question();
-        q.setSubject(subject);
-        q.setContent(content);
-        q.setCreateDate(LocalDateTime.now());
+        q.createQuestion(subject, content, LocalDateTime.now());
         questionRepository.save(q);
+
 
         return q;
     }

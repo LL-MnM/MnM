@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 
 @Getter
-@Setter
 @Entity
 @ToString
 public class Question {
@@ -22,18 +21,20 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @Column(length = 200)
     private String subject;
-
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-
     private LocalDateTime createDate;
-
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+
+    public void createQuestion(String subject, String content, LocalDateTime createDate) {
+        this.subject = subject;
+        this.content = content;
+        this.createDate = createDate;
+    }
 }
