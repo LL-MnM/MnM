@@ -17,8 +17,8 @@ spring:
         format_sql: false
         use_sql_comments: false
         default_batch_fetch_size: 200
+        default_lazy_load_no_trans: true
     defer-datasource-initialization: true
-
 
   data:
     redis:
@@ -28,6 +28,7 @@ spring:
   sql:
     init:
       mode: always
+
 decorator:
   datasource:
     p6spy:
