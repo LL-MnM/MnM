@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.board.answer;
 
 
+import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.board.question.Question;
 import com.example.MnM.boundedContext.board.question.QuestionService;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AnswerController {
     private final QuestionService questionService;
     private final AnswerService answerService;
+    private final Rq rq;
 
     @PostMapping("/create/{id}")
     public String createAnswer(
@@ -35,6 +37,6 @@ public class AnswerController {
         }
         Answer answer = answerService.create(question, answerForm.getContent());
 
-        return "redirect:/question/detail/%d".formatted(id);
+        return rq.redirectWithMsg("/question/detail/%d".formatted(id), "확인용 메세지입니다.");
     }
 }
