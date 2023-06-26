@@ -6,13 +6,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import lombok.ToString;
 import com.example.MnM.boundedContext.board.BaseEntity;
-
-
 import lombok.Getter;
-
-
-import java.time.LocalDateTime;
-
 
 @Getter
 @Entity
@@ -28,7 +22,7 @@ public class Question extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Answer> answerList;
 
     public void createQuestion(String subject, String content) {
