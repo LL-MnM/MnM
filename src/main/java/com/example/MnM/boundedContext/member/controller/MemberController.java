@@ -34,6 +34,7 @@ public class MemberController {
     }
 
     @PreAuthorize("isAnonymous()")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
