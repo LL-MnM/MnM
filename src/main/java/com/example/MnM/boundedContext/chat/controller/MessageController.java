@@ -27,8 +27,10 @@ public class MessageController {
 
         if (isExitRoomOwner(messageDto)) {
             publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(),messageDto.getSender()));
+            return messageDto;
         }
 
+        messageDto.isNotOwner();
         return messageDto;
     }
 
