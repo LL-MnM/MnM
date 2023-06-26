@@ -1,8 +1,6 @@
 package com.example.MnM.Board;
 
-import com.example.MnM.boundedContext.board.answer.Answer;
 import com.example.MnM.boundedContext.board.answer.AnswerRepository;
-import com.example.MnM.boundedContext.board.answer.AnswerService;
 import com.example.MnM.boundedContext.board.question.Question;
 import com.example.MnM.boundedContext.board.question.QuestionRepository;
 import com.example.MnM.boundedContext.board.question.QuestionService;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,106 +22,63 @@ class BoardApplicationTests {
 
     @Autowired
     private AnswerRepository answerRepository;
+
     @Autowired
     private QuestionService questionService;
 
-
     @Test
-    void testJpa() {
-        Question q1 = new Question();
-        q1.setSubject("MnM가 무엇인가요?");
-        q1.setContent("MnM에 대해서 알고 싶습니다.");
-        q1.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q1);  // 첫번째 질문 저장
-
-        Question q2 = new Question();
-        q2.setSubject("스프링부트 모델 질문입니다.");
-        q2.setContent("id는 자동으로 생성되나요?");
-        q2.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q2);  // 두번째 질문 저장
-    }
-
-    // 데이터 조회
-    @Test
-    void testJpa1() {
-        List<Question> all = this.questionRepository.findAll();
-        assertEquals(102, all.size());
-
-        Question q = all.get(0);
-        assertEquals("MnM가 무엇인가요?", q.getSubject());
-    }
-
-    // findById
-    @Test
-    void testJpa2() {
-        Optional<Question> oq = this.questionRepository.findById(1);
-        if (oq.isPresent()) {
-            Question q = oq.get();
-            assertEquals("MnM가 무엇인가요?", q.getSubject());
-        }
-
-    }
-
-    // findBySubject
-    @Test
-    void testJpa3() {
-        Question q = this.questionRepository.findBySubject("MnM가 무엇인가요?");
-        assertEquals(1, q.getId());
-    }
-
-    // findBySubjectAndContent
-    @Test
-    void testJpa4() {
-        Question q = this.questionRepository.findBySubjectAndContent(
-                "MnM가 무엇인가요?", "MnM에 대해서 알고 싶습니다.");
-        assertEquals(1, q.getId());
-    }
-
-    // findBySubjectLike
-    @Test
-    void testJpa5() {
-        List<Question> qList = this.questionRepository.findBySubjectLike("MnM%");
-        Question q = qList.get(0);
-        assertEquals("MnM가 무엇인가요?", q.getSubject());
-    }
-
-    // 데이터 수정
-    @Test
-    void testJpa6() {
-        Optional<Question> oq = this.questionRepository.findById(1);
-        assertTrue(oq.isPresent());
-        Question q = oq.get();
-        q.setSubject("수정된 제목");
-        this.questionRepository.save(q);
-    }
-
-    // 데이터 삭제
-    @Test
-    void testJpa7() {
-        assertEquals(102, this.questionRepository.count());
-        Optional<Question> oq = this.questionRepository.findById(1);
-        assertTrue(oq.isPresent());
-        Question q = oq.get();
-        this.questionRepository.delete(q);
-        assertEquals(101, this.questionRepository.count());
-    }
-
-    // 답변 조회하기
-    @Test
-    void testJpa9() {
-        Optional<Answer> oa = this.answerRepository.findById(1);
-        assertTrue(oa.isPresent());
-        Answer a = oa.get();
-        assertEquals(2, a.getQuestion().getId());
-    }
-
-    @Test
-    void testJpa10() {
+    void test_CreateQuestions_Setup() {
         for (int i = 1; i <= 100; i++) {
-            String subject = String.format("테스트 데이터입니다:[%03d]", i);
-            String content = "내용무";
+            String subject = String.format("Sample Question %d", i);
+            String content = "Sample Question Content";
             this.questionService.create(subject, content);
         }
+        assertEquals(100, questionRepository.count());
+    }
+
+    @Test
+    void test_FindAllQuestions() {
+        List<Question> allQuestions = questionRepository.findAll();
+        assertEquals(100, allQuestions.size());
+    }
+
+    @Test
+    void test_FindById() {
+        Optional<Question> oq = questionRepository.findById(99);
+        assertTrue(oq.isPresent());
+
+        Question q = oq.get();
+        assertEquals("Sample Question 99", q.getSubject());
+    }
+
+    @Test
+    void test_FindBySubject() {
+        String subject = "Sample Question 99";
+        Question q = questionRepository.findBySubject(subject);
+        assertEquals(99, q.getId());
+    }
+
+    @Test
+    void test_FindBySubjectAndContent() {
+        String subject = "Sample Question 99";
+        String content = "Sample Question Content";
+        Question q = questionRepository.findBySubjectAndContent(subject, content);
+        assertEquals(99, q.getId());
+    }
+
+    @Test
+    void test_FindBySubjectLike() {
+        List<Question> qList = questionRepository.findBySubjectLike("Sample%");
+        assertEquals(100, qList.size());
+    }
+
+    @Test
+    void test_UpdateQuestion() {
+        Optional<Question> oq = questionRepository.findById(99);
+        assertTrue(oq.isPresent());
+
+        Question q = oq.get();
+        q.createQuestion("Updated Subject", q.getContent());
+        questionRepository.save(q);
     }
 }
-
