@@ -12,10 +12,11 @@ public class ChatMessageDto {
 
     private String roomId;
     private String sender;
+    private Long senderId;
     private String message;
     private ChatStatus status;
 
-    public void isNotOwner() {
+    public void updateStatus() {
         status = ChatStatus.SEND;
     }
 }

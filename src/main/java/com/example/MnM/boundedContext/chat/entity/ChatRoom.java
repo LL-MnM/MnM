@@ -17,8 +17,9 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String uniqueId;
+    private String secretId;
     private String name;
     private String createUser;
+    private Long createUserId;
 
 }

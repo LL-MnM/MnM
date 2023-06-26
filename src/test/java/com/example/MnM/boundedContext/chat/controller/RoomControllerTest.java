@@ -1,6 +1,5 @@
 package com.example.MnM.boundedContext.chat.controller;
 
-import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
 import com.example.MnM.boundedContext.chat.repository.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -68,10 +66,10 @@ class RoomControllerTest {
     @Test
     void enterRoom() throws Exception {
 
-        ChatRoom room = ChatRoom.builder().uniqueId("uniqueId").build();
+        ChatRoom room = ChatRoom.builder().secretId("uniqueId").build();
         roomRepository.save(room);
 
-        mvc.perform(get("/chat/room/%s".formatted(room.getUniqueId())))
+        mvc.perform(get("/chat/room/%s".formatted(room.getSecretId())))
                 .andExpect(handler().handlerType(RoomController.class))
                 .andExpect(handler().methodName("entranceRoom"))
                 .andExpect(model().attributeExists("room"))
@@ -87,7 +85,7 @@ class RoomControllerTest {
         String roomId = "uuid";
         String username = "user1";
         ChatRoom room = ChatRoom.builder()
-                .uniqueId(roomId)
+                .secretId(roomId)
                 .createUser(username)
                 .build();
         roomRepository.save(room);

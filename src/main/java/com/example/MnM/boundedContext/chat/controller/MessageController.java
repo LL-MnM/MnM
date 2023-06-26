@@ -4,6 +4,7 @@ import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
 import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.service.ChatService;
+import com.example.MnM.boundedContext.chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -18,24 +19,22 @@ import org.springframework.stereotype.Controller;
 public class MessageController {
 
     private final ChatService chatService;
+    private final RoomService roomService;
     private final ApplicationEventPublisher publisher;
 
     @MessageMapping("/chat/{roomId}")
     @SendTo("/sub/chat/{roomId}")
     public ChatMessageDto sendManyToMany(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+
         chatService.saveChat(roomId, messageDto);
 
-        if (isExitRoomOwner(messageDto)) {
-            publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(),messageDto.getSender()));
+        if (messageDto.getStatus().equals(ChatStatus.EXIT) && isExitRoomOwner(messageDto)) {
+            publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(),messageDto.getSender(), messageDto.getSenderId()));
             return messageDto;
         }
 
-        messageDto.isNotOwner();
+        messageDto.updateStatus();
         return messageDto;
-    }
-
-    private  boolean isExitRoomOwner(ChatMessageDto messageDto) {
-        return messageDto.getStatus().equals(ChatStatus.EXIT);
     }
 
     @MessageMapping("/chatOne/{roomId}")
@@ -43,5 +42,9 @@ public class MessageController {
     public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto) {
         chatService.saveChat(roomId, messageDto);
         return messageDto;
+    }
+
+    private boolean isExitRoomOwner(ChatMessageDto messageDto) {
+        return roomService.isRoomOwner(messageDto.getRoomId(), messageDto.getSenderId());
     }
 }

@@ -19,28 +19,29 @@ public class RoomService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final RoomRepository roomRepository;
 
-
     public List<ChatRoom> findAll() {
         return roomRepository.findAll();
     }
 
-    public String createRoom() {
+    public String createRoom(Long memberId, String username) {
         String roomSecretId = UUID.randomUUID().toString();
 
+
         ChatRoom room = roomRepository.save(ChatRoom.builder()
-                .uniqueId(roomSecretId)
-                .createUser("hello")
-                .name(roomSecretId)
+                .secretId(roomSecretId)
+                .createUser(username)
+                .createUserId(memberId)
+                .name("%s의 방".formatted(username))
                 .build());
 
         Long roomId = room.getId();
         redisTemplate.opsForList().rightPush("rooms", roomId);
 
-        return room.getUniqueId();
+        return room.getSecretId();
     }
 
     public void deleteRoom(String roomId) {
-        roomRepository.deleteByUniqueId(roomId);
+        roomRepository.deleteBySecretId(roomId);
         redisTemplate.opsForList().remove("rooms",1,roomId);
     }
 
@@ -49,12 +50,12 @@ public class RoomService {
     }
 
     public ChatRoom findBySecretId(String roomId) {
-        return roomRepository.findByUniqueId(roomId)
+        return roomRepository.findBySecretId(roomId)
                 .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
     }
 
-    public boolean isRoomOwner(String roomId, String username) {
+    public boolean isRoomOwner(String roomId, Long userId) {
         ChatRoom chatRoom = findBySecretId(roomId);
-        return chatRoom.getCreateUser().equals(username);
+        return chatRoom.getCreateUserId().equals(userId);
     }
 }
