@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -28,6 +29,7 @@ import java.util.List;
 public class Member extends BaseEntity {
     private String userId; //id
     private String password; //pw
+    @Setter
     private String username; //이름
     private String nickname; //닉네임
     @Email
@@ -50,9 +52,8 @@ public class Member extends BaseEntity {
     public Member(String userId, String username, String password) {
         this.userId = userId;
         this.username = username;
-        this.password =password;
+        this.password = password;
     }
-
 
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
@@ -87,4 +88,7 @@ public class Member extends BaseEntity {
         toLikeablePeople.add(0, likeablePerson);
     }
 
+    public void changeUsername(String username) {
+        this.username = username;
+    }
 }

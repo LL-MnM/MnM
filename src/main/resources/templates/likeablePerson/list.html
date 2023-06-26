@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{layout/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 
-</body>
-</html>
+<head>
+    <title>당신이 좋아하는 사람들</title>
+</head>
+
+
+<div class="flex-grow flex items-center justify-center" layout:fragment="content">
+    <div class="max-w-2xl w-full px-4">
+        <h1>호감 리스트</h1>
+        <ul>
+            <li th:each="person : ${likeablePeople}" th:text="${person.getToMember().getUsername()}"></li>
+        </ul>
+    </div>
+</div>
