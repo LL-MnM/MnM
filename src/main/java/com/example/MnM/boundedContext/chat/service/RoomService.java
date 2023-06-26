@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.chat.service;
 
+import com.example.MnM.base.exception.NotFoundRoomException;
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
 import com.example.MnM.boundedContext.chat.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,10 @@ public class RoomService {
 
     public ChatRoom findById(Long id) {
         return roomRepository.findById(id).orElseThrow();
+    }
+
+    public ChatRoom findBySecretId(String roomId) {
+        return roomRepository.findByUniqueId(roomId)
+                .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
     }
 }
