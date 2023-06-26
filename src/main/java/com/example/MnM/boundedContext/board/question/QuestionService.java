@@ -1,9 +1,7 @@
 package com.example.MnM.boundedContext.board.question;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,11 +27,8 @@ public class QuestionService {
     }
 
     public Question getQuestion(Integer id) {
-        Optional<Question> oq = questionRepository.findById(id);
-
-        if (oq.isPresent() == false) throw new DataNotFoundException("question not found");
-
-        return oq.get();
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("question not found"));
     }
     public Question create(String subject, String content) {
         Question q = new Question();
