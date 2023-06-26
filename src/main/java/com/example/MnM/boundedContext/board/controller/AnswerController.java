@@ -1,9 +1,12 @@
-package com.example.MnM.boundedContext.board.answer;
+package com.example.MnM.boundedContext.board.controller;
 
 
 import com.example.MnM.base.rq.Rq;
-import com.example.MnM.boundedContext.board.question.Question;
-import com.example.MnM.boundedContext.board.question.QuestionService;
+import com.example.MnM.boundedContext.board.entity.answer.Answer;
+import com.example.MnM.boundedContext.board.entity.answer.AnswerForm;
+import com.example.MnM.boundedContext.board.service.AnswerService;
+import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.board.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
