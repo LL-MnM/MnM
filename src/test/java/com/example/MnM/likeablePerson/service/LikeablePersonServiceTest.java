@@ -29,7 +29,7 @@ public class LikeablePersonServiceTest {
     private LikeablePersonRepository likeablePersonRepository;
 
     @Test
-    @DisplayName("좋아요 생성")
+    @DisplayName("호감 생성")
     void t001() throws Exception {
 
         Member memberUser3 = memberService.findByUserName("홍길동").orElseThrow();
@@ -38,7 +38,7 @@ public class LikeablePersonServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요 삭제")
+    @DisplayName("호감 삭제")
     void t002() throws Exception {
 
         Member memberUser3 = memberService.findByUserName("홍길동").orElseThrow();
@@ -46,5 +46,16 @@ public class LikeablePersonServiceTest {
         assertThat(likeablePersonRepository.count() == 1);
         likeablePersonService.findById(1L);
         assertThat(likeablePersonRepository.count() == 0);
+    }
+
+    @Test
+    @DisplayName("호감 수정")
+    void t003() throws Exception {
+        Member memberUser3 = memberService.findByUserName("홍길동").orElseThrow();
+        likeablePersonService.like(memberUser3, "임꺽정");
+        assertThat(likeablePersonRepository.findById(1L).get().getToMember().getUsername().equals("임꺽정"));
+        likeablePersonService.modify(memberUser3, 1L, "박준수");
+        assertThat(likeablePersonRepository.findById(1L).get().getToMember().getUsername().equals("박준수"));
+
     }
 }

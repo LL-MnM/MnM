@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -28,6 +29,7 @@ import java.util.List;
 public class Member extends BaseEntity {
     private String userId; //id
     private String password; //pw
+    @Setter
     private String username; //이름
     private String nickname; //닉네임
     @Email
