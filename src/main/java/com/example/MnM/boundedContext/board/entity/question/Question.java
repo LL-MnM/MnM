@@ -1,11 +1,11 @@
 package com.example.MnM.boundedContext.board.entity.question;
 
 
+import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.ToString;
-import com.example.MnM.boundedContext.board.BaseEntity;
 
 
 import lombok.Getter;

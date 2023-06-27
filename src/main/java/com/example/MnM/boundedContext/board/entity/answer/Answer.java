@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.board.entity.answer;
 
+import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,13 +10,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class Answer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Answer extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
