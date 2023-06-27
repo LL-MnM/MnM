@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.chat.service;
 import com.example.MnM.base.exception.NotFoundRoomException;
 import com.example.MnM.boundedContext.chat.dto.SaveChatDto;
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
+import com.example.MnM.boundedContext.chat.entity.RoomStatus;
 import com.example.MnM.boundedContext.chat.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Transactional
@@ -27,7 +27,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public String createRoom(Long memberId, String username) {
+    public String createRoom(Long memberId, String username, RoomStatus status) {
         String roomSecretId = UUID.randomUUID().toString();
 
 
@@ -35,6 +35,7 @@ public class RoomService {
                 .secretId(roomSecretId)
                 .createUser(username)
                 .createUserId(memberId)
+                .status(status)
                 .name("%s의 방".formatted(username))
                 .build());
 
@@ -49,8 +50,8 @@ public class RoomService {
                 .orElseThrow(() -> new NotFoundRoomException("방을 찾을 수 없습니다."));
         Long roomId = room.getId();
         roomRepository.delete(room);
-        redisTemplate.opsForList().remove("rooms",1,roomSecretId);
-        publisher.publishEvent(new SaveChatDto(String.valueOf(roomId),roomSecretId));
+        redisTemplate.opsForList().remove("rooms", 1, roomSecretId);
+        publisher.publishEvent(new SaveChatDto(String.valueOf(roomId), roomSecretId));
 
     }
 

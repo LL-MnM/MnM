@@ -21,5 +21,6 @@ public class ChatRoom {
     private String name;
     private String createUser;
     private Long createUserId;
+    private RoomStatus status;
 
 }
