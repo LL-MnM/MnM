@@ -25,8 +25,8 @@ public class MemberService {
     @Transactional
 
     public RsData<Member> join(MemberDto MemberDto) {
-        String userId = MemberDto.getUserId();
         String username = MemberDto.getUsername();
+        String name = MemberDto.getName();
         String password = MemberDto.getPassword();
         String email = MemberDto.getEmail();
         String nickname = MemberDto.getNickname();
@@ -39,8 +39,8 @@ public class MemberService {
         String introduce = MemberDto.getIntroduce();
 
 
-        if (findByUserId(userId).isPresent()) {
-            return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(userId));
+        if (findByUserName(username).isPresent()) {
+            return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
         if (StringUtils.hasText(password)) password = passwordEncoder.encode(password);
@@ -48,7 +48,7 @@ public class MemberService {
         Member member = Member
                 .builder()
                 .username(username)
-                .userId(userId)
+                .name(name)
                 .password(password)
                 .email(email)
                 .nickname(nickname)
@@ -67,11 +67,11 @@ public class MemberService {
     }
 
 
-    public Optional<Member> findByUserId(String username) { //유저 아이디로 찾기
-        return memberRepository.findByUserId(username);
-    }
+    /*public Optional<Member> findByName(String name) { //유저 이름으로 찾기
+        return memberRepository.findByName(name);
+    }*/
 
-    public Optional<Member> findByUserName(String username) {
+    public Optional<Member> findByUserName(String username) {//유저 아이디로 찾기
         return memberRepository.findByUsername(username);
     }
 

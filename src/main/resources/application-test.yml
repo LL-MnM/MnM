@@ -12,9 +12,6 @@ spring:
 
   data:
     redis:
-      host: 172.30.1.82
-      port: 6379
-      password: lldj123414
       database: 1
 
 

@@ -14,13 +14,13 @@ import lombok.*;
 public class MemberDto {
 
     @NotBlank
-    private String userId; //id
+    private String username; //id
     @NotBlank
     private String password;
     @NotBlank
     private String email;
     @NotBlank
-    private String username; //이름
+    private String name; //이름
     @NotBlank
     private String nickname; //닉네임
     @Positive

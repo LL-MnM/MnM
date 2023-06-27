@@ -29,12 +29,12 @@ class MemberControllerTest {
         Member member = new Member("test001", "홍길동", "1234");//testcase
 
         memberService.saveMember(member);
-        assertThat(memberService.findByUserId(member.getUserId())).isNotNull();
+        assertThat(memberService.findByUserName(member.getUsername())).isNotNull();
         assertThat(member.isDeleted()).isFalse();
 
         memberService.deleteMember(member);
 
-        Optional<Member> afterDelete = memberService.findByUserId(member.getUserId());
+        Optional<Member> afterDelete = memberService.findByUserName(member.getUsername());
         assertThat(afterDelete).isNotEmpty();
         assertThat(afterDelete.get().isDeleted()).isTrue();
 

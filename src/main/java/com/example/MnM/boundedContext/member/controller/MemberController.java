@@ -34,7 +34,6 @@ public class MemberController {
     }
 
     @PreAuthorize("isAnonymous()")
-    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
@@ -55,6 +54,7 @@ public class MemberController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("hasRole('USER')") 테스트용
     @GetMapping("/me")
     public String showMe(Model model) {
         return "member/me";

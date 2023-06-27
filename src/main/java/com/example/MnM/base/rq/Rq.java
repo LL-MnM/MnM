@@ -60,11 +60,25 @@ public class Rq {
 
         // 데이터가 없는지 체크
         if (member == null) {
-            member = memberService.findByUserId(user.getUsername()).orElse(null);
+            member = memberService.findByUserName(user.getUsername()).orElse(null);
         }
 
         return member;
     }
+
+    public Member setMemberAuthorities(Member m, String Authorities) {
+        if (isLogout()) return null;
+
+        // 데이터가 없는지 체크
+        if (member == null) {
+            member = memberService.findByUserName(user.getUsername()).orElse(null);
+
+        }
+
+        return member;
+    }
+
+
 
     // 뒤로가기 + 메세지
     public String historyBack(String msg) {
