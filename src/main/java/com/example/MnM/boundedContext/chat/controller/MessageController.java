@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class MessageController {
 
     @MessageMapping("/chat/{roomId}")
     @SendTo("/sub/chat/{roomId}")
-    public ChatMessageDto sendManyToMany(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+    public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto) {
 
         chatService.saveChat(roomId, messageDto);
 
