@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.member.entity.emum;
 
+import com.example.MnM.base.exception.NotMatchUserLevelException;
 import jakarta.persistence.AttributeConverter;
 import lombok.Getter;
 
@@ -29,7 +30,7 @@ public enum UserLevel {
             return EnumSet.allOf(UserLevel.class).stream()
                     .filter(e -> e.getCode() == dbData)
                     .findAny()
-                    .orElseThrow(NotMatchAuthLevelException::new);
+                    .orElseThrow(NotMatchUserLevelException::new);
         }
     }
 }
