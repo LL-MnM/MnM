@@ -4,9 +4,14 @@ import com.example.MnM.boundedContext.board.repository.AnswerRepository;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.repository.QuestionRepository;
 import com.example.MnM.boundedContext.board.service.QuestionService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +19,11 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @SpringBootTest
+@ActiveProfiles("test")
+@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BoardApplicationTests {
 
     @Autowired
@@ -26,7 +35,7 @@ class BoardApplicationTests {
     @Autowired
     private QuestionService questionService;
 
-    @Test
+    @BeforeAll
     void test_CreateQuestions_Setup() {
         for (int i = 1; i <= 100; i++) {
             String subject = String.format("Sample Question %d", i);
