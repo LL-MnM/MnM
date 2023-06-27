@@ -17,9 +17,7 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 @Component
 public class ChatEventListener {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final ChatService chatService;
-
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
