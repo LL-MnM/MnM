@@ -1,6 +1,8 @@
 package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
+import com.example.MnM.boundedContext.gmail.email.service.EmailService;
+import com.example.MnM.boundedContext.gmail.emailVerification.service.EmailVerificationService;
 import com.example.MnM.boundedContext.member.controller.MemberController;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
@@ -21,6 +23,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final EmailVerificationService emailVerificationService;
+
+    private final EmailService emailService;
 
     @Transactional
 
@@ -82,4 +88,5 @@ public class MemberService {
     public void deleteMember(Member member){
         memberRepository.delete(member);
     }
+
 }
