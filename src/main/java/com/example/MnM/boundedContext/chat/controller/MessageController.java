@@ -2,6 +2,7 @@ package com.example.MnM.boundedContext.chat.controller;
 
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
 import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
+import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.service.ChatService;
 import com.example.MnM.boundedContext.chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +49,12 @@ public class MessageController {
     }
 
     private boolean isRoomOwnerExit(ChatMessageDto messageDto) {
-        return messageDto.getStatus().equals(EXIT) && isRoomOwner(messageDto);
+        return isExit(messageDto.getStatus()) &&
+                roomService.isRoomOwner(messageDto.getRoomId(), messageDto.getSenderId());
     }
 
-    private boolean isRoomOwner(ChatMessageDto messageDto) {
-        return roomService.isRoomOwner(messageDto.getRoomId(), messageDto.getSenderId());
+    private boolean isExit(ChatStatus status) {
+        return status.equals(EXIT);
     }
 
     private ChatMessageDto deleteRoom(ChatMessageDto messageDto) {

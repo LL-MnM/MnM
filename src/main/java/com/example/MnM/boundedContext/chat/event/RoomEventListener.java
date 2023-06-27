@@ -1,6 +1,5 @@
 package com.example.MnM.boundedContext.chat.event;
 
-import com.example.MnM.base.exception.NotOwnerRoomException;
 import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +13,10 @@ public class RoomEventListener {
     private final RoomService roomService;
 
     @EventListener(DeleteRoomDto.class)
-    public void deleteRoom(DeleteRoomDto dto) {
+    public void deleteRoomEvent(DeleteRoomDto dto) {
+
         String roomId = dto.getRoomId();
+        roomService.deleteRoom(roomId);
 
-        Long userId = dto.getUserId();
-
-        if (roomService.isRoomOwner(roomId, userId)) {
-            roomService.deleteRoom(roomId);
-        } else {
-            throw new NotOwnerRoomException("방 삭제 권한이 없습니다.");
-        }
     }
 }

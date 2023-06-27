@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class RoomService {
 
@@ -23,10 +23,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final ApplicationEventPublisher publisher;
 
-    public List<ChatRoom> findAll() {
-        return roomRepository.findAll();
-    }
-
+    @Transactional
     public String createRoom(Long memberId, String username, RoomStatus status) {
         String roomSecretId = UUID.randomUUID().toString();
 
@@ -45,23 +42,31 @@ public class RoomService {
         return room.getSecretId();
     }
 
+    @Transactional
     public void deleteRoom(String roomSecretId) {
         ChatRoom room = roomRepository.findBySecretId(roomSecretId)
                 .orElseThrow(() -> new NotFoundRoomException("방을 찾을 수 없습니다."));
+
         Long roomId = room.getId();
         roomRepository.delete(room);
+
         redisTemplate.opsForList().remove("rooms", 1, roomSecretId);
+
         publisher.publishEvent(new SaveChatDto(String.valueOf(roomId), roomSecretId));
 
+    }
+
+    public ChatRoom findBySecretId(String roomId) {
+        return roomRepository.findBySecretId(roomId)
+                .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
     }
 
     public ChatRoom findById(Long id) {
         return roomRepository.findById(id).orElseThrow();
     }
 
-    public ChatRoom findBySecretId(String roomId) {
-        return roomRepository.findBySecretId(roomId)
-                .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
+    public List<ChatRoom> findAll() {
+        return roomRepository.findAll();
     }
 
     public boolean isRoomOwner(String roomId, Long userId) {
