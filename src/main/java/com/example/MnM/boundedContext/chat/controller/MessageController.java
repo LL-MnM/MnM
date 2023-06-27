@@ -26,7 +26,7 @@ public class MessageController {
     @SendTo("/group/chat/{roomId}")
     public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto) {
 
-        chatService.saveChat(roomId, messageDto);
+        chatService.saveChatToCache(roomId, messageDto);
 
         return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
     }
@@ -35,7 +35,7 @@ public class MessageController {
     @SendTo("/single/chat/{roomId}")
     public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto) {
 
-        chatService.saveChat(roomId, messageDto);
+        chatService.saveChatToCache(roomId, messageDto);
 
         return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
     }
