@@ -46,15 +46,13 @@ public class SecurityConfig {
                         .requestMatchers("").authenticated() //인증된 사용자만 허용
                         .requestMatchers("/member/login").anonymous() //익명의 사용자 허용
                         .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN") //이중 권한이 1개라도 있다면 허용
-                        .requestMatchers("").permitAll() //누구에게나 허용
+                        .requestMatchers("/member/join").permitAll() //누구에게나 허용
                         .anyRequest().authenticated())
-
-                .rememberMe(rememberMe -> rememberMe //쿠키 적용
+                .rememberMe(rememberMe -> rememberMe //쿠키 적용, 아이디 기억하기 기능
                         .rememberMeParameter("remember")
                         .key("12345678")
-                        .tokenRepository(persistentTokenRepository())
                         .userDetailsService(userDetailsService)
-                        .tokenValiditySeconds(60*60*24*30) //쿠키는 30일짜리 입니다.
+                        .tokenValiditySeconds(60*60*24*7) //쿠키는 7일짜리 입니다.
                 );
 
         return http.build();
@@ -69,13 +67,6 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         //정적 자원들은 스프링 시큐리티 적용에서 제외
         return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
-        repo.setDataSource(dataSource);
-        return repo;
     }
 
 }

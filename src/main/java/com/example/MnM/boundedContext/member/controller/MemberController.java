@@ -44,7 +44,6 @@ public class MemberController {
         RsData<Member> joinRs = memberService.join(memberDto);
 
         if(bindingResult.hasErrors()){
-            System.out.println(memberDto.getMbti()+"--------------------------------------------");
             return rq.redirectWithMsg("/member/join", "실패");
         }
         if (joinRs.isFail()) {
