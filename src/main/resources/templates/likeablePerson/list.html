@@ -10,9 +10,35 @@
 
 <div class="flex-grow flex items-center justify-center" layout:fragment="content">
     <div class="max-w-2xl w-full px-4">
-        <h1>호감 리스트</h1>
-        <ul>
-            <li th:each="person : ${likeablePeople}" th:text="${person.getToMember().getUsername()}"></li>
-        </ul>
+        <h1 class="text-3xl font-bold mb-4 text-center">나의 호감 리스트</h1>
+
+        <div th:unless="${!#lists.isEmpty(likeablePeople)}" class="text-center">
+            <div class="text-gray-500 text-lg my-8">
+                <i class="far fa-face-laugh text-2xl"></i> 목록이 비어있습니다. 당신의 호감을 표시해주세요.
+            </div>
+        </div>
+
+        <th:block th:each="person : ${likeablePeople}">
+            <div class="flex items-center mb-2">
+                <ul>
+                    <li th:text="${person.getToMember().getUsername()}" class="text-xl"></li>
+                </ul>
+                <div class="ml-3">
+                    <a class="btn btn-sm btn-outline text-sm font-medium px-4 py-2"
+                       href="javascript:"
+                       onclick="if(confirm('정말로 취소하시겠습니까?')) $(this).next().submit();">
+                        <i class="fas fa-user-slash mr-1"></i>
+                        호감취소
+                    </a>
+                    <form hidden th:action="@{|/likeablePerson/delete/${person.getId()}|}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                    </form>
+                </div>
+            </div>
+        </th:block>
+        <div class="flex justify-end mt-4">
+            <a href="/likeablePerson/like" class="text-black-500 hover:underline text-sm font-bold px-2 py-1">호감표시로 돌아가기</a>
+        </div>
     </div>
 </div>
+
