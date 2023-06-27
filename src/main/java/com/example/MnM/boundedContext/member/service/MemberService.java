@@ -1,9 +1,6 @@
 package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
-import com.example.MnM.boundedContext.gmail.email.service.EmailService;
-import com.example.MnM.boundedContext.gmail.emailVerification.service.EmailVerificationService;
-import com.example.MnM.boundedContext.member.controller.MemberController;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
@@ -24,9 +21,6 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final EmailVerificationService emailVerificationService;
-
-    private final EmailService emailService;
 
     @Transactional
 
