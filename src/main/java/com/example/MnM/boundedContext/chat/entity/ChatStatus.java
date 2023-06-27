@@ -1,5 +1,5 @@
 package com.example.MnM.boundedContext.chat.entity;
 
 public enum ChatStatus {
-    ENTER,SEND,EXIT
+    ENTER,SEND, DELETE, EXIT
 }

@@ -16,7 +16,7 @@ public class ChatMessageDto {
     private String message;
     private ChatStatus status;
 
-    public void updateStatus() {
-        status = ChatStatus.SEND;
+    public void statusToDelete() {
+        status = ChatStatus.DELETE;
     }
 }
