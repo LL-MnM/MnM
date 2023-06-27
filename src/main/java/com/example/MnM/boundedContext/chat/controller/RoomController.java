@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.chat.controller;
 import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
+import com.example.MnM.boundedContext.chat.entity.RoomStatus;
 import com.example.MnM.boundedContext.chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,16 @@ public class RoomController {
         return "chat/rooms";
     }
 
-    @PostMapping("/create/room")
-    public String createRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getId(),rq.getMember().getUsername());
+    @PostMapping("/create/room/group")
+    public String createGroupRoom() {
+        String roomId = roomService.createRoom(rq.getMember().getId(),rq.getMember().getUsername(), RoomStatus.GROUP);
+
+        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId),"채팅 방이 생성되었습니다.");
+    }
+
+    @PostMapping("/create/room/single")
+    public String createSingleRoom() {
+        String roomId = roomService.createRoom(rq.getMember().getId(),rq.getMember().getUsername(),RoomStatus.SINGLE);
 
         return rq.redirectWithMsg("/chat/room/%s".formatted(roomId),"채팅 방이 생성되었습니다.");
     }
