@@ -2,6 +2,8 @@ package com.example.MnM.boundedContext.chat.controller;
 
 import com.example.MnM.boundedContext.chat.entity.ChatRoom;
 import com.example.MnM.boundedContext.chat.repository.RoomRepository;
+import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ class RoomControllerTest {
     RoomController roomController;
 
     @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
     MockMvc mvc;
 
     @DisplayName("채팅 방 목록")
@@ -51,10 +56,10 @@ class RoomControllerTest {
     @WithUserDetails("user3")
     @Test
     void createRoom() throws Exception {
-        mvc.perform(post("/chat/create/room")
+        mvc.perform(post("/chat/create/room/group")
                         .with(csrf()))
                 .andExpect(handler().handlerType(RoomController.class))
-                .andExpect(handler().methodName("createRoom"))
+                .andExpect(handler().methodName("createGroupRoom"))
                 .andExpect(redirectedUrlPattern("/chat/room/**"));
 
         List<ChatRoom> rooms = roomRepository.findAll();
@@ -81,12 +86,15 @@ class RoomControllerTest {
     @WithUserDetails("user3")
     @Test
     void deleteRoom() throws Exception {
-
+        Member user3 = memberRepository.findByUserId("user3").orElseThrow();
         String roomId = "uuid";
-        String username = "user1";
+
+        String username = user3.getUsername();
+        Long userId = user3.getId();
         ChatRoom room = ChatRoom.builder()
                 .secretId(roomId)
                 .createUser(username)
+                .createUserId(userId)
                 .build();
         roomRepository.save(room);
 
@@ -94,6 +102,7 @@ class RoomControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("roomId", roomId)
                         .param("username", username)
+                        .param("userId", String.valueOf(userId))
                         .with(csrf()))
                 .andExpect(handler().handlerType(RoomController.class))
                 .andExpect(handler().methodName("deleteRoom"))

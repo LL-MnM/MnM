@@ -63,7 +63,7 @@ class RoomServiceTest {
 
         roomRepository.save(checkRoom);
 
-        assertThat(roomService.isRoomOwner(uniqueId,userId)).isFalse();
+        assertThat(roomService.isRoomOwner(uniqueId,userId+1)).isFalse();
 
     }
 
