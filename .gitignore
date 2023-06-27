@@ -38,3 +38,4 @@ out/
 src/main/generated
 src/main/resources/application-secret.yml
 src/main/resources/data.sql
+secret
