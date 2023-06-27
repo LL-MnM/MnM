@@ -3,9 +3,11 @@ const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
 const endPoint = 12;
 const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let prevAnswers = [];
+let qIdx = 0;
 
 function calResult() {
-    var result = select.indexOf(Math.max(...select));
+    const result = select.indexOf(Math.max(...select));
     return result;
 }
 
@@ -22,8 +24,8 @@ function setResult() {
         resultName.innerText = infoList[newPoint].name;
         resultDesc.innerHTML = infoList[newPoint].desc;
 
-        var resultImg = document.createElement('img');
-        var imgURL = '/mbtiTest/img/image-' + newPoint + '.png';
+        let resultImg = document.createElement('img');
+        let imgURL = '/mbtiTest/img/image-' + newPoint + '.png';
         resultImg.src = imgURL;
         resultImg.alt = newPoint;
         resultImg.classList.add('img-fluid');
@@ -34,12 +36,18 @@ function setResult() {
 
     updateResult(point); // initial result update
 
+    let currentPoint = point;
+
     fitButton.addEventListener('click', () => {
-        updateResult(infoList[point].fit[0]);
+        let nextPoint = infoList[currentPoint].fit[0];
+        updateResult(nextPoint);
+        currentPoint = nextPoint;  // update the currentPoint after the result is updated
     });
 
     notFitButton.addEventListener('click', () => {
-        updateResult(infoList[point].notFit[0]);
+        let nextPoint = infoList[currentPoint].notFit[0];
+        updateResult(nextPoint);
+        currentPoint = nextPoint;  // update the currentPoint after the result is updated
     });
 }
 
@@ -58,8 +66,8 @@ function goResult() {
 }
 
 function addAnswer(answerText, qIdx, idx) {
-    var a = document.querySelector('.answerBox');
-    var answer = document.createElement('button');
+    let a = document.querySelector('.answerBox');
+    let answer = document.createElement('button');
     answer.classList.add('answerList');
     answer.classList.add('my-3');
     answer.classList.add('p-3');
@@ -70,17 +78,19 @@ function addAnswer(answerText, qIdx, idx) {
     answer.innerHTML = answerText;
 
     answer.addEventListener("click", function () {
-        var children = document.querySelectorAll('.answerList');
+        let children = document.querySelectorAll('.answerList');
         for (let i = 0; i < children.length; i++) {
             children[i].disabled = true;
             children[i].style.WebkitAnimation = "fadeOut 0.5s";
             children[i].style.animation = "fadeOut 0.5s";
         }
         setTimeout(() => {
-            var target = qnaList[qIdx].a[idx].type;
+            let target = qnaList[qIdx].a[idx].type;
             for (let i = 0; i < target.length; i++) {
                 select[target[i]] += 1;
             }
+
+            prevAnswers.push({qIdx, answer: idx});
 
             for (let i = 0; i < children.length; i++) {
                 children[i].style.display = 'none';
@@ -96,16 +106,37 @@ function goNext(qIdx) {
         return;
     }
 
-    var q = document.querySelector('.qBox');
+    let q = document.querySelector('.qBox');
     q.innerHTML = qnaList[qIdx].q;
+    let answerBox = document.querySelector('.answerBox');
+    answerBox.innerHTML = '';  // Reset the answer box
     for (let i in qnaList[qIdx].a) {
         addAnswer(qnaList[qIdx].a[i].answer, qIdx, i);
     }
-    var status = document.querySelector('.statusBar');
+    let status = document.querySelector('.statusBar');
     status.style.width = (100 / endPoint) * (qIdx + 1) + '%';
-    var countStatusNum = document.querySelector('.countStatus');
+    let countStatusNum = document.querySelector('.countStatus');
     countStatusNum.innerHTML = (qIdx + 1) + "/" + endPoint;
+
+    const backButton = document.querySelector('#backButton');
+    if (qIdx === 0) {
+        backButton.style.display = 'none';
+    } else {
+        backButton.style.display = 'block';
+    }
 }
+
+backButton.addEventListener('click', function () {
+    if (prevAnswers.length === 0) {
+        return;
+    }
+    const lastAnswer = prevAnswers.pop();
+    const target = qnaList[lastAnswer.qIdx].a[lastAnswer.answer].type;
+    for (let i = 0; i < target.length; i++) {
+        select[target[i]] -= 1;
+    }
+    goNext(lastAnswer.qIdx);
+});
 
 function begin() {
     main.style.WebkitAnimation = "fadeOut 1s";
@@ -117,7 +148,8 @@ function begin() {
             main.style.display = "none";
             qna.style.display = "block";
         }, 450)
-        let qIdx = 0;
+        qIdx = 0;
+        prevAnswers = [];
         goNext(qIdx);
     }, 450);
 
