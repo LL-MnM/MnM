@@ -27,9 +27,9 @@ import java.util.List;
 @Getter
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 public class Member extends BaseEntity {
-    private String userId; //id
+    private String username; //id
     private String password; //pw
-    private String username; //이름
+    private String name; //이름
     private String nickname; //닉네임
     @Email
     private String email; //이메일
@@ -49,9 +49,9 @@ public class Member extends BaseEntity {
     private boolean deleted = Boolean.FALSE; //soft delete
 
     public Member(String userId, String username, String password) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
+        this.username = userId;
+        this.name = username;
+        this.password =password;
     }
 
 
@@ -60,7 +60,7 @@ public class Member extends BaseEntity {
 
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 
-        if ("admin".equals(userId)) {
+        if ("admin".equals(username)) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
         }
 
