@@ -1,9 +1,11 @@
 package com.example.MnM.boundedContext.board.controller;
 
+import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.board.entity.answer.AnswerForm;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.entity.question.QuestionForm;
 import com.example.MnM.boundedContext.board.service.QuestionService;
+import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
+    private final Rq rq;
 
     @GetMapping("/question/list")
     public String list(Model model , @RequestParam(defaultValue = "0") int page) {
@@ -52,7 +55,7 @@ public class QuestionController {
         }
 
 
-        questionService.create(questionForm.getSubject() , questionForm.getContent());
+        questionService.create(questionForm.getSubject() , questionForm.getContent(),rq.getMember());
 
         return "redirect:/question/list";
     }
