@@ -49,6 +49,10 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	//google
+	implementation 'com.google.cloud:google-cloud-language:2.21.0'
+	implementation 'com.google.auth:google-auth-library-oauth2-http:1.18.0'
+
 	// Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
