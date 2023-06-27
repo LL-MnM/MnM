@@ -27,16 +27,26 @@ public class LikeablePersonController {
     private final LikeablePersonService likeablePersonService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/list")
-    public String showList(Model model) {
+    @GetMapping("/fromList")
+    public String showFromList(Model model) {
         Member member = rq.getMember();
         if (member != null) {
             List<LikeablePerson> likeablePeople = member.getFromLikeablePeople();
             model.addAttribute("likeablePeople", likeablePeople);
         }
-        return "/likeablePerson/list";
+        return "/likeablePerson/fromList";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/toList")
+    public String showToList(Model model) {
+        Member member = rq.getMember();
+        if (member != null) {
+            List<LikeablePerson> likeablePeople = member.getToLikeablePeople();
+            model.addAttribute("likeablePeople", likeablePeople);
+        }
+        return "/likeablePerson/toList";
+    }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like")
     public String showLike() {
@@ -51,7 +61,7 @@ public class LikeablePersonController {
         if (rsData.isFail()) {
             return rq.historyBack(rsData);
         }
-        return rq.redirectWithMsg("/likeablePerson/list", rsData);
+        return rq.redirectWithMsg("/likeablePerson/fromList", rsData);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -64,7 +74,7 @@ public class LikeablePersonController {
             return rq.historyBack(rsData);
         }
 
-        return rq.redirectWithMsg("/likeablePerson/list", rsData);
+        return rq.redirectWithMsg("/likeablePerson/fromList", rsData);
     }
 
     @PreAuthorize("isAuthenticated()")
