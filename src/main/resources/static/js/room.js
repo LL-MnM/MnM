@@ -76,8 +76,6 @@ function showMessageOutput(messageData) {
     senderElement.textContent = messageData.sender;
     senderElement.classList.add('w-6', 'h-6', 'rounded-full');
 
-    console.log("username:"+username);
-    console.log("messageData:"+messageData.sender);
     if (messageData.sender === username) {
         detailsElement.classList.add('flex', 'items-end', 'justify-end');
         textElement.classList.add('order-1', 'items-end');
