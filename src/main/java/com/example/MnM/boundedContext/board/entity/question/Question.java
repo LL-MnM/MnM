@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.board.entity.question;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.answer.Answer;
+import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.ToString;
@@ -23,8 +24,14 @@ public class Question extends BaseEntity {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Answer> answerList;
 
-    public void createQuestion(String subject, String content) {
+    @ManyToOne
+    @JoinColumn(name = "member_nickname")
+    private Member member;
+
+    public void createQuestion(String subject, String content, Member member) {
         this.subject = subject;
         this.content = content;
+        this.member = member;
+
     }
 }

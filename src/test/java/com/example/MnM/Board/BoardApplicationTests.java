@@ -4,6 +4,7 @@ import com.example.MnM.boundedContext.board.repository.AnswerRepository;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.repository.QuestionRepository;
 import com.example.MnM.boundedContext.board.service.QuestionService;
+import com.example.MnM.boundedContext.member.entity.Member;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,15 @@ class BoardApplicationTests {
     @Autowired
     private QuestionService questionService;
 
+    Member member;
     @BeforeAll
     void test_CreateQuestions_Setup() {
+        member = new Member("1","testUser","1234");
+
         for (int i = 1; i <= 100; i++) {
             String subject = String.format("Sample Question %d", i);
             String content = "Sample Question Content";
-            this.questionService.create(subject, content);
+            this.questionService.create(subject , content , member);
         }
         assertEquals(100, questionRepository.count());
     }
@@ -83,11 +87,12 @@ class BoardApplicationTests {
 
     @Test
     void test_UpdateQuestion() {
+
         Optional<Question> oq = questionRepository.findById(99);
         assertTrue(oq.isPresent());
 
         Question q = oq.get();
-        q.createQuestion("Updated Subject", q.getContent());
+        q.createQuestion("Updated Subject", q.getContent(), member );
         questionRepository.save(q);
     }
 }
