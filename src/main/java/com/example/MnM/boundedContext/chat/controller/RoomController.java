@@ -64,7 +64,6 @@ public class RoomController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        roomService.deleteRoom(deleteRoomDto.getRoomId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
