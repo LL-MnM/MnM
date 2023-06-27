@@ -55,9 +55,9 @@ public class LikeablePersonService {
     }
     @Transactional
     public RsData<LikeablePerson> cancel(LikeablePerson likeablePerson) {
-        likeablePersonRepository.delete(likeablePerson); // 저장
+        likeablePersonRepository.delete(likeablePerson);
 
-        return RsData.of("S-1", "호감을 표시하셨습니다.", likeablePerson);
+        return RsData.of("S-1", "호감을 취소하셨습니다.", likeablePerson);
     }
 
     @Transactional

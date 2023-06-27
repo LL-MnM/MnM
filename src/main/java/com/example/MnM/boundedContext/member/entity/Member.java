@@ -29,7 +29,6 @@ import java.util.List;
 public class Member extends BaseEntity {
     private String userId; //id
     private String password; //pw
-    @Setter
     private String username; //이름
     private String nickname; //닉네임
     @Email

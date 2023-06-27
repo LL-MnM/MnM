@@ -8,9 +8,7 @@ import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +51,6 @@ public class LikeablePersonController {
         if (rsData.isFail()) {
             return rq.historyBack(rsData);
         }
-
         return rq.redirectWithMsg("/likeablePerson/list", rsData);
     }
 
@@ -80,10 +77,12 @@ public class LikeablePersonController {
 
     @AllArgsConstructor
     @Getter
+    @Setter
+    @NoArgsConstructor
     public static class LikeForm {
         @NotBlank
         @Size(min = 3, max = 30)
-        private final String username;
+        private String username;
     }
 
 }
