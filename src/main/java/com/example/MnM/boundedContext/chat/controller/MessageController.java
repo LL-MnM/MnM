@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
@@ -24,24 +23,30 @@ public class MessageController {
     private final ApplicationEventPublisher publisher;
 
     @MessageMapping("/chat/{roomId}")
-    @SendTo("/sub/chat/{roomId}")
+    @SendTo("/group/chat/{roomId}")
     public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto) {
 
         chatService.saveChat(roomId, messageDto);
 
-        if (messageDto.getStatus().equals(ChatStatus.EXIT) && isExitRoomOwner(messageDto)) {
-            publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(),messageDto.getSender(), messageDto.getSenderId()));
-            return messageDto;
-        }
-
-        messageDto.updateStatus();
-        return messageDto;
+        return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
     }
 
-    @MessageMapping("/chatOne/{roomId}")
+    @MessageMapping("/singleChat/{roomId}")
     @SendTo("/single/chat/{roomId}")
     public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+
         chatService.saveChat(roomId, messageDto);
+
+        return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
+    }
+
+    private boolean isRoomOwnerExit(ChatMessageDto messageDto) {
+        return messageDto.getStatus().equals(ChatStatus.EXIT) && isExitRoomOwner(messageDto);
+    }
+
+    private ChatMessageDto deleteRoom(ChatMessageDto messageDto) {
+        publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(), messageDto.getSender(), messageDto.getSenderId()));
+        messageDto.statusToDelete();
         return messageDto;
     }
 

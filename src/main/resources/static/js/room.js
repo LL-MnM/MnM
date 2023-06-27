@@ -18,7 +18,7 @@ const headers = {
 };
 stompClient.connect(headers, function (frame) {
     // 구독 설정
-    stompClient.subscribe('/sub/chat/' + roomId, function (messageOutput) {
+    stompClient.subscribe('/group/chat/' + roomId, function (messageOutput) {
         showMessageOutput(JSON.parse(messageOutput.body));
     }, headers);
     sendMessage(`${username}님이 입장하셨습니다.`, "ENTER");
@@ -42,7 +42,7 @@ stompClient.connect(headers, function (frame) {
 });
 
 function sendMessage(message, status) {
-    stompClient.send("/pub/chat/" + roomId, {},
+    stompClient.send("/group/chat/" + roomId, {},
         JSON.stringify({
             'roomId': roomId,
             'message': message,
@@ -53,11 +53,12 @@ function sendMessage(message, status) {
 }
 
 function showMessageOutput(messageData) {
-    if (messageData.status === "EXIT") {
+    if (messageData.status === "DELETE") {
         stompClient.disconnect();
         window.location.href = 'http://localhost:8080/chat/rooms'; // 홈으로 이동
         return;
     }
+
 
     // 메시지를 담을 chat-message div를 생성합니다.
     const messageElement = document.createElement('div');
@@ -76,7 +77,12 @@ function showMessageOutput(messageData) {
     senderElement.textContent = messageData.sender;
     senderElement.classList.add('w-6', 'h-6', 'rounded-full');
 
-    if (messageData.sender === username) {
+    if (messageData.status === "EXIT") {
+        detailsElement.classList.add('flex', 'items-center', 'justify-center');
+        textElement.classList.add('bg-gray-300', 'text-gray-600');
+        spanElement.classList.add('rounded-lg');
+        senderElement.classList.add('hidden');
+    } else if (messageData.sender === username) {
         detailsElement.classList.add('flex', 'items-end', 'justify-end');
         textElement.classList.add('order-1', 'items-end');
         spanElement.classList.add('rounded-br-none', 'bg-blue-600', 'text-white');
@@ -141,13 +147,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         formData.append("username", username);
         formData.append("roomId", roomId);
+        formData.append("userId", userId);
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
         fetch("/chat/room/delete", {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 [csrfHeader]: csrfToken
             },
             body: formData
