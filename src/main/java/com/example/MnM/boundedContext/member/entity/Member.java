@@ -33,6 +33,7 @@ public class Member extends BaseEntity {
     private String nickname; //닉네임
     @Email
     private String email; //이메일
+    private Boolean emailVerified; //이메일 인증 확인
     private String providerType; //소셜로그인을 위한 제공자 타입
 
     //여기까지 회원가입시 기본정보, 아래로는 개인정보

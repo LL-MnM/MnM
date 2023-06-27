@@ -41,15 +41,16 @@ public class SecurityConfig {
                         logout -> logout
                                 .logoutUrl("/member/logout")
                 )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/comment/**","/adm/**","/actuator/**","/swagger-ui/**").hasRole("ADMIN")
-                        .requestMatchers("/member/login").anonymous()
-                        .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/favicon.ico", "/resource/**", "/error",
-                                "/image/**", "/js/**", "/test/**", "/send","/").permitAll()
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("").hasRole("ADMIN") //관리자 권한 가진사람만 허용
+                        .requestMatchers("").authenticated() //인증된 사용자만 허용
+                        .requestMatchers("/member/login").anonymous() //익명의 사용자 허용
+                        .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN") //이중 권한이 1개라도 있다면 허용
+                        .requestMatchers("").permitAll() //누구에게나 허용
                         .anyRequest().authenticated())
 
-                .rememberMe(rememberMe -> rememberMe
+                .rememberMe(rememberMe -> rememberMe //쿠키 적용
+                        .rememberMeParameter("remember")
                         .key("12345678")
                         .tokenRepository(persistentTokenRepository())
                         .userDetailsService(userDetailsService)
