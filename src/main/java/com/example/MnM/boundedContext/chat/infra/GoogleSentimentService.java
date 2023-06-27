@@ -1,4 +1,4 @@
-package com.example.MnM.boundedContext.chat.service;
+package com.example.MnM.boundedContext.chat.infra;
 
 import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.google.api.gax.core.FixedCredentialsProvider;
@@ -17,12 +17,12 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Profile("prod")
 @Component
-public class GoogleSentimentService {
+public class GoogleSentimentService implements InspectSentimentService {
 
     @Value("${secret.google.place}")
     private String keyPath;
 
-    @Async
+    @Async("googleService")
     public CompletableFuture<EmotionDegree> chatInspectSentiment(String msg) throws IOException {
 
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(keyPath));
@@ -34,12 +34,11 @@ public class GoogleSentimentService {
             Document doc = Document.newBuilder().setContent(msg).setType(Document.Type.PLAIN_TEXT).build();
             AnalyzeSentimentResponse response = language.analyzeSentiment(doc);
             Sentiment sentiment = response.getDocumentSentiment();
+
             if (sentiment == null) {
                 log.info("No sentiment found");
-            } else {
-                log.info("Sentiment magnitude: %.3f\n", sentiment.getMagnitude());
-                log.info("Sentiment score: %.3f\n", sentiment.getScore());
             }
+
             EmotionDegree emotionDegree = new EmotionDegree(sentiment.getMagnitude(), sentiment.getScore());
             return CompletableFuture.completedFuture(emotionDegree);
         }
