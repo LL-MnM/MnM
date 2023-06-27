@@ -42,7 +42,7 @@ stompClient.connect(headers, function (frame) {
 });
 
 function sendMessage(message, status) {
-    stompClient.send("/group/chat/" + roomId, {},
+    stompClient.send("/pub/chat/" + roomId, {},
         JSON.stringify({
             'roomId': roomId,
             'message': message,
