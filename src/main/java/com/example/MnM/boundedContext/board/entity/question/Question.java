@@ -14,10 +14,6 @@ import lombok.Getter;
 @Entity
 @ToString
 public class Question extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @Column(length = 200)
     private String subject;
 
