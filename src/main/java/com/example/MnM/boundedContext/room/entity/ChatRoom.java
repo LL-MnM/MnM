@@ -1,4 +1,4 @@
-package com.example.MnM.boundedContext.chat.entity;
+package com.example.MnM.boundedContext.room.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

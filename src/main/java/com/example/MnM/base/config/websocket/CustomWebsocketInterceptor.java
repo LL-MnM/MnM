@@ -1,8 +1,7 @@
 package com.example.MnM.base.config.websocket;
 
-import com.example.MnM.base.exception.NotValidRoomException;
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -31,18 +30,15 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
     }
 
     private void isValid(StompHeaderAccessor headerAccessor) {
+        String roomStatus = headerAccessor.getFirstNativeHeader("roomStatus");
 
-        String username = headerAccessor.getFirstNativeHeader("username");
-        String roomId = headerAccessor.getFirstNativeHeader("roomId");
-
-        ChatRoom chatRoom = roomService.findBySecretId(roomId);
-
-        if (!isRoomOwner(username, chatRoom))
-            throw new NotValidRoomException("권한이 없는 방입니다.");
-
+        if (roomStatus.equals(RoomStatus.SINGLE.name())) {
+            String userId = headerAccessor.getFirstNativeHeader("userId");
+            roomService.checkSingleRoom(userId);
+        } else {
+            String roomId = headerAccessor.getFirstNativeHeader("roomId");
+            roomService.checkGroupRoom(roomId);
+        }
     }
 
-    private boolean isRoomOwner(String username, ChatRoom chatRoom) {
-        return chatRoom.getCreateUser().equals(username);
-    }
 }

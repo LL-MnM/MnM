@@ -14,7 +14,8 @@ const sendButton = document.getElementById('sendButton');
 const headers = {
     'username': username,
     'roomId': roomId,
-    'userId': userId
+    'userId': userId,
+    'roomStatus':roomStatus
 };
 stompClient.connect(headers, function (frame) {
     // 구독 설정
@@ -23,6 +24,10 @@ stompClient.connect(headers, function (frame) {
     }, headers);
     sendMessage(`${username}님이 입장하셨습니다.`, "ENTER");
 
+    stompClient.onDisconnect = function () {
+        exitRoom();
+        window.location.href = 'http://localhost:8080/chat/rooms'; // 자동으로 이동할 URL
+    };
     // Send 버튼 이벤트
     sendButton.addEventListener('click', function () {
         sendMessage(messageInput.value, "SEND");
@@ -66,7 +71,6 @@ function showMessageOutput(messageData) {
         return;
     }
 
-
     // 메시지를 담을 chat-message div를 생성합니다.
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message');
@@ -79,21 +83,34 @@ function showMessageOutput(messageData) {
     spanElement.classList.add('px-4', 'py-2', 'rounded-lg', 'inline-block');
 
     spanElement.textContent = messageData.message;
-    // <div className="w-6 h-6 rounded-full order-2">hello</div>
-    const senderElement = document.createElement('div');
+
+    const senderElement2 = document.createElement('div');
+    senderElement2.classList.add("flex", "items-center", "h-full");
+    const senderElement3 = document.createElement('div');
+    senderElement3.classList.add("flex-shrink-0", "truncate");
+    const senderElement = document.createElement('span');
     senderElement.textContent = messageData.sender;
-    senderElement.classList.add('w-6', 'h-6', 'rounded-full');
+    senderElement.classList.add('w-6', 'h-6', 'rounded-full','whitespace-nowrap');
+
+
+    senderElement2.appendChild(senderElement3);
+    senderElement3.appendChild(senderElement);
 
     if (messageData.status === "EXIT") {
         detailsElement.classList.add('flex', 'items-center', 'justify-center');
-        textElement.classList.add('bg-gray-300', 'text-gray-600');
+        textElement.classList.add('bg-pink-500', 'text-white');
+        spanElement.classList.add('rounded-lg');
+        senderElement.classList.add('hidden');
+    } else if (messageData.status === "ENTER") {
+        detailsElement.classList.add('flex', 'items-center', 'justify-center');
+        textElement.classList.add('bg-blue-500','text-white');
         spanElement.classList.add('rounded-lg');
         senderElement.classList.add('hidden');
     } else if (messageData.sender === username) {
         detailsElement.classList.add('flex', 'items-end', 'justify-end');
         textElement.classList.add('order-1', 'items-end');
         spanElement.classList.add('rounded-br-none', 'bg-blue-600', 'text-white');
-        senderElement.classList.add('order-2');
+        senderElement2.classList.add('order-2');
     } else {
         detailsElement.classList.add('flex', 'items-end');
         textElement.classList.add('order-2', 'items-start');
@@ -104,7 +121,7 @@ function showMessageOutput(messageData) {
     // 생성된 모든 요소를 조립합니다.
     textElement.appendChild(spanElement);
     detailsElement.appendChild(textElement);
-    detailsElement.appendChild(senderElement);
+    detailsElement.appendChild(senderElement2);
     messageElement.appendChild(detailsElement);
 
     // 완성된 메시지를 메시지 목록에 추가합니다.

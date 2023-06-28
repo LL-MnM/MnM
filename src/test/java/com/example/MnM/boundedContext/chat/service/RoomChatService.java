@@ -1,7 +1,8 @@
 package com.example.MnM.boundedContext.chat.service;
 
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.repository.RoomRepository;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.repository.RoomRepository;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

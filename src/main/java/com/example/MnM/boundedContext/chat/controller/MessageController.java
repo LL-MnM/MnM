@@ -1,10 +1,10 @@
 package com.example.MnM.boundedContext.chat.controller;
 
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
-import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
+import com.example.MnM.boundedContext.room.dto.DeleteRoomDto;
 import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.service.ChatService;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
