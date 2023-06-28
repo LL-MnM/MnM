@@ -37,6 +37,7 @@ stompClient.connect(headers, function (frame) {
     });
 
     window.addEventListener("beforeunload", function (event) {
+        exitRoom();
         stompClient.disconnect();
     });
 });
@@ -56,6 +57,12 @@ function showMessageOutput(messageData) {
     if (messageData.status === "DELETE") {
         stompClient.disconnect();
         window.location.href = 'http://localhost:8080/chat/rooms'; // 홈으로 이동
+        return;
+    }
+
+    if (messageData.status === "EXIT" && messageData.sender === username) {
+        stompClient.disconnect();
+        window.location.href = 'http://localhost:8080/chat/rooms';
         return;
     }
 
@@ -142,26 +149,11 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.classList.add('hidden');
     });
 
-    function exitRoom() {
-        let formData = new FormData();
 
-        formData.append("username", username);
-        formData.append("roomId", roomId);
-        formData.append("userId", userId);
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-        fetch("/chat/room/delete", {
-            method: "DELETE",
-            headers: {
-                [csrfHeader]: csrfToken
-            },
-            body: formData
-        }).then(r => {
-            if (r.status === 200) {
-                sendMessage(`${username}님이 나갔습니다.`, "EXIT");
-                window.location.href = 'http://localhost:8080/chat/rooms';
-            }
-        });
-    }
 });
+
+function exitRoom() {
+
+    sendMessage(`${username}님이 나갔습니다.`, "EXIT");
+
+}
