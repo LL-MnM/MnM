@@ -55,21 +55,4 @@ public class RoomController {
         return "chat/room";
     }
 
-    @DeleteMapping("/room/delete")
-    public ResponseEntity<String> deleteRoom(DeleteRoomDto deleteRoomDto) {
-
-        Long memberId = rq.getMember().getId();
-
-        if (!isRoomOwner(deleteRoomDto, memberId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private boolean isRoomOwner(DeleteRoomDto deleteRoomDto, Long memberId) {
-        return deleteRoomDto.getUserId().equals(memberId);
-    }
-
-
 }

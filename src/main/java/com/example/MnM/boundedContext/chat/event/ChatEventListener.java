@@ -19,7 +19,7 @@ public class ChatEventListener {
     private final ChatService chatService;
 
     @Async("messageThreadPool")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     @EventListener(SaveChatDto.class)
     public void saveChatToDb(SaveChatDto saveChatDto) {
 
