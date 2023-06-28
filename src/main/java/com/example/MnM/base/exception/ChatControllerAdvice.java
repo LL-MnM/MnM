@@ -15,4 +15,9 @@ public class ChatControllerAdvice {
     public String notFoundRoomException(NotFoundRoomException e) {
         return rq.historyBack(e.getMessage());
     }
+
+    @ExceptionHandler(OverCapacityRoomException.class)
+    public String overCapacityRoomException(OverCapacityRoomException e) {
+        return rq.historyBack(e.getMessage());
+    }
 }
