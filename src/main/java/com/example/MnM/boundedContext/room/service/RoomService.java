@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.room.service;
 
 import com.example.MnM.base.exception.NotFoundRoomException;
+import com.example.MnM.base.exception.OverCapacityRoomException;
 import com.example.MnM.boundedContext.chat.dto.SaveChatDto;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
 import com.example.MnM.boundedContext.room.entity.RoomStatus;
@@ -23,6 +24,8 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final ApplicationEventPublisher publisher;
 
+    private final Long MAX_CAPACITY = 10L;
+
     @Transactional
     public String createRoom(Long memberId, String username, RoomStatus status) {
         String roomSecretId = UUID.randomUUID().toString();
@@ -36,8 +39,7 @@ public class RoomService {
                 .name("%s의 방".formatted(username))
                 .build());
 
-        Long roomId = room.getId();
-        redisTemplate.opsForList().rightPush("rooms", roomId);
+        redisTemplate.opsForHash().put("rooms", room.getSecretId(), 0L);
 
         return room.getSecretId();
     }
@@ -50,11 +52,29 @@ public class RoomService {
         Long roomId = room.getId();
         roomRepository.delete(room);
 
-        redisTemplate.opsForList().remove("rooms", 1, roomSecretId);
+        redisTemplate.opsForHash().delete("rooms", roomId);
 
         publisher.publishEvent(new SaveChatDto(String.valueOf(roomId), roomSecretId));
-
     }
+
+    @Transactional
+    public Long enterRoom(String roomSecretId) {
+        isExistRoom(roomSecretId);
+        return redisTemplate.opsForHash().increment("rooms", roomSecretId, 1L);
+    }
+
+    @Transactional
+    public Long exitRoom(String roomSecretId) {
+        isExistRoom(roomSecretId);
+        return redisTemplate.opsForHash().increment("rooms", roomSecretId, -1L);
+    }
+
+    private void isExistRoom(String roomSecretId) {
+        boolean isExist = redisTemplate.opsForHash().hasKey("rooms", roomSecretId);
+        if (!isExist)
+            throw new NotFoundRoomException("생성되지 않은 방입니다.");
+    }
+
 
     public ChatRoom findBySecretId(String roomId) {
         return roomRepository.findBySecretId(roomId)
@@ -74,11 +94,17 @@ public class RoomService {
         return chatRoom.getCreateUserId().equals(userId);
     }
 
-    public void checkSingleRoom(String userId) {
+    public void checkSingleRoom(String roomId, String userId) {
+
         //TODO Single check
     }
 
     public void checkGroupRoom(String roomId) {
-        //TODO Group check
+
+        Integer people = (Integer) redisTemplate.opsForHash().get("rooms", roomId);
+
+        if (people >= MAX_CAPACITY)
+            throw new OverCapacityRoomException("정원 초과");
+
     }
 }

@@ -30,7 +30,9 @@ public class MessageController {
 
         switch (messageDto.getStatus()) {
             case EXIT -> {
-                return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
+                if (isRoomOwnerExit(messageDto))
+                    return deleteRoom(messageDto);
+                roomService.exitRoom(messageDto.getRoomId());
             }
             case SEND -> {
                 chatService.saveChatToCache(roomId, messageDto);
