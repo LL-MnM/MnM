@@ -7,5 +7,5 @@ import java.util.concurrent.CompletableFuture;
 
 public interface InspectSentimentService {
 
-    CompletableFuture<EmotionDegree> chatInspectSentiment(String msg) throws IOException;
+    CompletableFuture<EmotionDegree> chatInspectSentiment(String tendency,String msg) throws IOException;
 }

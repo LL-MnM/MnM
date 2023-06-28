@@ -10,10 +10,12 @@ import lombok.*;
 @Entity
 public class EmotionDegree extends BaseEntity {
 
+    private String tendency;
     private float magnitude;
     private float score;
 
-    public EmotionDegree(float magnitude, float score) {
+    public EmotionDegree(String tendency,float magnitude, float score) {
+        this.tendency =tendency;
         this.magnitude = magnitude;
         this.score = score;
     }

@@ -11,10 +11,10 @@ import java.util.concurrent.CompletableFuture;
 @Profile("dev")
 public class LocalInspectService implements InspectSentimentService {
     @Override
-    public CompletableFuture<EmotionDegree> chatInspectSentiment(String msg) {
+    public CompletableFuture<EmotionDegree> chatInspectSentiment(String tendency, String msg) {
 
         Random random = new Random();
 
-        return CompletableFuture.completedFuture(new EmotionDegree(random.nextFloat(), random.nextFloat()));
+        return CompletableFuture.completedFuture(new EmotionDegree(tendency,random.nextFloat(), random.nextFloat()));
     }
 }

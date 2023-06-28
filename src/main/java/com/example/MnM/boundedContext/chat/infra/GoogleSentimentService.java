@@ -23,7 +23,7 @@ public class GoogleSentimentService implements InspectSentimentService {
     private String keyPath;
 
     @Async("googleService")
-    public CompletableFuture<EmotionDegree> chatInspectSentiment(String msg) throws IOException {
+    public CompletableFuture<EmotionDegree> chatInspectSentiment(String tendency, String msg) throws IOException {
 
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(keyPath));
 
@@ -39,7 +39,7 @@ public class GoogleSentimentService implements InspectSentimentService {
                 log.info("No sentiment found");
             }
 
-            EmotionDegree emotionDegree = new EmotionDegree(sentiment.getMagnitude(), sentiment.getScore());
+            EmotionDegree emotionDegree = new EmotionDegree(tendency,sentiment.getMagnitude(), sentiment.getScore());
             return CompletableFuture.completedFuture(emotionDegree);
         }
     }
