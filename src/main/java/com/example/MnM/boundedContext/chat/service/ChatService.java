@@ -30,6 +30,8 @@ public class ChatService {
 
         List<ChatMessage> entities = new ArrayList<>();
 
+        //TODO 감정 분석
+
         for (Object dto : list) {
             ChatMessageDto messageDto = (ChatMessageDto) dto;
             ChatMessage message = ChatMessage.builder()

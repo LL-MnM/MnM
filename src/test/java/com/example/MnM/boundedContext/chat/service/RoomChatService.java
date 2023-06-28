@@ -24,8 +24,7 @@ public class RoomChatService {
     RoomService roomService;
 
     @MockBean
-    ChatService chatService;
-
+    ChatService mockService;
 
     @DisplayName("방 삭제시 해당 채팅 로그 영속화")
     @Test
@@ -35,12 +34,12 @@ public class RoomChatService {
                 .build();
         roomRepository.save(room);
 
-        doNothing().when(chatService).saveChatToCache(any(), any());
-        doNothing().when(chatService).deleteCacheChat(room.getSecretId());
+        doNothing().when(mockService).saveChatToCache(any(), any());
+        doNothing().when(mockService).deleteCacheChat(room.getSecretId());
 
         roomService.deleteRoom(room.getSecretId());
 
-        verify(chatService,times(1)).saveChatToDb(any(),any());
-        verify(chatService,times(1)).deleteCacheChat(any());
+        verify(mockService,times(1)).saveChatToDb(any(),any());
+        verify(mockService,times(1)).deleteCacheChat(any());
     }
 }
