@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-@Profile("dev")
+@Profile({"dev","test"})
 public class LocalInspectService implements InspectSentimentService {
     @Override
     public CompletableFuture<EmotionDegree> chatInspectSentiment(String tendency, String msg) {
