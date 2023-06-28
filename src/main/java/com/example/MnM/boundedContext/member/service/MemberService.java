@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.member.service;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.member.entity.emum.UserLevel;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +40,7 @@ public class MemberService {
         String introduce = MemberDto.getIntroduce();
 
 
-        if (findByUserName(username).isPresent()) {
+        if (findByUserName(username).isPresent() || username.equals("admin")) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
@@ -62,6 +63,9 @@ public class MemberService {
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
                 .build();
+
+        member.addRole(UserLevel.USER);
+
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
     }

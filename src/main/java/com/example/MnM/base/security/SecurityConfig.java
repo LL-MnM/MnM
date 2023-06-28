@@ -1,5 +1,6 @@
 package com.example.MnM.base.security;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -30,6 +31,8 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
 
+
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -41,18 +44,19 @@ public class SecurityConfig {
                         logout -> logout
                                 .logoutUrl("/member/logout")
                 )
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                /*.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("").hasRole("ADMIN") //관리자 권한 가진사람만 허용
                         .requestMatchers("").authenticated() //인증된 사용자만 허용
                         .requestMatchers("/member/login").anonymous() //익명의 사용자 허용
                         .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN") //이중 권한이 1개라도 있다면 허용
-                        .requestMatchers("/member/join").permitAll() //누구에게나 허용
-                        .anyRequest().authenticated())
+                        .requestMatchers("/member/join", "common/**").permitAll() //누구에게나 허용
+                        .anyRequest().authenticated())*/
+
                 .rememberMe(rememberMe -> rememberMe //쿠키 적용, 아이디 기억하기 기능
                         .rememberMeParameter("remember")
-                        .key("12345678")
+                        .key(AppConfig.getKey())
                         .userDetailsService(userDetailsService)
-                        .tokenValiditySeconds(60*60*24*7) //쿠키는 7일짜리 입니다.
+                        .tokenValiditySeconds(AppConfig.getTokenValiditySeconds()) //쿠키는 7일짜리 입니다.
                 );
 
         return http.build();

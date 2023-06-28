@@ -34,3 +34,8 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+custom:
+  cookie:
+    tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
+    key: "12345678"
