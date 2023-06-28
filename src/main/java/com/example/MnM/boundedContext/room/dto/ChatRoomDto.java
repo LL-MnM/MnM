@@ -1,6 +1,6 @@
-package com.example.MnM.boundedContext.chat.dto;
+package com.example.MnM.boundedContext.room.dto;
 
-import com.example.MnM.boundedContext.chat.entity.RoomStatus;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import lombok.*;
 
 @EqualsAndHashCode

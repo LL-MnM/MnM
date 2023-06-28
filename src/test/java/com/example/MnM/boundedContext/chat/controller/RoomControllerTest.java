@@ -1,9 +1,10 @@
 package com.example.MnM.boundedContext.chat.controller;
 
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.repository.RoomRepository;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.repository.RoomRepository;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
+import com.example.MnM.boundedContext.room.controller.RoomController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

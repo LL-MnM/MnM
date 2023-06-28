@@ -1,10 +1,10 @@
-package com.example.MnM.boundedContext.chat.service;
+package com.example.MnM.boundedContext.room.service;
 
 import com.example.MnM.base.exception.NotFoundRoomException;
 import com.example.MnM.boundedContext.chat.dto.SaveChatDto;
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.entity.RoomStatus;
-import com.example.MnM.boundedContext.chat.repository.RoomRepository;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
+import com.example.MnM.boundedContext.room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -72,5 +72,13 @@ public class RoomService {
     public boolean isRoomOwner(String roomId, Long userId) {
         ChatRoom chatRoom = findBySecretId(roomId);
         return chatRoom.getCreateUserId().equals(userId);
+    }
+
+    public void checkSingleRoom(String userId) {
+        //TODO Single check
+    }
+
+    public void checkGroupRoom(String roomId) {
+        //TODO Group check
     }
 }

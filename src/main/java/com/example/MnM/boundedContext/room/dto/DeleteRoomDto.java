@@ -1,4 +1,4 @@
-package com.example.MnM.boundedContext.chat.dto;
+package com.example.MnM.boundedContext.room.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
