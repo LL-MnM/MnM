@@ -66,17 +66,17 @@ public class Rq {
         return member;
     }
 
-    public Member setMemberAuthorities(Member m, String Authorities) {
+    /*public Member setMemberAuthorities(Member m, String Authorities) {
         if (isLogout()) return null;
-
         // 데이터가 없는지 체크
         if (member == null) {
             member = memberService.findByUserName(user.getUsername()).orElse(null);
-
+            user.getAuthorities().stream().filter()
         }
-
         return member;
-    }
+    }*/
+
+
 
 
 
