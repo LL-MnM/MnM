@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/layout.html}">
 <head>
 </head>
@@ -15,6 +16,13 @@
                 <div class="bg-primary-500 text-white px-2 py-1 text-start">
                     <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
+            </div>
+            <div class="my-3">
+                <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
+                   th:text="수정"></a>
+            </div>
             </div>
         </div>
     </div>

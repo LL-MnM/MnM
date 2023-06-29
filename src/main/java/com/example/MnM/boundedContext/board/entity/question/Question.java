@@ -5,6 +5,8 @@ import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.ToString;
 
@@ -34,4 +36,9 @@ public class Question extends BaseEntity {
         this.member = member;
 
     }
+    public void updateQuestion(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+    }
+
 }
