@@ -16,7 +16,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
 import java.text.Normalizer;
 
 @Controller
@@ -53,13 +55,10 @@ public class MemberController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    //@PreAuthorize("hasRole('USER')") 테스트용
     @GetMapping("/me")
     public String showMe(Model model) {
         System.out.println(rq.getMember().getGrantedAuthorities() + "----------------------------------------------------");
-        System.out.println(rq.getMember().getRoleSet() + "----------------------------------------------------");
         return "member/me";
     }
-
 
 }
