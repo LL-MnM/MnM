@@ -6,27 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private  final DataSource dataSource;
     @Autowired
     private final CustomUserDetailsService userDetailsService;
 
@@ -44,19 +39,17 @@ public class SecurityConfig {
                         logout -> logout
                                 .logoutUrl("/member/logout")
                 )
-                /*.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("").hasRole("ADMIN") //관리자 권한 가진사람만 허용
-                        .requestMatchers("").authenticated() //인증된 사용자만 허용
-                        .requestMatchers("/member/login").anonymous() //익명의 사용자 허용
-                        .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN") //이중 권한이 1개라도 있다면 허용
-                        .requestMatchers("/member/join", "common/**").permitAll() //누구에게나 허용
-                        .anyRequest().authenticated())*/
-
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                       .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                .hasAuthority("ADMIN")
+                                .anyRequest()
+                                .permitAll()
+                )//추후 관리자 페이지나 api문서 화면, 등등 설정함
                 .rememberMe(rememberMe -> rememberMe //쿠키 적용, 아이디 기억하기 기능
                         .rememberMeParameter("remember")
-                        .key(AppConfig.getKey())
+                        .key(AppConfig.getKey()) //쿠키 키 값
                         .userDetailsService(userDetailsService)
-                        .tokenValiditySeconds(AppConfig.getTokenValiditySeconds()) //쿠키는 7일짜리 입니다.
+                        .tokenValiditySeconds(AppConfig.getTokenValiditySeconds()) //쿠키는 3일짜리 입니다.
                 );
 
         return http.build();

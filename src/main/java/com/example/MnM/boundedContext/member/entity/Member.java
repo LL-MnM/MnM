@@ -1,23 +1,19 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
-import com.example.MnM.base.security.CustomConverter;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
-import com.example.MnM.boundedContext.member.entity.emum.UserLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Builder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 
 import java.util.*;
@@ -32,19 +28,10 @@ public class Member extends BaseEntity {
     private String username; //id
     private String password; //pw
     private String name; //이름
-
     @Email
     private String email; //이메일
     private Boolean emailVerified; //이메일 인증 확인
     private String providerType; //소셜로그인을 위한 제공자 타입
-
-    /*@Convert(converter = CustomConverter.class)
-    @Builder.Default
-    private Set<UserLevel> roleSet = new HashSet<>();*/
-
-    @ElementCollection
-    @Builder.Default
-    private Set<UserLevel> roleSet = new HashSet<>();
 
     private boolean deleted = Boolean.FALSE; //soft delete
 
@@ -60,9 +47,6 @@ public class Member extends BaseEntity {
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
 
-    public void addRole(UserLevel userLevel){
-        this.roleSet.add(userLevel);
-    }
 
 
     public Member(String userId, String username, String password) {
@@ -72,7 +56,7 @@ public class Member extends BaseEntity {
     }
 
 
-    public List<? extends GrantedAuthority> getGrantedAuthorities() {
+    public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
@@ -83,6 +67,9 @@ public class Member extends BaseEntity {
 
         return grantedAuthorities;
     }
+
+
+
 
     @OneToMany(mappedBy = "fromMember", cascade = {CascadeType.ALL})
     @OrderBy("id desc") // 정렬
