@@ -84,4 +84,6 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
+    public Optional<Member> findByMbti(String mbti){return memberRepository.findByMbti(mbti); }
+
 }
