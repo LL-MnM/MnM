@@ -22,8 +22,7 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
                    th:text="수정"></a>
-                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/question/delete/${question.id}|}" class="btn btn-sm btn-outline-secondary"
-                   sec:authorize="isAuthenticated()"
+                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/question/delete/${question.id}|}" class="btn btn-sm btn-outline-secondary"                   sec:authorize="isAuthenticated()"
                    th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
                    th:text="삭제"></a>
             </div>
@@ -45,6 +44,10 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.userId}"
                    th:text="수정"></a>
+                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/answer/delete/${answer.id}|}"
+                   class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.userId}"
+                   th:text="삭제"></a>
             </div>
         </div>
     </div>
