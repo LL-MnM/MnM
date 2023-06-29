@@ -34,6 +34,7 @@ public class QuestionService {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("question not found"));
     }
+
     public Question create(String subject, String content, Member member) {
 
         System.out.println(member.getUsername());
@@ -41,8 +42,12 @@ public class QuestionService {
         System.out.println(member.getNickname());
 
         Question q = new Question();
-        q.createQuestion(subject, content , member);
+        q.createQuestion(subject, content, member);
         questionRepository.save(q);
         return q;
+    }
+    public void modify(Question question, String subject, String content) {
+        question.updateQuestion(subject,content);
+        questionRepository.save(question);
     }
 }
