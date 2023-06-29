@@ -7,7 +7,6 @@ spring:
     url: ENC(caq/+9P8gm2xwvxAc6bryGylgJEX19QHmuL3umll+NyiG7ggOoug5uWyGDTQzBd1YG4YpRK/PVvYFt2zHM0bYrLSPIg4kIo3fpJFJnlWD3bzjY1UXSuTBuhLM3r4JgfuRlsfAb9tWG7E+KSIe1HQWedUAT4vbT9IYxskAIZVkCFqWIS8v3EChQ==)
     username: ENC(feciTQh5rLQ2dmTa1Z/A9g==)
     password: ENC(lZ30TkUte7l7K/5PAiHp3g==)
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -19,7 +18,35 @@ spring:
         default_batch_fetch_size: 200
         default_lazy_load_no_trans: true
     defer-datasource-initialization: true
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            client-name: Google
+            scope: profile, email
+          kakao:
+            scope:
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            client-authentication-method: POST
+          naver:
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            scope: profile,email
+            authorization-grant-type: authorization_code
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
   data:
     redis:
       host: 127.0.0.1
@@ -34,6 +61,8 @@ decorator:
     p6spy:
       enable-logging: true
 custom:
+  site:
+    baseUrl: http://localhost
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
     key: "12345678"

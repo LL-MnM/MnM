@@ -13,7 +13,7 @@ import lombok.*;
 @RequiredArgsConstructor
 public class MemberDto {
 
-    @NotBlank
+    @NotBlank(message = "id는 필수 입니다")
     private String username; //id
     @NotBlank
     private String password;
@@ -42,4 +42,6 @@ public class MemberDto {
 
     private boolean deleted;
 
+    public MemberDto(String username, String name, String s, String email, String s1) {
+    }
 }

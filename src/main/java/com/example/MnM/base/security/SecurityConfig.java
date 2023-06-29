@@ -28,6 +28,7 @@ public class SecurityConfig {
 
 
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -38,6 +39,10 @@ public class SecurityConfig {
                 .logout(
                         logout -> logout
                                 .logoutUrl("/member/logout")
+                )
+                .oauth2Login(
+                        oauth2Login -> oauth2Login
+                                .loginPage("/member/login")
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
