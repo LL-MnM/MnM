@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByUsername(String username);
+    Optional<Member> findByUsername(String username); //아이디로 찾기
 
-    Optional<Member> findByName(String name);
+    Optional<Member> findByName(String name); //
 
     Optional<Member> findByUsernameAndEmail(String username, String email);
+
+    Optional<Member> findByMbti(String mbti);
 
 }
