@@ -50,4 +50,7 @@ public class QuestionService {
         question.updateQuestion(subject,content);
         questionRepository.save(question);
     }
+    public void delete(Question question) {
+        questionRepository.delete(question);
+    }
 }
