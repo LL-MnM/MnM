@@ -6,8 +6,6 @@ import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,10 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.security.Principal;
-import java.text.Normalizer;
 
 @Controller
 @RequestMapping("/member")
@@ -57,7 +51,6 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public String showMe(Model model) {
-        System.out.println(rq.getMember().getGrantedAuthorities() + "----------------------------------------------------");
         return "member/me";
     }
 
