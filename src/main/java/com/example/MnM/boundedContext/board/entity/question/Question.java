@@ -6,7 +6,6 @@ import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.ToString;
 
