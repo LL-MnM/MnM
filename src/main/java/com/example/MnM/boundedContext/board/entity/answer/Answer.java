@@ -2,6 +2,7 @@ package com.example.MnM.boundedContext.board.entity.answer;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.question.Question;
+import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,10 +24,19 @@ public class Answer extends BaseEntity {
     @ToString.Exclude
     private Question question;
 
-    public Answer(String content, LocalDateTime createDate, Question question) {
+    @ManyToOne
+    @JoinColumn(name = "member_nickname")
+    private Member member;
+
+    public Answer(String content, LocalDateTime createDate, Question question,Member member) {
         this.content = content;
         this.createDate = createDate;
         this.question = question;
+        this.member = member;
+
+    }
+    public void updateAnswer(String content) {
+        this.content = content;
     }
 }
 
