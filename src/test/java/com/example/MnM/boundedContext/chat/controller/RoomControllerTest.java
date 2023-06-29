@@ -86,7 +86,7 @@ class RoomControllerTest {
     @WithUserDetails("user3")
     @Test
     void deleteRoom() throws Exception {
-        Member user3 = memberRepository.findByUserId("user3").orElseThrow();
+        Member user3 = memberRepository.findByUsername("user3").orElseThrow();
         String roomId = "uuid";
 
         String username = user3.getUsername();
