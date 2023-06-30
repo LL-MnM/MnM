@@ -1,28 +1,17 @@
 package com.example.MnM.boundedContext.chat.entity;
 
-import com.example.MnM.base.baseEntity.BaseEntity;
-import com.example.MnM.boundedContext.member.entity.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Embeddable;
 import lombok.*;
 
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
 @Getter
-@Entity
-public class EmotionDegree extends BaseEntity {
+@Embeddable
+public class EmotionDegree {
 
-    private String tendency;
     private float magnitude;
     private float score;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
-    public EmotionDegree(String tendency,float magnitude, float score) {
-        this.tendency =tendency;
-        this.magnitude = magnitude;
-        this.score = score;
-    }
+    private String mbti;
 }
+

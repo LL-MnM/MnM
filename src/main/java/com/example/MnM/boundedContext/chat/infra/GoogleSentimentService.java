@@ -1,6 +1,6 @@
 package com.example.MnM.boundedContext.chat.infra;
 
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
+import com.example.MnM.boundedContext.chat.dto.SentimentDto;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.language.v1.*;
@@ -23,7 +23,7 @@ public class GoogleSentimentService implements InspectSentimentService {
     private String keyPath;
 
     @Async("googleService")
-    public CompletableFuture<EmotionDegree> chatInspectSentiment(String tendency, String msg) throws IOException {
+    public CompletableFuture<SentimentDto> chatInspectSentiment(String msg) throws IOException {
 
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(keyPath));
 
@@ -36,11 +36,10 @@ public class GoogleSentimentService implements InspectSentimentService {
             Sentiment sentiment = response.getDocumentSentiment();
 
             if (sentiment == null) {
-                log.info("No sentiment found");
+                log.debug("No sentiment found");
             }
 
-            EmotionDegree emotionDegree = new EmotionDegree(tendency,sentiment.getMagnitude(), sentiment.getScore());
-            return CompletableFuture.completedFuture(emotionDegree);
+            return CompletableFuture.completedFuture(new SentimentDto(sentiment.getMagnitude(), sentiment.getScore()));
         }
     }
 }
