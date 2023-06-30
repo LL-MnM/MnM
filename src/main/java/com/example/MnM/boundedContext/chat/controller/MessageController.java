@@ -30,14 +30,14 @@ public class MessageController {
 
         switch (messageDto.getStatus()) {
             case EXIT -> {
+
                 if (isRoomOwnerExit(messageDto)) {
                     return finishChat(messageDto);
                 }
 
-//                roomService.exitRoom(messageDto.getRoomId(), String.valueOf(messageDto.getSenderId()));
             }
             case SEND -> {
-                roomService.isRoomMember(roomId,messageDto.getSenderId());
+                roomService.isRoomMember(roomId, messageDto.getSenderId());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }
@@ -50,7 +50,9 @@ public class MessageController {
 
         chatService.saveChatToCache(roomId, messageDto);
 
-        return isRoomOwnerExit(messageDto) ? finishChat(messageDto) : messageDto;
+        Long exitRoom = roomService.exitRoom(messageDto.getRoomId(), String.valueOf(messageDto.getSenderId()));
+
+        return isRoomOwnerExit(messageDto) || exitRoom == 0L ? finishChat(messageDto) : messageDto;
     }
 
     private boolean isRoomOwnerExit(ChatMessageDto messageDto) {

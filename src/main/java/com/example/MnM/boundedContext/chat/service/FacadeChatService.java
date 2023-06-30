@@ -17,7 +17,7 @@ import java.util.List;
 import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
 
 
-/**
+/*
  * Single 전용 객체입니다.
  */
 @Slf4j
@@ -32,12 +32,7 @@ public class FacadeChatService {
 
     public void inspectChat(String roomSecretId, String chat) {
 
-        SetOperations<String, Object> redisSet = redisTemplate.opsForSet();
-
-        if (redisSet.size(COUNT.getKey(roomSecretId)) <= 1)
-            return;
-
-        List<String> values = redisSet
+        List<String> values = redisTemplate.opsForSet()
                 .members(COUNT.getKey(roomSecretId))
                 .stream()
                 .limit(2)

@@ -24,7 +24,7 @@ public class RoomService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final RoomRepository roomRepository;
 
-    private final Long MAX_CAPACITY = 10L;
+    private static final Long MAX_CAPACITY = 10L;
 
     @Transactional
     public String createRoom(Long memberId, String username, RoomStatus status) {
