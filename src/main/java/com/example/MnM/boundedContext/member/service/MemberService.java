@@ -1,10 +1,10 @@
 package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
-import com.example.MnM.boundedContext.member.controller.MemberController;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
+import com.example.MnM.boundedContext.recommend.service.MbtiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,8 +20,9 @@ import java.util.Optional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
+
+    private final MbtiService mbtiService;
 
     @Transactional
 
@@ -57,7 +59,7 @@ public class MemberService {
                 .height(height)
                 .gender(gender)
                 .hobby(hobby)
-                .mbti(mbti)
+                .mbtiName(mbti)
                 .locate(locate)
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
@@ -75,11 +77,15 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Member saveMember(Member member){
+    public Member saveMember(Member member) {
         return memberRepository.save(member);
     }
 
-    public void deleteMember(Member member){
+    public void deleteMember(Member member) {
         memberRepository.delete(member);
+    }
+
+    public List<Member> findByMbtiName(String mbtiName) {
+        return memberRepository.findByMbtiName(mbtiName);
     }
 }

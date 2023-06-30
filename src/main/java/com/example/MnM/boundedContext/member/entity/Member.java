@@ -2,20 +2,21 @@ package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.Email;
-import lombok.Builder;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,12 @@ public class Member extends BaseEntity {
     @Email
     private String email; //이메일
     private String providerType; //소셜로그인을 위한 제공자 타입
-
     //여기까지 회원가입시 기본정보, 아래로는 개인정보
-
     private Integer height; //키
     private Integer age; //나이;
     private String locate; //지역
     private String gender; //성별
-    private String mbti; //mbti
+    private String mbtiName; //mbti
     private String hobby; //취미
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
@@ -90,4 +89,5 @@ public class Member extends BaseEntity {
     public void changeUsername(String username) {
         this.username = username;
     }
+
 }
