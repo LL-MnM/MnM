@@ -35,6 +35,7 @@ public class MessageController {
                 roomService.exitRoom(messageDto.getRoomId(), String.valueOf(messageDto.getSenderId()));
             }
             case SEND -> {
+                roomService.isRoomMember(roomId,messageDto.getSenderId());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }
