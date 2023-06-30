@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.room.service;
 
 import com.example.MnM.base.exception.NotFoundRoomException;
+import com.example.MnM.base.exception.NotRoomParticipants;
 import com.example.MnM.base.exception.OverCapacityRoomException;
 import com.example.MnM.boundedContext.chat.dto.SaveChatDto;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.MnM.boundedContext.chat.entity.RedisChat.*;
-import static com.example.MnM.boundedContext.room.entity.RedisRoom.*;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -41,8 +41,6 @@ public class RoomService {
                 .status(status)
                 .name("%s의 방".formatted(username))
                 .build());
-
-        redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId),memberId);
 
         return room.getSecretId();
     }
@@ -106,8 +104,13 @@ public class RoomService {
 
         Long people = redisTemplate.opsForSet().size(COUNT.getKey(roomSecretId));
 
-        if (people >= MAX_CAPACITY)
+        if (people > MAX_CAPACITY)
             throw new OverCapacityRoomException("정원 초과");
 
+    }
+
+    public void isRoomMember(String roomSecretId, Long senderId) {
+        if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(COUNT.getKey(roomSecretId), senderId)))
+            throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
     }
 }
