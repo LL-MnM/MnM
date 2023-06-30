@@ -10,7 +10,5 @@ import lombok.Getter;
 public class DeleteRoomDto {
 
     private String roomId;
-    private String username;
-    private Long userId;
 
 }
