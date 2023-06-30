@@ -38,7 +38,6 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         RsData<Member> joinRs = memberService.join(memberDto);
-
         if(bindingResult.hasErrors()){
             return rq.redirectWithMsg("/member/join", "실패");
         }

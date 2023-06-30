@@ -21,27 +21,33 @@ public class MemberDto {
     private String email;
     @NotBlank
     private String name; //이름
-    @NotBlank
+
+    private String providerTypeCode;
+
     private String nickname; //닉네임
     @Positive
     private Integer height; //키
     @Positive
     private Integer age; //나이;
-    @NotBlank
+
     private String locate; //지역
-    @NotBlank
+
     private String gender; //성별
-    @NotBlank
+
     private String mbti; //mbti
-    @NotBlank
+
     private String hobby; //취미
-    @NotBlank
+
     private String introduce; //자기소개
 
     private String profileImage;
 
     private boolean deleted;
 
-    public MemberDto(String username, String name, String s, String email, String s1) {
+
+    public MemberDto(String username, String password, String providerTypeCode) {
+        this.username = username;
+        this.password = password;
+        this.providerTypeCode = providerTypeCode;
     }
 }

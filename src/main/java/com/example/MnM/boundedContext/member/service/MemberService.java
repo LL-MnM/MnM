@@ -23,24 +23,25 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public RsData<Member> join(MemberDto MemberDto){ //일반 로그인
-        return join(MemberDto, "MnM");
+    public RsData<Member> join(MemberDto memberDto){ //일반 로그인
+        return join(memberDto, "MnM");
     }
 
     @Transactional
-    public RsData<Member> join(MemberDto MemberDto, String providerTypeCode) {
-        String username = MemberDto.getUsername();
-        String name = MemberDto.getName();
-        String password = MemberDto.getPassword();
-        String email = MemberDto.getEmail();
-        String nickname = MemberDto.getNickname();
-        Integer height = MemberDto.getHeight();
-        Integer age = MemberDto.getAge();
-        String locate =MemberDto.getLocate();
-        String gender = MemberDto.getGender();
-        String mbti = MemberDto.getMbti();
-        String hobby = MemberDto.getHobby();
-        String introduce = MemberDto.getIntroduce();
+    public RsData<Member> join(MemberDto memberDto, String providerTypeCode) {
+        String username = memberDto.getUsername();
+        String password = memberDto.getPassword();
+        String name = memberDto.getName();
+        String email = memberDto.getEmail();
+        String nickname = memberDto.getNickname();
+        Integer height = memberDto.getHeight();
+        Integer age = memberDto.getAge();
+        String locate =memberDto.getLocate();
+        String gender = memberDto.getGender();
+        String mbti = memberDto.getMbti();
+        String hobby = memberDto.getHobby();
+        String introduce = memberDto.getIntroduce();
+
 
 
         if (findByUserName(username).isPresent() || username.equals("admin")) {
@@ -49,6 +50,7 @@ public class MemberService {
 
         if (StringUtils.hasText(password)) password = passwordEncoder.encode(password);
 
+
         Member member = Member
                 .builder()
                 .username(username)
@@ -56,7 +58,7 @@ public class MemberService {
                 .password(password)
                 .email(email)
                 .nickname(nickname)
-                .providerType(null)
+                .providerType(providerTypeCode)
                 .age(age)
                 .height(height)
                 .gender(gender)
@@ -66,7 +68,6 @@ public class MemberService {
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
                 .build();
-
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
     }
@@ -117,7 +118,7 @@ public class MemberService {
             }
         }
 
-        MemberDto memberDto = new MemberDto(username, name, "", email, "");
+        MemberDto memberDto = new MemberDto(username, "", providerTypeCode);
 
         return join(memberDto, providerTypeCode);
     }

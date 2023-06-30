@@ -57,12 +57,12 @@ public class Member extends BaseEntity {
     private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
-    public Member(String userId, String username, String password) {
-        this.username = userId;
-        this.name = username;
-        this.password = password;
-    }
+    public Member(String username, String password, String providerType) {
+        this.username = username;
+        this.password =password;
+        this.providerType = providerType;
 
+    }
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

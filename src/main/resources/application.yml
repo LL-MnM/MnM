@@ -25,7 +25,7 @@ spring:
           google:
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-name: Google
-            scope: profile, email
+            scope: profile
           kakao:
             scope:
             client-name: Kakao
@@ -34,7 +34,7 @@ spring:
             client-authentication-method: POST
           naver:
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
-            scope: profile,email
+            scope: name
             authorization-grant-type: authorization_code
         provider:
           kakao:
