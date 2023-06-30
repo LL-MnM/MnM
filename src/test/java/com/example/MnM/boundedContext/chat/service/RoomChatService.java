@@ -22,25 +22,25 @@ public class RoomChatService {
     RoomRepository roomRepository;
 
     @Autowired
-    RoomService roomService;
+    ChatService chatService;
 
     @MockBean
-    ChatService mockService;
+    RoomService roomService;
 
-    @DisplayName("방 삭제시 해당 채팅 로그 영속화")
+
+    @DisplayName("채팅 삭제후 방 삭제")
     @Test
-    void saveChatWhenDeleteRoom() {
+    void deleteCacheChatWillDeleteRoom() {
         ChatRoom room = ChatRoom.builder()
                 .secretId("secretId")
                 .build();
         roomRepository.save(room);
 
-        doNothing().when(mockService).saveChatToCache(any(), any());
-        doNothing().when(mockService).deleteCacheChat(room.getSecretId());
+        doNothing().when(roomService).deleteRoom(room.getSecretId());
 
-        roomService.deleteRoom(room.getSecretId());
+        chatService.deleteCacheChat("secretId");
 
-        verify(mockService,times(1)).saveChatToDb(any(),any());
-        verify(mockService,times(1)).deleteCacheChat(any());
+        verify(roomService,times(1)).deleteRoom(any());
     }
+
 }
