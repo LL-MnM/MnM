@@ -1,12 +1,13 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
+import com.example.MnM.boundedContext.chat.dto.SentimentDto;
 import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Builder;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,8 +17,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -49,14 +52,15 @@ public class Member extends BaseEntity {
     private String introduce; //자기소개
 
     @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @ElementCollection
+    @CollectionTable(name = "bestMatch", joinColumns = @JoinColumn(name = "member_id"))
     private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
     public Member(String userId, String username, String password) {
         this.username = userId;
         this.name = username;
-        this.password =password;
+        this.password = password;
     }
 
 
@@ -71,8 +75,6 @@ public class Member extends BaseEntity {
 
         return grantedAuthorities;
     }
-
-
 
 
     @OneToMany(mappedBy = "fromMember", cascade = {CascadeType.ALL})
@@ -97,5 +99,9 @@ public class Member extends BaseEntity {
 
     public void changeUsername(String username) {
         this.username = username;
+    }
+
+    public void addBestEmotion(SentimentDto sentimentDto, String mbti) {
+        this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(),sentimentDto.score(),mbti));
     }
 }
