@@ -32,7 +32,7 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
 
         if (command == CONNECT) {
             isValid(roomStatus, roomId, userId);
-            roomService.enterRoom(roomId);
+            roomService.enterRoom(roomId,userId);
         }
 
         return message;

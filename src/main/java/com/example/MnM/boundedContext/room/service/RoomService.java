@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.MnM.boundedContext.chat.entity.RedisChat.*;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.*;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -39,7 +42,7 @@ public class RoomService {
                 .name("%s의 방".formatted(username))
                 .build());
 
-        redisTemplate.opsForHash().put("rooms", room.getSecretId(), 0L);
+        redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId),memberId);
 
         return room.getSecretId();
     }
@@ -52,26 +55,26 @@ public class RoomService {
         Long roomId = room.getId();
         roomRepository.delete(room);
 
-        redisTemplate.opsForHash().delete("rooms", roomId);
+        redisTemplate.delete(COUNT.getKey(roomSecretId));
 
         publisher.publishEvent(new SaveChatDto(String.valueOf(roomId), roomSecretId));
     }
 
     @Transactional
-    public Long enterRoom(String roomSecretId) {
+    public Long enterRoom(String roomSecretId,String userId) {
         isExistRoom(roomSecretId);
-        return redisTemplate.opsForHash().increment("rooms", roomSecretId, 1L);
+        return redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId),userId);
     }
 
     @Transactional
-    public Long exitRoom(String roomSecretId) {
+    public Long exitRoom(String roomSecretId,String userId) {
         isExistRoom(roomSecretId);
-        return redisTemplate.opsForHash().increment("rooms", roomSecretId, -1L);
+        return redisTemplate.opsForSet().remove(COUNT.getKey(roomSecretId),userId);
     }
 
     private void isExistRoom(String roomSecretId) {
-        boolean isExist = redisTemplate.opsForHash().hasKey("rooms", roomSecretId);
-        if (!isExist)
+        Boolean isExist = redisTemplate.hasKey(COUNT.getKey(roomSecretId));
+        if (isExist != null && !isExist)
             throw new NotFoundRoomException("생성되지 않은 방입니다.");
     }
 
@@ -94,14 +97,14 @@ public class RoomService {
         return chatRoom.getCreateUserId().equals(userId);
     }
 
-    public void checkSingleRoom(String roomId, String userId) {
+    public void checkSingleRoom(String roomSecretId, String userId) {
 
         //TODO Single check
     }
 
-    public void checkGroupRoom(String roomId) {
+    public void checkGroupRoom(String roomSecretId) {
 
-        Integer people = (Integer) redisTemplate.opsForHash().get("rooms", roomId);
+        Long people = redisTemplate.opsForSet().size(COUNT.getKey(roomSecretId));
 
         if (people >= MAX_CAPACITY)
             throw new OverCapacityRoomException("정원 초과");

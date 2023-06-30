@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
+import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -47,6 +48,9 @@ public class Member extends BaseEntity {
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
 
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
     public Member(String userId, String username, String password) {
