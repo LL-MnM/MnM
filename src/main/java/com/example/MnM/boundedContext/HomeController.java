@@ -9,4 +9,9 @@ public class HomeController {
     public String showMain() {
         return "main";
     }
+
+    @GetMapping("/about")
+    public String showAbout(){
+        return "about";
+    }
 }
