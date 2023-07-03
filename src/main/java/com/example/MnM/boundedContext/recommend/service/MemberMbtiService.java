@@ -20,7 +20,7 @@ public class MemberMbtiService {
     public List<Member> findMbtiForMember(Member member) {
         Mbti mbti = mbtiService.findByName(member.getMbti());
         String name = mbti.getBestMbti();
-        List<Member> members = memberService.findByMbtiName(name);
+        List<Member> members = memberService.findByMbti(name);
         return members;
     }
 }

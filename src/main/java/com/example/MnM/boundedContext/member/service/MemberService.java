@@ -86,7 +86,7 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
-    public List<Member> findByMbtiName(String mbtiName) {
-        return memberRepository.findByMbtiName(mbtiName);
+    public List<Member> findByMbti(String mbti) {
+        return memberRepository.findByMbti(mbti);
     }
 }
