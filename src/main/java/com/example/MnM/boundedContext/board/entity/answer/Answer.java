@@ -8,6 +8,8 @@ import lombok.*;
 
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -38,5 +40,11 @@ public class Answer extends BaseEntity {
     public void updateAnswer(String content) {
         this.content = content;
     }
-}
 
+    @ManyToMany
+    private Set<Member> userId = new LinkedHashSet<>();
+
+    public void addVoter(Member voter) {
+        userId.add(voter);
+    }
+}
