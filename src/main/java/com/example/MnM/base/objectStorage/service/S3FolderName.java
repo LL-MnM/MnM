@@ -1,4 +1,4 @@
-package com.example.MnM.base.objectStorage.s3;
+package com.example.MnM.base.objectStorage.service;
 
 public enum S3FolderName {
 

@@ -1,6 +1,6 @@
 package com.example.MnM.base.objectStorage;
 
-import com.example.MnM.base.objectStorage.s3.S3FolderName;
+import com.example.MnM.base.objectStorage.service.S3FolderName;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
