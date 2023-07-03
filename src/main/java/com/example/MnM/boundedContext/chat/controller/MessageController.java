@@ -1,10 +1,10 @@
 package com.example.MnM.boundedContext.chat.controller;
 
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
-import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
+import com.example.MnM.boundedContext.chat.dto.SaveChatDto;
 import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.service.ChatService;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -13,7 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import static com.example.MnM.boundedContext.chat.entity.ChatStatus.*;
+import static com.example.MnM.boundedContext.chat.entity.ChatStatus.EXIT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,9 +30,14 @@ public class MessageController {
 
         switch (messageDto.getStatus()) {
             case EXIT -> {
-                return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
+
+                if (isRoomOwnerExit(messageDto)) {
+                    return finishChat(messageDto);
+                }
+
             }
             case SEND -> {
+                roomService.isRoomMember(roomId, messageDto.getSenderId());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }
@@ -45,7 +50,9 @@ public class MessageController {
 
         chatService.saveChatToCache(roomId, messageDto);
 
-        return isRoomOwnerExit(messageDto) ? deleteRoom(messageDto) : messageDto;
+        Long exitRoom = roomService.exitRoom(messageDto.getRoomId(), String.valueOf(messageDto.getSenderId()));
+
+        return isRoomOwnerExit(messageDto) || exitRoom == 0L ? finishChat(messageDto) : messageDto;
     }
 
     private boolean isRoomOwnerExit(ChatMessageDto messageDto) {
@@ -57,8 +64,8 @@ public class MessageController {
         return status.equals(EXIT);
     }
 
-    private ChatMessageDto deleteRoom(ChatMessageDto messageDto) {
-        publisher.publishEvent(new DeleteRoomDto(messageDto.getRoomId(), messageDto.getSender(), messageDto.getSenderId()));
+    private ChatMessageDto finishChat(ChatMessageDto messageDto) {
+        publisher.publishEvent(new SaveChatDto(messageDto.getRoomId()));
         messageDto.statusToDelete();
         return messageDto;
     }

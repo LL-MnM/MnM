@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MbtiService {
     private final MbtiRepository mbtiRepository;
 
-    public Mbti findByName(String mbtiName) {
-        return mbtiRepository.findByName(mbtiName).orElseThrow();
+    public Mbti findByName(String mbti) {
+        return mbtiRepository.findByName(mbti).orElseThrow();
     }
 }

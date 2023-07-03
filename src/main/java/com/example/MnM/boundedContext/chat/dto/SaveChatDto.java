@@ -8,6 +8,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class SaveChatDto {
-    private final String roomId;
     private final String roomSecretId;
 }

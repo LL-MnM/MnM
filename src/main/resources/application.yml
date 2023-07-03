@@ -4,9 +4,9 @@ spring:
     include: secret
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3307/MnM__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
-    username: root
-    password:
+    url: ENC(caq/+9P8gm2xwvxAc6bryGylgJEX19QHmuL3umll+NyiG7ggOoug5uWyGDTQzBd1YG4YpRK/PVvYFt2zHM0bYrLSPIg4kIo3fpJFJnlWD3bzjY1UXSuTBuhLM3r4JgfuRlsfAb9tWG7E+KSIe1HQWedUAT4vbT9IYxskAIZVkCFqWIS8v3EChQ==)
+    username: ENC(feciTQh5rLQ2dmTa1Z/A9g==)
+    password: ENC(lZ30TkUte7l7K/5PAiHp3g==)
 
   jpa:
     hibernate:
@@ -37,3 +37,8 @@ custom:
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
     key: "12345678"
+
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

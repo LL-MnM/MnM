@@ -1,7 +1,7 @@
-package com.example.MnM.boundedContext.chat.event;
+package com.example.MnM.boundedContext.room.event;
 
-import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.room.dto.DeleteRoomDto;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -14,9 +14,7 @@ public class RoomEventListener {
 
     @EventListener(DeleteRoomDto.class)
     public void deleteRoomEvent(DeleteRoomDto dto) {
-
         String roomId = dto.getRoomId();
         roomService.deleteRoom(roomId);
-
     }
 }

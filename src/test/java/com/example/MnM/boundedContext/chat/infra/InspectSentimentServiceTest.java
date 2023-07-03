@@ -1,6 +1,6 @@
 package com.example.MnM.boundedContext.chat.infra;
 
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
+import com.example.MnM.boundedContext.chat.dto.SentimentDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,15 +19,14 @@ class InspectSentimentServiceTest {
 
     @Test
     void inspectTest() throws IOException, ExecutionException, InterruptedException {
-        String tendency ="ISFJ";
+
         String msg = "hello world";
-        CompletableFuture<EmotionDegree> sentiment = inspectSentimentService.chatInspectSentiment(tendency, msg);
+        CompletableFuture<SentimentDto> sentiment = inspectSentimentService.chatInspectSentiment(msg);
 
-        EmotionDegree emotionDegree = sentiment.get();
+        SentimentDto emotionDegree = sentiment.get();
 
-        assertThat(emotionDegree.getMagnitude()).isInstanceOf(Float.class);
-        assertThat(emotionDegree.getScore()).isInstanceOf(Float.class);
-        assertThat(emotionDegree.getTendency()).isEqualTo(tendency);
+        assertThat(emotionDegree.magnitude()).isInstanceOf(Float.class);
+        assertThat(emotionDegree.score()).isInstanceOf(Float.class);
     }
 
 }

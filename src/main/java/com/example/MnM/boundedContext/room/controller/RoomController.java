@@ -1,17 +1,19 @@
-package com.example.MnM.boundedContext.chat.controller;
+package com.example.MnM.boundedContext.room.controller;
 
 import com.example.MnM.base.rq.Rq;
-import com.example.MnM.boundedContext.chat.dto.DeleteRoomDto;
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.entity.RoomStatus;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.room.dto.EnterRoomDto;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -50,26 +52,15 @@ public class RoomController {
     public String entranceRoom(Model model, @PathVariable String roomId) {
 
         ChatRoom room = roomService.findBySecretId(roomId);
-        model.addAttribute("room",room);
+
+        Member member = rq.getMember();
+        EnterRoomDto enterRoomDto = new EnterRoomDto(member.getUsername(), member.getId());
+
+        model.addAttribute("room", room);
+        model.addAttribute("enterPerson", enterRoomDto);
+
 
         return "chat/room";
     }
-
-    @DeleteMapping("/room/delete")
-    public ResponseEntity<String> deleteRoom(DeleteRoomDto deleteRoomDto) {
-
-        Long memberId = rq.getMember().getId();
-
-        if (!isRoomOwner(deleteRoomDto, memberId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private boolean isRoomOwner(DeleteRoomDto deleteRoomDto, Long memberId) {
-        return deleteRoomDto.getUserId().equals(memberId);
-    }
-
 
 }

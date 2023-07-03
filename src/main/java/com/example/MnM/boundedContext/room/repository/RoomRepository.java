@@ -1,6 +1,6 @@
-package com.example.MnM.boundedContext.chat.repository;
+package com.example.MnM.boundedContext.room.repository;
 
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

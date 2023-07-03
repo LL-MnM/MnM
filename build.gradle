@@ -53,6 +53,10 @@ dependencies {
 	implementation 'com.google.cloud:google-cloud-language:2.21.0'
 	implementation 'com.google.auth:google-auth-library-oauth2-http:1.18.0'
 
+	//jasypt 암호화
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+
+
 	// Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"

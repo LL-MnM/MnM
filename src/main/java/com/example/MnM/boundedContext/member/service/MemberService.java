@@ -60,7 +60,7 @@ public class MemberService {
                 .height(height)
                 .gender(gender)
                 .hobby(hobby)
-                .mbtiName(mbti)
+                .mbti(mbti)
                 .locate(locate)
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
