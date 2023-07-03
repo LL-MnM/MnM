@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,4 +37,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(customWebsocketInterceptor);
     }
 
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+        registry.setSendTimeLimit(10 * 1000)
+                .setSendBufferSizeLimit(512 * 1024) // 메시지 송신 버퍼 크기 제한 설정 (바이트 단위)
+                .setMessageSizeLimit(8192);
+    }
 }

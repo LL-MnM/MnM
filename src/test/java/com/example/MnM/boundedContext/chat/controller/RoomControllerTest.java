@@ -1,9 +1,10 @@
 package com.example.MnM.boundedContext.chat.controller;
 
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.repository.RoomRepository;
+import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.repository.RoomRepository;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
+import com.example.MnM.boundedContext.room.controller.RoomController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,34 +82,6 @@ class RoomControllerTest {
                 .andExpect(view().name("chat/room"))
                 .andExpect(status().is2xxSuccessful());
     }
-
-    @DisplayName("채팅 방 삭제 성공")
-    @WithUserDetails("user3")
-    @Test
-    void deleteRoom() throws Exception {
-        Member user3 = memberRepository.findByUsername("user3").orElseThrow();
-        String roomId = "uuid";
-
-        String username = user3.getUsername();
-        Long userId = user3.getId();
-        ChatRoom room = ChatRoom.builder()
-                .secretId(roomId)
-                .createUser(username)
-                .createUserId(userId)
-                .build();
-        roomRepository.save(room);
-
-        mvc.perform(delete("/chat/room/delete")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("roomId", roomId)
-                        .param("username", username)
-                        .param("userId", String.valueOf(userId))
-                        .with(csrf()))
-                .andExpect(handler().handlerType(RoomController.class))
-                .andExpect(handler().methodName("deleteRoom"))
-                .andExpect(status().is2xxSuccessful());
-    }
-
 
 
 }

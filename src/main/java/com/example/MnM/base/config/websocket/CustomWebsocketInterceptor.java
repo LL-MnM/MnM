@@ -1,18 +1,18 @@
 package com.example.MnM.base.config.websocket;
 
-import com.example.MnM.base.exception.NotValidRoomException;
-import com.example.MnM.boundedContext.chat.entity.ChatRoom;
-import com.example.MnM.boundedContext.chat.service.RoomService;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.messaging.simp.stomp.StompCommand.CONNECT;
-import static org.springframework.messaging.simp.stomp.StompCommand.SUBSCRIBE;
+import static com.example.MnM.boundedContext.room.entity.RoomStatus.*;
+import static org.springframework.messaging.simp.stomp.StompCommand.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,25 +24,29 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
-        if (CONNECT.equals(headerAccessor.getCommand()) || SUBSCRIBE.equals(headerAccessor.getCommand())) {
-            isValid(headerAccessor);
+        String roomStatus = headerAccessor.getFirstNativeHeader("roomStatus");
+        String roomId = headerAccessor.getFirstNativeHeader("roomId");
+        String userId = headerAccessor.getFirstNativeHeader("userId");
+
+        StompCommand command = headerAccessor.getCommand();
+
+        if (command == CONNECT) {
+            isValid(roomStatus, roomId, userId);
+            roomService.enterRoom(roomId,userId);
         }
+
         return message;
     }
 
-    private void isValid(StompHeaderAccessor headerAccessor) {
+    private void isValid(String roomStatus, String roomId,String userId ) {
 
-        String username = headerAccessor.getFirstNativeHeader("username");
-        String roomId = headerAccessor.getFirstNativeHeader("roomId");
+        if (roomStatus.equals(SINGLE.name())) {
+            roomService.checkSingleRoom(roomId,userId);
+            return;
+        }
 
-        ChatRoom chatRoom = roomService.findBySecretId(roomId);
-
-        if (!isRoomOwner(username, chatRoom))
-            throw new NotValidRoomException("권한이 없는 방입니다.");
+        roomService.checkGroupRoom(roomId);
 
     }
 
-    private boolean isRoomOwner(String username, ChatRoom chatRoom) {
-        return chatRoom.getCreateUser().equals(username);
-    }
 }

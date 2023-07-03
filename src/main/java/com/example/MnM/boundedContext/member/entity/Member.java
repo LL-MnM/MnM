@@ -1,6 +1,8 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
+import com.example.MnM.boundedContext.chat.dto.SentimentDto;
+import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,7 +21,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+
 import java.util.List;
+
 
 
 @Entity
@@ -46,12 +50,16 @@ public class Member extends BaseEntity {
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
 
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "bestMatch", joinColumns = @JoinColumn(name = "member_id"))
+    private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
     public Member(String userId, String username, String password) {
         this.username = userId;
         this.name = username;
-        this.password =password;
+        this.password = password;
     }
 
 
@@ -66,6 +74,10 @@ public class Member extends BaseEntity {
 
         return grantedAuthorities;
     }
+
+
+
+
 
     @OneToMany(mappedBy = "fromMember", cascade = {CascadeType.ALL})
     @OrderBy("id desc") // 정렬
@@ -89,5 +101,9 @@ public class Member extends BaseEntity {
 
     public void changeUsername(String username) {
         this.username = username;
+    }
+
+    public void addBestEmotion(SentimentDto sentimentDto, String mbti) {
+        this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(),sentimentDto.score(),mbti));
     }
 }

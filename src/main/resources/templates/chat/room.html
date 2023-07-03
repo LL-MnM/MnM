@@ -16,22 +16,7 @@
       </div>
     </div>
     <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-      <div class="chat-message">
-        <div class="flex items-end">
-          <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-            <div><span class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">Thanks for your message David. I thought I'm alone with this issue. Please, ? the issue to support it :)</span></div>
-          </div>
-          <div class="w-6 h-6 rounded-full order-1">you</div>
-        </div>
-      </div>
-      <div class="chat-message">
-        <div class="flex items-end justify-end">
-          <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-            <div><span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">yes, I have a mac. I never had issues with root permission as well, but this helped me to solve the problem</span></div>
-          </div>
-          <div class="w-6 h-6 rounded-full order-2">hello</div>
-        </div>
-      </div>
+
     </div>
     <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
       <div class="relative flex">
@@ -86,9 +71,10 @@
 
 
   <script th:inline="javascript">
-    const username = /*[[${room.createUser}]]*/ null;
-    const roomId = /*[[${room.secretId}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
-    const userId = /*[[${room.createUserId}]]*/ null;  // 채팅방 id는 여기에 할당하십시오.
+    const username = /*[[${enterPerson.username}]]*/ null;
+    const roomId = /*[[${room.secretId}]]*/ null;
+    const userId = /*[[${enterPerson.userId}]]*/ null;
+    const roomStatus = /*[[${room.status}]]*/ null;
     </script>
   <script th:src="@{/js/room.js}"></script>
 

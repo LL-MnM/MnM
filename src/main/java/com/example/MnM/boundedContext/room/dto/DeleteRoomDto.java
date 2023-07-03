@@ -1,4 +1,4 @@
-package com.example.MnM.boundedContext.chat.dto;
+package com.example.MnM.boundedContext.room.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,5 @@ import lombok.Getter;
 public class DeleteRoomDto {
 
     private String roomId;
-    private String username;
-    private Long userId;
 
 }
