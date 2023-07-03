@@ -39,7 +39,8 @@
 </div>
 <h5 class="border-b-2 my-3 py-2 text-dark mx-auto w-11/12"
     th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
-<div class="card my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${question.answerList}">
+
+<div th:id="|answer_${answer.id}|" class="card my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${question.answerList}">
     <div class="card-body border-t border-black p-4">
         <div class="card-text text-dark whitespace-pre-line m-4" th:text="${answer.content}"></div>
         <div class="flex justify-end m-4">

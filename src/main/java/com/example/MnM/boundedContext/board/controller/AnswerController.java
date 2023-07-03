@@ -47,7 +47,7 @@ public class AnswerController {
         }
         Answer answer = answerService.create(question, answerForm.getContent(),rq.getMember());
 
-        return rq.redirectWithMsg("/question/detail/%d".formatted(id), "확인용 메세지입니다.");
+        return "redirect:/question/detail/%d#answer_%d".formatted(id, answer.getId());
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
@@ -79,7 +79,7 @@ public class AnswerController {
 
         answerService.modify(answer, answerForm.getContent());
 
-        return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
+        return "redirect:/question/detail/%d#answer_%d".formatted(answer.getQuestion().getId(), id);
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
@@ -102,6 +102,6 @@ public class AnswerController {
 
         answerService.vote(answer, voter);
 
-        return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
+        return "redirect:/question/detail/%d#answer_%d".formatted(answer.getQuestion().getId(), id);
     }
 }
