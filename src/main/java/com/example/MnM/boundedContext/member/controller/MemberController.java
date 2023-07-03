@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -58,5 +60,24 @@ public class MemberController {
     public String MemberDelete() {
         RsData deleteRs = memberService.deleteMember(rq.getMember());
         return rq.redirectWithMsg("member/login", deleteRs);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/editMyPage")
+    public String showEditMyPage(Model model) {
+        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
+
+        model.addAttribute("user", member);
+        return "member/editMyPage";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/editMyPage")
+    public String editMyPage(JoinForm joinForm) {
+        Member actor = rq.getMember();
+
+        RsData modifyRsData = memberService.modify(actor, joinForm);
+
+        return rq.redirectWithMsg("/usr/member/myPage", modifyRsData);
     }
 }
