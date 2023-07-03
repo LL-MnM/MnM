@@ -103,5 +103,6 @@ public class Member extends BaseEntity {
 
     public void addBestEmotion(SentimentDto sentimentDto, String mbti) {
         this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(), sentimentDto.score(), mbti));
+
     }
 }
