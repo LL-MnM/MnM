@@ -16,7 +16,7 @@ public class LocalInspectService implements InspectSentimentService {
     public CompletableFuture<SentimentDto> chatInspectSentiment(String msg) {
 
         Random random = new Random();
-        log.info("LocalInspectService 호출 = {}",msg);
+        log.info("LocalInspectService 호출 = {}", msg);
         return CompletableFuture.completedFuture(new SentimentDto(random.nextFloat(), random.nextFloat()));
     }
 }

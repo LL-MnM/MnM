@@ -1,7 +1,9 @@
 package com.example.MnM.boundedContext.room.dto;
 
 import com.example.MnM.boundedContext.room.entity.RoomStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 @EqualsAndHashCode
 @AllArgsConstructor

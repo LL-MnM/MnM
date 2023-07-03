@@ -40,7 +40,7 @@ public class RoomChatService {
 
         chatService.deleteCacheChat("secretId");
 
-        verify(roomService,times(1)).deleteRoom(any());
+        verify(roomService, times(1)).deleteRoom(any());
     }
 
 }

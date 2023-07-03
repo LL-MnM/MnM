@@ -1,7 +1,6 @@
 package com.example.MnM.boundedContext.chat.infra;
 
 import com.example.MnM.boundedContext.chat.dto.SentimentDto;
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

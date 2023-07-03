@@ -97,11 +97,12 @@ public class Member extends BaseEntity {
         toLikeablePeople.add(0, likeablePerson);
     }
 
-    public void changeUsername(String username) {
-        this.username = username;
+    public void changeUsername(String name) {
+        this.name = name;
     }
 
     public void addBestEmotion(SentimentDto sentimentDto, String mbti) {
-        this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(),sentimentDto.score(),mbti));
+        this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(), sentimentDto.score(), mbti));
+
     }
 }
