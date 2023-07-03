@@ -70,9 +70,9 @@ public class MemberService {
     }
 
 
-    /*public Optional<Member> findByName(String name) { //유저 이름으로 찾기
+    public Optional<Member> findByName(String name) { //유저 이름으로 찾기
         return memberRepository.findByName(name);
-    }*/
+    }
 
     public Optional<Member> findByUserName(String username) {//유저 아이디로 찾기
         return memberRepository.findByUsername(username);

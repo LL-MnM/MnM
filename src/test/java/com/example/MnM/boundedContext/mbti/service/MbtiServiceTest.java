@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-class MbtiControllerTest {
+class MbtiServiceTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -29,12 +29,12 @@ class MbtiControllerTest {
     @Test
     @DisplayName("recommendMember")
     void recommendTest() {
-        Optional<Member> username = memberRepository.findByUsername("홍길동");
+        Optional<Member> name = memberRepository.findByName("홍길동");
 
-        List<Member> mbtiForMember = memberMbtiService.findMbtiForMember(username.get());
+        List<Member> mbtiForMember = memberMbtiService.findMbtiForMember(name.get());
         for (Member member : mbtiForMember) {
-            String memberUsername = member.getUsername();
-            assertThat(memberUsername).isEqualTo("김철수");
+            String memberName = member.getName();
+            assertThat(memberName).isEqualTo("김철수");
         }
 
     }
