@@ -103,5 +103,19 @@ public class QuestionController {
 
         return "redirect:/";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("question/vote/{id}")
+    public String questionVote(Principal principal, @PathVariable("id") Integer id) {
+        Question question = questionService.getQuestion(id);
+        Member voter = question.getMember();
+
+        if (!voter.getUserId().equals(principal.getName())) {
+            return "redirect:/error";
+        }
+
+        questionService.vote(question, voter);
+
+        return "redirect:/question/detail/%d".formatted(id);
+    }
 }
 
