@@ -1,8 +1,7 @@
-package com.example.MnM.boundedContext.mbti.controller;
+package com.example.MnM.boundedContext.mbti.service;
 
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
-import com.example.MnM.boundedContext.member.service.MemberService;
 import com.example.MnM.boundedContext.recommend.service.MemberMbtiService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class MbtiControllerTest {
     @Autowired
-    private MemberService memberService;
-    @Autowired
     private MemberRepository memberRepository;
     @Autowired
     private MemberMbtiService memberMbtiService;
@@ -33,7 +30,6 @@ class MbtiControllerTest {
     @DisplayName("recommendMember")
     void recommendTest() {
         Optional<Member> username = memberRepository.findByUsername("홍길동");
-        String mbti = username.get().getMbtiName();
 
         List<Member> mbtiForMember = memberMbtiService.findMbtiForMember(username.get());
         for (Member member : mbtiForMember) {
