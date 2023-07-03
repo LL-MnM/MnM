@@ -1,7 +1,7 @@
-package com.example.MnM.base.objectStorage.s3;
+package com.example.MnM.base.objectStorage;
 
 import com.amazonaws.util.IOUtils;
-import com.example.MnM.base.objectStorage.ObjectStorageService;
+import com.example.MnM.base.objectStorage.service.S3FolderName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
