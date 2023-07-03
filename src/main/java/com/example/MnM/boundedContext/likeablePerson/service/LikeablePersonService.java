@@ -53,8 +53,12 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "호감을 표시하셨습니다.", likeablePerson);
     }
+
     @Transactional
-    public RsData<LikeablePerson> cancel(LikeablePerson likeablePerson) {
+    public RsData<LikeablePerson> cancel(LikeablePerson likeablePerson, Long memberId) {
+        if (!likeablePerson.getFromMember().getId().equals(memberId)) {
+            return RsData.of("F-1", "삭제할 권한이 없습니다.");
+        }
         likeablePersonRepository.delete(likeablePerson);
 
         return RsData.of("S-1", "호감을 취소하셨습니다.", likeablePerson);
