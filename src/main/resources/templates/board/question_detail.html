@@ -13,7 +13,7 @@
             <div class="card-text text-dark whitespace-pre-line m-4" th:text="${question.content}"></div>
             <div class="flex justify-end m-4">
                 <div th:if="${question.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">(수정됨)</div>
+                    <div class="mb-2"></div>
                     <div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
                 <div th:if="${question.modifyDate == null}" class="bg-primary-500 text-white px-2 py-1 text-start">
@@ -21,6 +21,11 @@
                 </div>
             </div>
             <div class="my-3 m-4">
+                <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                   th:href="@{|/question/vote/${question.id}|}">
+                    좋아요
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.userId)}"></span>
+                </a>
                 <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
