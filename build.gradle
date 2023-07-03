@@ -56,6 +56,11 @@ dependencies {
 	//jasypt 암호화
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 
+	//S3
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.499'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+	implementation 'org.apache.tika:tika-core:2.8.0'
+
 
 	// Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
