@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Set;
 
 
+
 @Entity
 @SuperBuilder
+//@SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
@@ -57,12 +59,14 @@ public class Member extends BaseEntity {
     private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
+
     public Member(String username, String password, String providerType) {
         this.username = username;
         this.password =password;
         this.providerType = providerType;
 
     }
+
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -50,13 +49,13 @@ public class MemberService {
 
         if (StringUtils.hasText(password)) password = passwordEncoder.encode(password);
 
-
         Member member = Member
                 .builder()
                 .username(username)
                 .name(name)
                 .password(password)
                 .email(email)
+                .providerType(providerTypeCode)
                 .nickname(nickname)
                 .providerType(providerTypeCode)
                 .age(age)
@@ -85,9 +84,22 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public void deleteMember(Member member){
+    /*//soft delete
+    public RsData deleteMember(Member member) {
+        Member deletedMember = member.toBuilder()
+                .deleteDate(LocalDateTime.now())
+                .build();
+        memberRepository.save(deletedMember);
+        return null;
+    }*/
+
+    //hard delete
+    public RsData<Member> deleteMember(Member member){
         memberRepository.delete(member);
+        return RsData.of("S-1", "회원탈퇴 성공");
     }
+
+
 
     public Optional<Member> findByMbti(String mbti){return memberRepository.findByMbti(mbti); }
 
@@ -97,29 +109,11 @@ public class MemberService {
 
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
-        String name = null;
-        String email = null;
-
-        switch (providerTypeCode) {
-            case "NAVER" -> {
-                name = ((Map<String, String>) oAuth2User.getAttribute("response")).get("name");
-                email = ((Map<String, String>) oAuth2User.getAttribute("response")).get("email");
-            }
-            case "KAKAO" -> {
-                name = ((Map<String, String>) oAuth2User.getAttribute("properties")).get("nickname");
-                email = ((Map<String, String>) oAuth2User.getAttribute("kakao_account")).get("email");
-
-                if (!((Map<String, Map<String, Object>>) oAuth2User.getAttribute("kakao_account")).get("profile").get("is_default_image").equals("true")) {
-                }
-            }
-            case "GOOGLE" -> {
-                name = oAuth2User.getAttribute("name");
-                email = oAuth2User.getAttribute("email");
-            }
-        }
-
-        MemberDto memberDto = new MemberDto(username, "", providerTypeCode);
-
+        MemberDto memberDto = MemberDto.builder()
+                .username(username)
+                .password("")
+                .providerTypeCode(providerTypeCode)
+                .build();
         return join(memberDto, providerTypeCode);
     }
 }

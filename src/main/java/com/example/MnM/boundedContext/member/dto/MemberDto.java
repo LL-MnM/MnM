@@ -11,6 +11,7 @@ import lombok.*;
 @ToString
 @Setter
 @RequiredArgsConstructor
+@Builder
 public class MemberDto {
 
     @NotBlank(message = "id는 필수 입니다")
@@ -43,11 +44,4 @@ public class MemberDto {
     private String profileImage;
 
     private boolean deleted;
-
-
-    public MemberDto(String username, String password, String providerTypeCode) {
-        this.username = username;
-        this.password = password;
-        this.providerTypeCode = providerTypeCode;
-    }
 }

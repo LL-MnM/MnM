@@ -39,12 +39,12 @@ public class MemberController {
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         RsData<Member> joinRs = memberService.join(memberDto);
         if(bindingResult.hasErrors()){
-            return rq.redirectWithMsg("/member/join", "실패");
+            return rq.redirectWithMsg("/member/join", "입력하신 정보를 다시 확인해주세요.");
         }
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("/member/join", joinRs);
+            return rq.redirectWithMsg("/member/join", "로그인에 실패하였습니다.");
         }
-        return rq.redirectWithMsg("/member/login", joinRs);
+        return rq.redirectWithMsg("/member/me", joinRs);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -53,4 +53,10 @@ public class MemberController {
         return "member/me";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete")
+    public String MemberDelete() {
+        RsData deleteRs = memberService.deleteMember(rq.getMember());
+        return rq.redirectWithMsg("member/login", deleteRs);
+    }
 }
