@@ -60,7 +60,7 @@ public class Rq {
 
         // 데이터가 없는지 체크
         if (member == null) {
-            member = memberService.findByUserName(user.getUsername()).orElse(null);
+            member = memberService.findByUserName(user.getUsername());
         }
 
         return member;

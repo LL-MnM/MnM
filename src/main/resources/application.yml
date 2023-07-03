@@ -71,3 +71,4 @@ custom:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+    password: mnmsecretkey

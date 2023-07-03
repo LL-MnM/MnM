@@ -28,7 +28,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username) {
-        Optional<Member> optionalMember = memberService.findByUserName(username);
+        Optional<Member> optionalMember = Optional.ofNullable(memberService.findByUserName(username));
         if (optionalMember.isEmpty()) {
             return RsData.of("F-1", "존재하지 않는 유저 입니다.");
         }

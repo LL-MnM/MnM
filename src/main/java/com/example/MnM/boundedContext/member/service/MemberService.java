@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
+import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
@@ -40,10 +41,11 @@ public class MemberService {
         String mbti = memberDto.getMbti();
         String hobby = memberDto.getHobby();
         String introduce = memberDto.getIntroduce();
+        String profileImage  = memberDto.getProfileImage();
 
 
 
-        if (findByUserName(username).isPresent() || username.equals("admin")) {
+        if (Optional.ofNullable(findByUserName(username)).isPresent() || username.equals("admin")) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
@@ -57,7 +59,6 @@ public class MemberService {
                 .email(email)
                 .providerType(providerTypeCode)
                 .nickname(nickname)
-                .providerType(providerTypeCode)
                 .age(age)
                 .height(height)
                 .gender(gender)
@@ -66,6 +67,7 @@ public class MemberService {
                 .locate(locate)
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
+                .profileImage(profileImage)
                 .build();
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
@@ -76,22 +78,21 @@ public class MemberService {
         return memberRepository.findByName(name);
     }*/
 
-    public Optional<Member> findByUserName(String username) {//유저 아이디로 찾기
-        return memberRepository.findByUsername(username);
+    public Member findByUserName(String username) {//유저 아이디로 찾기
+        return memberRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member saveMember(Member member){
         return memberRepository.save(member);
     }
 
-    /*//soft delete
-    public RsData deleteMember(Member member) {
+    // soft-delete
+    public void delete(Member member) {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
         memberRepository.save(deletedMember);
-        return null;
-    }*/
+    }
 
     //hard delete
     public RsData<Member> deleteMember(Member member){
@@ -105,7 +106,7 @@ public class MemberService {
 
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
-        Optional<Member> opMember = findByUserName(username);
+        Optional<Member> opMember = Optional.ofNullable(findByUserName(username));
 
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
@@ -115,5 +116,27 @@ public class MemberService {
                 .providerTypeCode(providerTypeCode)
                 .build();
         return join(memberDto, providerTypeCode);
+    }
+
+    public Member modify(Member member, MemberDto memberDto) {
+        Member modifiedMember = member.toBuilder()
+                .username(memberDto.getUsername())
+                .name(memberDto.getName())
+                .email(memberDto.getEmail())
+                .password(memberDto.getPassword())
+                .email(memberDto.getEmail())
+                .providerType(memberDto.getProviderTypeCode())
+                .nickname(memberDto.getNickname())
+                .age(memberDto.getAge())
+                .height(memberDto.getHeight())
+                .gender(memberDto.getGender())
+                .hobby(memberDto.getHobby())
+                .mbti(memberDto.getMbti())
+                .locate(memberDto.getLocate())
+                .introduce(memberDto.getIntroduce())
+                .createDate(LocalDateTime.now())
+                .profileImage(memberDto.getProfileImage())
+                .build();
+        return memberRepository.save(modifiedMember);
     }
 }

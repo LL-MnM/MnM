@@ -4,6 +4,7 @@ import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.chat.dto.SentimentDto;
 import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
+import com.example.MnM.boundedContext.member.dto.MemberDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
@@ -17,6 +18,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,8 +27,7 @@ import java.util.Set;
 
 
 @Entity
-@SuperBuilder
-//@SuperBuilder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
@@ -66,7 +67,6 @@ public class Member extends BaseEntity {
         this.providerType = providerType;
 
     }
-
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

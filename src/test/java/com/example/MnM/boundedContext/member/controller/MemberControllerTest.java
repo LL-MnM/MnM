@@ -53,7 +53,7 @@ class MemberControllerTest {
 
         memberService.deleteMember(member);
 
-        Optional<Member> afterDelete = memberService.findByUserName(member.getUsername());
+        Optional<Member> afterDelete = Optional.ofNullable(memberService.findByUserName(member.getUsername()));
         assertThat(afterDelete).isNotEmpty();
         assertThat(afterDelete.get().isDeleted()).isTrue();
     }

@@ -7,6 +7,7 @@ import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.*;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class MemberController {
     private final MemberService memberService;
     private final Rq rq;
+    private final ApplicationEventPublisher publisher;
 
 
     @PreAuthorize("isAnonymous()")
@@ -49,6 +51,8 @@ public class MemberController {
         return rq.redirectWithMsg("/member/me", joinRs);
     }
 
+
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public String showMe(Model model) {
@@ -58,26 +62,25 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String MemberDelete() {
-        RsData deleteRs = memberService.deleteMember(rq.getMember());
-        return rq.redirectWithMsg("member/login", deleteRs);
+        Member member = memberService.findByUserName(rq.getMember().getUsername());
+        memberService.delete(member);
+        return rq.redirectWithMsg("member/login", "회원이 탈퇴되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/editMyPage")
     public String showEditMyPage(Model model) {
-        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
-
-        model.addAttribute("user", member);
+        Member member = memberService.findByUserName(rq.getMember().getUsername());
+        model.addAttribute("member", member);
         return "member/editMyPage";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editMyPage")
-    public String editMyPage(JoinForm joinForm) {
-        Member actor = rq.getMember();
+    public String editMyPage(@Valid MemberDto memberDto) {
+        Member member = memberService.findByUserName(rq.getMember().getUsername());
 
-        RsData modifyRsData = memberService.modify(actor, joinForm);
-
-        return rq.redirectWithMsg("/usr/member/myPage", modifyRsData);
+        memberService.modify(member, memberDto);
+        return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
     }
 }

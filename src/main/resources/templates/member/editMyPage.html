@@ -106,22 +106,60 @@
     ">취소
         </button>
     </div>
+
     <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST">
         <table class="table" style="width: 500px">
             <tr>
-                <th>이름</th>
-                <td colspan="2"><input name="username" type="text" th:value="${username}"></td>
+                <th>아이디</th>
+                <td colspan="2"><input name="username" type="text" th:value="${member.getUsername()}"></td>
             </tr>
             <tr>
                 <th>닉네임</th>
-                <td colspan="2"><input name="nickname" type="text" th:value="${nickname}"></td>
+                <td colspan="2"><input name="nickname" type="text" th:value="${member.getNickname()}"></td>
             </tr>
             <tr>
                 <th>이메일</th>
-                <td colspan="2"><input name="email" type="text" th:value="${email}"></td>
+                <td colspan="2"><input name="email" type="text" th:value="${member.getEmail()}"></td>
+            </tr>
+            <tr>
+                <th>키</th>
+                <td colspan="2"><input name="height" type="number" th:value="${member.getHeight()}"></td>
+            </tr>
+            <tr>
+                <th>나이</th>
+                <td colspan="2"><input name="age" type="number" th:value="${member.getAge()}"></td>
+            </tr>
+            <tr>
+                <th>지역</th>
+                <td colspan="2"><input name="locate" type="text" th:value="${member.locate}"></td>
+            </tr>
+            <tr>
+                <th>성별</th>
+                <td colspan="2"><input name=gender type="text" th:value="${member.getGender()}"></td>
+            </tr>
+            <tr>
+                <th>mbti</th>
+                <td colspan="2"><input name="mbti" type="text" th:value="${member.getMbti()}"></td>
+            </tr>
+            <tr>
+                <th>취미</th>
+                <td colspan="2"><input name="hobby" type="text" th:value="${member.getHobby()}"></td>
+            </tr>
+            <tr>
+                <th>자기소개</th>
+                <td colspan="2"><input name="introduce" type="text" th:value="${member.getHobby()}"></td>
+            </tr>
+            <tr>
+                <th>프로필(임시)</th>
+                <td colspan="2"><input name="profileImage" type="text" th:value="${member.getProfileImage()}"></td>
+            </tr>
+            <tr>
+                <th>변경</th>
+                <td colspan="2"><input type="submit" value="저장하기" class="btn btn-secondary">
             </tr>
         </table>
     </form>
+
 </main>
 </body>
 </html>
