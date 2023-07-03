@@ -7,6 +7,7 @@ import com.example.MnM.boundedContext.board.entity.answer.AnswerForm;
 import com.example.MnM.boundedContext.board.service.AnswerService;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.service.QuestionService;
+import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -90,6 +91,16 @@ public class AnswerController {
         }
 
         answerService.delete(answer);
+
+        return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String answerVote(Principal principal, @PathVariable("id") Integer id) {
+        Answer answer = answerService.getAnswer(id);
+        Member voter = answer.getMember();
+
+        answerService.vote(answer, voter);
 
         return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
     }
