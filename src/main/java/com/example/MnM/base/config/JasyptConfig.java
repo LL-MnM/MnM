@@ -1,6 +1,5 @@
 package com.example.MnM.base.config;
 
-import com.querydsl.core.annotations.Config;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

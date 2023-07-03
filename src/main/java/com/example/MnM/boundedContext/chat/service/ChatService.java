@@ -33,7 +33,7 @@ public class ChatService {
         redisTemplate.expire(roomSecretId, 3, TimeUnit.DAYS);
     }
 
-    public void saveChatToDb(String roomSecretId ) {
+    public void saveChatToDb(String roomSecretId) {
 
         List<Object> list = redisTemplate.opsForList().range(CHAT.getKey(roomSecretId), 0, -1);
 
@@ -56,7 +56,7 @@ public class ChatService {
 
             sb.append(sender).append(": ").append(message).append("\n");
         }
-        facadeChatService.inspectChat(roomSecretId,sb.toString());
+        facadeChatService.inspectChat(roomSecretId, sb.toString());
 
         redisTemplate.delete(CHAT.getKey(roomSecretId));
 

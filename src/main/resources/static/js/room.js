@@ -15,7 +15,7 @@ const headers = {
     'username': username,
     'roomId': roomId,
     'userId': userId,
-    'roomStatus':roomStatus
+    'roomStatus': roomStatus
 };
 stompClient.connect(headers, function (frame) {
     // 구독 설정
@@ -78,7 +78,7 @@ function showMessageOutput(messageData) {
     senderElement3.classList.add("flex-shrink-0", "truncate");
     const senderElement = document.createElement('span');
     senderElement.textContent = messageData.sender;
-    senderElement.classList.add('w-6', 'h-6', 'rounded-full','whitespace-nowrap');
+    senderElement.classList.add('w-6', 'h-6', 'rounded-full', 'whitespace-nowrap');
 
 
     senderElement2.appendChild(senderElement3);
@@ -91,7 +91,7 @@ function showMessageOutput(messageData) {
         senderElement.classList.add('hidden');
     } else if (messageData.status === "ENTER") {
         detailsElement.classList.add('flex', 'items-center', 'justify-center');
-        textElement.classList.add('bg-blue-500','text-white');
+        textElement.classList.add('bg-blue-500', 'text-white');
         spanElement.classList.add('rounded-lg');
         senderElement.classList.add('hidden');
     } else if (messageData.sender === username) {

@@ -57,6 +57,9 @@ public class SecurityConfig {
                         .tokenValiditySeconds(AppConfig.getTokenValiditySeconds()) //쿠키는 3일짜리 입니다.
                 );
 
+        //TODO csrf 설정은 테스트용으로만 사용하고 나중에 다시 잠글겁니다.
+        http.csrf( i -> i.ignoringRequestMatchers("/make","/show","/delete"));
+
         return http.build();
     }
 

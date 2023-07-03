@@ -5,6 +5,7 @@ import com.example.MnM.boundedContext.board.entity.question.DataNotFoundExceptio
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
+import com.example.MnM.boundedContext.recommend.service.MbtiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +28,9 @@ public class MemberService {
     public RsData<Member> join(MemberDto memberDto){ //일반 로그인
         return join(memberDto, "MnM");
     }
+
+    private final MbtiService mbtiService;
+
 
     @Transactional
     public RsData<Member> join(MemberDto memberDto, String providerTypeCode) {
@@ -74,17 +79,18 @@ public class MemberService {
     }
 
 
-    /*public Optional<Member> findByName(String name) { //유저 이름으로 찾기
+    public Optional<Member> findByName(String name) { //유저 이름으로 찾기
         return memberRepository.findByName(name);
-    }*/
+    }
 
     public Member findByUserName(String username) {//유저 아이디로 찾기
         return memberRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
-    public Member saveMember(Member member){
+    public Member saveMember(Member member) {
         return memberRepository.save(member);
     }
+
 
     // soft-delete
     public void delete(Member member) {
@@ -102,7 +108,7 @@ public class MemberService {
 
 
 
-    public Optional<Member> findByMbti(String mbti){return memberRepository.findByMbti(mbti); }
+    public List<Member> findByMbti(String mbti){return memberRepository.findByMbti(mbti); }
 
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
@@ -138,5 +144,6 @@ public class MemberService {
                 .profileImage(memberDto.getProfileImage())
                 .build();
         return memberRepository.save(modifiedMember);
+
     }
 }

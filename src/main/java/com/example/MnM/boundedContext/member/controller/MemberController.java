@@ -5,9 +5,11 @@ import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
+import com.example.MnM.boundedContext.recommend.service.MemberMbtiService;
 import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.context.ApplicationEventPublisher;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final MemberMbtiService memberMbtiService;
     private final Rq rq;
     private final ApplicationEventPublisher publisher;
 
@@ -59,6 +62,7 @@ public class MemberController {
         return "member/me";
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String MemberDelete() {
@@ -83,4 +87,5 @@ public class MemberController {
         memberService.modify(member, memberDto);
         return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
     }
+
 }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev, naver
     include: secret
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -56,6 +56,12 @@ spring:
     init:
       mode: always
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+
 decorator:
   datasource:
     p6spy:
@@ -72,3 +78,4 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     password: mnmsecretkey
+

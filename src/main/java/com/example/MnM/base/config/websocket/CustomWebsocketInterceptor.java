@@ -1,6 +1,5 @@
 package com.example.MnM.base.config.websocket;
 
-import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +10,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-import static com.example.MnM.boundedContext.room.entity.RoomStatus.*;
-import static org.springframework.messaging.simp.stomp.StompCommand.*;
+import static com.example.MnM.boundedContext.room.entity.RoomStatus.SINGLE;
+import static org.springframework.messaging.simp.stomp.StompCommand.CONNECT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,16 +31,16 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
 
         if (command == CONNECT) {
             isValid(roomStatus, roomId, userId);
-            roomService.enterRoom(roomId,userId);
+            roomService.enterRoom(roomId, userId);
         }
 
         return message;
     }
 
-    private void isValid(String roomStatus, String roomId,String userId ) {
+    private void isValid(String roomStatus, String roomId, String userId) {
 
         if (roomStatus.equals(SINGLE.name())) {
-            roomService.checkSingleRoom(roomId,userId);
+            roomService.checkSingleRoom(roomId, userId);
             return;
         }
 
