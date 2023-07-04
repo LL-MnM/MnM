@@ -54,11 +54,6 @@ public class Member extends BaseEntity {
     private String introduce; //자기소개
 
 
-    @Builder.Default
-    @OneToMany(mappedBy = "member", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<EmotionDegree> bestMatch = new HashSet<>();
-
-
     public Member(String userId, String username, String password) {
         this.username = userId;
         this.name = username;
@@ -101,10 +96,5 @@ public class Member extends BaseEntity {
 
     public void changeUsername(String name) {
         this.name = name;
-    }
-
-    public void addBestEmotion(EmotionDegree emotionDegree) {
-        emotionDegree.addMember(this);
-        this.bestMatch.add(emotionDegree);
     }
 }
