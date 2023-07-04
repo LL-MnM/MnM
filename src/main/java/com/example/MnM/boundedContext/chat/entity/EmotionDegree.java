@@ -5,7 +5,7 @@ import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"magnitude","score"})
+@EqualsAndHashCode(exclude = {"magnitude", "score"})
 @Getter
 @Embeddable
 public class EmotionDegree {

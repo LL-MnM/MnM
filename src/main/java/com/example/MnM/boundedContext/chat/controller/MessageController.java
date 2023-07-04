@@ -29,7 +29,7 @@ public class MessageController {
 
     @MessageMapping("/chat/{roomId}")
     @SendTo("/group/chat/{roomId}")
-    public ChatMessageDto sendGroup(@DestinationVariable String roomId , ChatMessageDto messageDto,
+    public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto,
                                     Principal principal) {
 
         messageDto.addUserInfo(principal.getName());
@@ -63,7 +63,7 @@ public class MessageController {
 
     @MessageExceptionHandler(Exception.class)
     public void messageExceptionHandler(Exception e) {
-        log.info("메시지 에러 발생",e);
+        log.info("메시지 에러 발생", e);
     }
 
     private boolean isRoomOwnerExit(ChatMessageDto messageDto) {

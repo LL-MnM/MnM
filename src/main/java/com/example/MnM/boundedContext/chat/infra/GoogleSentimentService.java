@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static com.example.MnM.boundedContext.chat.infra.SentimentResult.*;
+import static com.example.MnM.boundedContext.chat.infra.SentimentResult.DocumentSentiment;
 
 @Slf4j
 @Profile("prod")
