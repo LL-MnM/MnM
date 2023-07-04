@@ -109,9 +109,9 @@ public class QuestionController {
         Question question = questionService.getQuestion(id);
         Member voter = question.getMember();
 
-        if (!voter.getUserId().equals(principal.getName())) {
-            return "redirect:/error";
-        }
+//        if (!voter.getUserId().equals(principal.getName())) {
+//            return "redirect:/error";
+//        }
 
         questionService.vote(question, voter);
 

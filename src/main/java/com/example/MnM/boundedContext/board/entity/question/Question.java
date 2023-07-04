@@ -1,22 +1,18 @@
 package com.example.MnM.boundedContext.board.entity.question;
 
-
 import com.example.MnM.base.baseEntity.BaseEntity;
 import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 
-
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import lombok.ToString;
 import lombok.Getter;
 
 @Getter
 @Entity
-@ToString
 public class Question extends BaseEntity {
     @Column(length = 200)
     private String subject;
@@ -34,6 +30,9 @@ public class Question extends BaseEntity {
     @ManyToMany
     private Set<Member> userId = new LinkedHashSet<>();
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
     public void createQuestion(String subject, String content, Member member) {
         this.subject = subject;
         this.content = content;
@@ -45,8 +44,11 @@ public class Question extends BaseEntity {
         this.content = content;
     }
 
-    public void addVoter(Member voter)
-    {
+    public void addVoter(Member voter) {
         this.userId.add(voter);
+    }
+
+    public void setView(int view) {
+        this.view = view;
     }
 }
