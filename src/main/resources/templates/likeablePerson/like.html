@@ -8,7 +8,7 @@
 
 <main layout:fragment="content" class="flex-grow flex items-center justify-center">
         <script th:inline="javascript">
-            const MemberUsername = /*[[ ${@rq.member.username} ]]*/ null;
+            const MemberUsername = /*[[ ${@rq.member.name} ]]*/ null;
 
             function LikeForm__submit(form) {
                 // username 이(가) 올바른지 체크
@@ -46,7 +46,7 @@
                             당신의 이름
                         </span>
                     </label>
-                    <div class="badge badge-primary" th:text="${@rq.member.username}"></div>
+                    <div class="badge badge-primary" th:text="${@rq.member.name}"></div>
                 </div>
 
                 <div class="form-control">
@@ -55,10 +55,6 @@
                            onKeyUp="$(this).prev().children(':last-child').text(this.value.trim());"
                            onPaste="setTimeoutZero(() => $(this).keyup());"/>
                     <script>
-                        // input : 태그가 input 인 녀석 선택
-                        // input[name="username"] 태그가 input 이고 name 속성의 값이 username 인 녀석을 선택
-                        // input[name="username"]:last : 태그가 input 이고 name 속성의 값이 username 인 녀석들 중에서 꼴등 한명 선택
-                        // .keyup(); : 강제로 keyup 이벤트 트리거(이벤트를 강제로 발동시킨다.)
                         $(`input[name="username"]:last`).keyup();
                     </script>
                 </div>

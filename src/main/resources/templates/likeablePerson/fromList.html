@@ -21,7 +21,7 @@
         <th:block th:each="person : ${likeablePeople}">
             <div class="flex items-center mb-2">
                 <ul>
-                    <li th:text="${person.getToMember().getUsername()}" class="text-xl"></li>
+                    <li class="text-xl" th:text="${person.getToMember().getName()}"></li>
                 </ul>
                 <div class="ml-3">
                     <a class="btn btn-sm btn-outline text-sm font-medium px-4 py-2"

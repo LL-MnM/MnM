@@ -1,5 +1,5 @@
 <html th:lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 
 <div th:fragment="header" class ="sticky top-0 z-50">
   <div class="navbar max-w-2xl mx-auto w-full px-4">
@@ -29,7 +29,7 @@
             <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
           </a>
           <ul class="p-2 bg-base-100">
-            <li><a>추천받기</a></li>
+            <li th:if="${@rq.login}"><a href="/recommend/member">추천받기</a></li>
             <li th:if="${@rq.login}"><a href="/likeablePerson/like">호감 표시</a></li>
             <li th:if="${@rq.login}"><a href="/likeablePerson/toList">나를 좋아하는 사람들</a></li>
             <li th:if="${@rq.login}"><a href="/likeablePerson/fromList">내가 좋아하는 사람들</a></li>
