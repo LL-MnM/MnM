@@ -21,18 +21,17 @@
             <th class="w-4/6">제목</th>
             <th class="w-3/6">글쓴이</th>
             <th class="w-1/6">작성일시</th>
+            <th class="w-1/6">조회수</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="q, loop: ${paging}">
+        <<tr th:each="q, loop: ${paging}">
             <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="w-4/6">
+                <!-- 이전 코드를 유지하고 추가된 코드에서 변경 사항을 주의하세요: "${q.view}" -->
                 <a th:text="${q.subject}" th:href="@{|/question/detail/${q.id}|}" class="text-primary-500"></a>
-                <span class="text-danger small ms-2"
-                      th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
-                <span class="text-danger small ms-2"
-                      th:if="${#lists.size(q.answerList) > 0}"
-                      th:text="${#lists.size(q.answerList)}"></span>
+                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
+                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}" th:text="${#lists.size(q.answerList)}"></span>
             </td>
             <td class="w-1/6 text-gray-500">
                 <small th:text="${q.member.username}"></small>
@@ -40,6 +39,7 @@
             <td class="w-1/6 text-gray-500">
                 <small th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}"></small>
             </td>
+            <td class="w-1/6" th:text="${q.view}"></td>
         </tr>
         </tbody>
     </table>
