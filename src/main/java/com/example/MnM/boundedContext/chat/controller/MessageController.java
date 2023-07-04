@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import java.security.Principal;
 
 import static com.example.MnM.boundedContext.chat.entity.ChatStatus.EXIT;
 
@@ -26,8 +29,10 @@ public class MessageController {
 
     @MessageMapping("/chat/{roomId}")
     @SendTo("/group/chat/{roomId}")
-    public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+    public ChatMessageDto sendGroup(@DestinationVariable String roomId , ChatMessageDto messageDto,
+                                    Principal principal) {
 
+        messageDto.addUserInfo(principal.getName());
         switch (messageDto.getStatus()) {
             case EXIT -> {
 
@@ -37,7 +42,7 @@ public class MessageController {
 
             }
             case SEND -> {
-                roomService.isRoomMember(roomId, messageDto.getSenderId());
+                roomService.isRoomMember(roomId, messageDto.getSenderName());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }
@@ -50,14 +55,20 @@ public class MessageController {
 
         chatService.saveChatToCache(roomId, messageDto);
 
-        Long exitRoom = roomService.exitRoom(messageDto.getRoomId(), String.valueOf(messageDto.getSenderId()));
+        Long exitRoom = roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
 
         return isRoomOwnerExit(messageDto) || exitRoom == 0L ? finishChat(messageDto) : messageDto;
     }
 
+
+    @MessageExceptionHandler(Exception.class)
+    public void messageExceptionHandler(Exception e) {
+        log.info("메시지 에러 발생",e);
+    }
+
     private boolean isRoomOwnerExit(ChatMessageDto messageDto) {
         return isExit(messageDto.getStatus()) &&
-                roomService.isRoomOwner(messageDto.getRoomId(), messageDto.getSenderId());
+                roomService.isRoomOwner(messageDto.getRoomId(), messageDto.getSenderName());
     }
 
     private boolean isExit(ChatStatus status) {
@@ -66,6 +77,7 @@ public class MessageController {
 
     private ChatMessageDto finishChat(ChatMessageDto messageDto) {
         publisher.publishEvent(new SaveChatDto(messageDto.getRoomId()));
+        roomService.deleteDbRoom(messageDto.getRoomId());
         messageDto.statusToDelete();
         return messageDto;
     }

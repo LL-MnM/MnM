@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile("naver")
+@Profile({"naver","test"})
 @Configuration
 public class NaverObjectConfigure{
     @Value("${cloud.aws.credentials.access-key}")

@@ -18,9 +18,8 @@ public class ChatRoom {
     private Long id;
 
     private String secretId;
-    private String name;
-    private String createUser;
-    private Long createUserId;
+    private String roomName;
+    private String createUserName;
     private RoomStatus status;
 
 }
