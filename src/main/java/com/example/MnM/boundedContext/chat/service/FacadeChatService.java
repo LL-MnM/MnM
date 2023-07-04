@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.chat.service;
 
 import com.example.MnM.base.exception.NotFoundParticipantException;
+import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.chat.infra.InspectSentimentService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
@@ -53,8 +54,21 @@ public class FacadeChatService {
                             Member second = memberRepository.findByUsername(secondPerson)
                                     .orElseThrow(() -> new NotFoundParticipantException("존재 하지 않는 유저입니다."));
 
-                            first.addBestEmotion(emotionDegree, second.getMbti());
-                            second.addBestEmotion(emotionDegree, first.getMbti());
+                            EmotionDegree firstDegree = EmotionDegree.builder()
+                                    .magnitude(emotionDegree.magnitude())
+                                    .score(emotionDegree.score())
+                                    .mbti(second.getMbti())
+                                    .build();
+
+                            first.addBestEmotion(firstDegree);
+
+                            EmotionDegree secondDegree = EmotionDegree.builder()
+                                    .magnitude(emotionDegree.magnitude())
+                                    .score(emotionDegree.score())
+                                    .mbti(first.getMbti())
+                                    .build();
+
+                            second.addBestEmotion(secondDegree);
                         });
                     });
         } catch (IOException e) {
