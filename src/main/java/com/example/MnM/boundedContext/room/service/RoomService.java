@@ -27,40 +27,38 @@ public class RoomService {
     private static final Long MAX_CAPACITY = 10L;
 
     @Transactional
-    public String createRoom(Long memberId, String username, RoomStatus status) {
+    public String createRoom(String username, RoomStatus status) {
         String roomSecretId = UUID.randomUUID().toString();
-
 
         ChatRoom room = roomRepository.save(ChatRoom.builder()
                 .secretId(roomSecretId)
-                .createUser(username)
-                .createUserId(memberId)
+                .createUserName(username)
                 .status(status)
-                .name("%s의 방".formatted(username))
+                .roomName("%s의 방".formatted(username))
                 .build());
 
         return room.getSecretId();
     }
 
     @Transactional
-    public void deleteRoom(String roomSecretId) {
-        ChatRoom room = roomRepository.findBySecretId(roomSecretId)
-                .orElseThrow(() -> new NotFoundRoomException("방을 찾을 수 없습니다."));
-
-        roomRepository.delete(room);
+    public void deleteDbRoom(String roomSecretId) {
+        roomRepository.deleteBySecretId(roomSecretId);
+    }
+    @Transactional
+    public void deleteCacheRoom(String roomSecretId) {
         redisTemplate.delete(COUNT.getKey(roomSecretId));
     }
 
     @Transactional
-    public Long enterRoom(String roomSecretId, String userId) {
+    public Long enterRoom(String roomSecretId, String senderName) {
         isExistRoom(roomSecretId);
-        return redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId), userId);
+        return redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId), senderName);
     }
 
     @Transactional
-    public Long exitRoom(String roomSecretId, String userId) {
+    public Long exitRoom(String roomSecretId, String senderName) {
         isExistRoom(roomSecretId);
-        return redisTemplate.opsForSet().remove(COUNT.getKey(roomSecretId), userId);
+        return redisTemplate.opsForSet().remove(COUNT.getKey(roomSecretId), senderName);
     }
 
     private void isExistRoom(String roomSecretId) {
@@ -75,17 +73,9 @@ public class RoomService {
                 .orElseThrow(() -> new NotFoundRoomException("생성되지 않은 방입니다."));
     }
 
-    public ChatRoom findById(Long id) {
-        return roomRepository.findById(id).orElseThrow();
-    }
-
-    public List<ChatRoom> findAll() {
-        return roomRepository.findAll();
-    }
-
-    public boolean isRoomOwner(String roomId, Long userId) {
+    public boolean isRoomOwner(String roomId, String senderName) {
         ChatRoom chatRoom = findBySecretId(roomId);
-        return chatRoom.getCreateUserId().equals(userId);
+        return chatRoom.getCreateUserName().equals(senderName);
     }
 
     public void checkSingleRoom(String roomSecretId, String userId) {
@@ -102,8 +92,16 @@ public class RoomService {
 
     }
 
-    public void isRoomMember(String roomSecretId, Long senderId) {
-        if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(COUNT.getKey(roomSecretId), String.valueOf(senderId))))
+    public void isRoomMember(String roomSecretId, String senderName) {
+        if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(COUNT.getKey(roomSecretId), senderName)))
             throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
+    }
+
+    public ChatRoom findById(Long id) {
+        return roomRepository.findById(id).orElseThrow();
+    }
+
+    public List<ChatRoom> findAll() {
+        return roomRepository.findAll();
     }
 }

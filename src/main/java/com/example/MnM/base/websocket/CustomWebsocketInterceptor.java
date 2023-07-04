@@ -1,4 +1,4 @@
-package com.example.MnM.base.config.websocket;
+package com.example.MnM.base.websocket;
 
 import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +25,22 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
         String roomStatus = headerAccessor.getFirstNativeHeader("roomStatus");
         String roomId = headerAccessor.getFirstNativeHeader("roomId");
-        String userId = headerAccessor.getFirstNativeHeader("userId");
+        String senderName = headerAccessor.getFirstNativeHeader("senderName");
 
         StompCommand command = headerAccessor.getCommand();
 
         if (command == CONNECT) {
-            isValid(roomStatus, roomId, userId);
-            roomService.enterRoom(roomId, userId);
+            isValid(roomStatus, roomId, senderName);
+            roomService.enterRoom(roomId, senderName);
         }
 
         return message;
     }
 
-    private void isValid(String roomStatus, String roomId, String userId) {
+    private void isValid(String roomStatus, String roomId, String senderName) {
 
         if (roomStatus.equals(SINGLE.name())) {
-            roomService.checkSingleRoom(roomId, userId);
+            roomService.checkSingleRoom(roomId, senderName);
             return;
         }
 

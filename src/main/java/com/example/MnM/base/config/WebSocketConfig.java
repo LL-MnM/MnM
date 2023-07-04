@@ -1,6 +1,6 @@
 package com.example.MnM.base.config;
 
-import com.example.MnM.base.config.websocket.CustomWebsocketInterceptor;
+import com.example.MnM.base.websocket.CustomWebsocketInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

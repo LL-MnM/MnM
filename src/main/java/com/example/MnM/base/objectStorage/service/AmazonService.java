@@ -54,8 +54,11 @@ public class AmazonService implements ObjectStorageService {
     @Override
     public InputStream getImage(S3FolderName folderName, String name) {
 
-        S3Object object = amazonS3Client.getObject(bucket, folderName.getFolderName(name));
-        return object.getObjectContent();
+        if (amazonS3Client.doesObjectExist(bucket, folderName.getFolderName(name))) {
+            S3Object object = amazonS3Client.getObject(bucket, folderName.getFolderName(name));
+            return object.getObjectContent();
+        }
+        return InputStream.nullInputStream();
     }
 
     @Override

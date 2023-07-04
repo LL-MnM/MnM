@@ -29,17 +29,17 @@ class RoomServiceTest {
     @Test
     void isRoomOwner() {
 
-        Long userId = 1L;
+        String createUserName = "userName";
         String uniqueId = "uniqueId";
 
         ChatRoom checkRoom = ChatRoom.builder()
-                .createUserId(userId)
+                .createUserName(createUserName)
                 .secretId(uniqueId)
                 .build();
 
         roomRepository.save(checkRoom);
 
-        assertThat(roomService.isRoomOwner(uniqueId,userId)).isTrue();
+        assertThat(roomService.isRoomOwner(uniqueId,createUserName)).isTrue();
     }
 
     @DisplayName("방 주인 검증 실패 - 존재하지 않는 방")
@@ -47,7 +47,7 @@ class RoomServiceTest {
     void notExistRoom() {
 
         assertThatThrownBy(() -> {
-            roomService.isRoomOwner("no",20L);
+            roomService.isRoomOwner("no","FakeOwner");
         }).isInstanceOf(NotFoundRoomException.class);
     }
 
@@ -55,17 +55,17 @@ class RoomServiceTest {
     @Test
     void hasNotOwner() {
 
-        Long userId = 30L;
+        String createUserName = "userName";
         String uniqueId = "uniqueId";
 
         ChatRoom checkRoom = ChatRoom.builder()
-                .createUserId(userId)
+                .createUserName(createUserName)
                 .secretId(uniqueId)
                 .build();
 
         roomRepository.save(checkRoom);
 
-        assertThat(roomService.isRoomOwner(uniqueId,userId+1)).isFalse();
+        assertThat(roomService.isRoomOwner(uniqueId,"FakeUser")).isFalse();
 
     }
 

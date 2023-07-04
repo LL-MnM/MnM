@@ -10,18 +10,20 @@ const messages = document.getElementById('messages');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 
+const csrfToken = $("meta[name='_csrf']").attr("content");
+const csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
 const headers = {
-    'username': username,
+    'senderName': username,
     'roomId': roomId,
-    'userId': userId,
-    'roomStatus': roomStatus
+    'roomStatus': roomStatus,
+    "X-CSRF-TOKEN": csrfToken
 };
 stompClient.connect(headers, function (frame) {
     // 구독 설정
     stompClient.subscribe('/group/chat/' + roomId, function (messageOutput) {
         showMessageOutput(JSON.parse(messageOutput.body));
-    }, headers);
+    });
     sendMessage(`${username}님이 입장하셨습니다.`, "ENTER");
 
     // Send 버튼 이벤트
@@ -47,14 +49,13 @@ function sendMessage(message, status) {
         JSON.stringify({
             'roomId': roomId,
             'message': message,
-            'sender': username,
-            'senderId': userId,
-            'status': status
+            'senderName': username,
+            'status': status,
         }));
 }
 
 function showMessageOutput(messageData) {
-    if (messageData.status === "DELETE" || (messageData.status === "EXIT" && messageData.sender === username)) {
+    if (messageData.status === "DELETE" || (messageData.status === "EXIT" && messageData.senderName === username)) {
         exitRoom();
         return;
     }
@@ -77,7 +78,7 @@ function showMessageOutput(messageData) {
     const senderElement3 = document.createElement('div');
     senderElement3.classList.add("flex-shrink-0", "truncate");
     const senderElement = document.createElement('span');
-    senderElement.textContent = messageData.sender;
+    senderElement.textContent = messageData.senderName;
     senderElement.classList.add('w-6', 'h-6', 'rounded-full', 'whitespace-nowrap');
 
 
@@ -94,7 +95,7 @@ function showMessageOutput(messageData) {
         textElement.classList.add('bg-blue-500', 'text-white');
         spanElement.classList.add('rounded-lg');
         senderElement.classList.add('hidden');
-    } else if (messageData.sender === username) {
+    } else if (messageData.senderName === username) {
         detailsElement.classList.add('flex', 'items-end', 'justify-end');
         textElement.classList.add('order-1', 'items-end');
         spanElement.classList.add('rounded-br-none', 'bg-blue-600', 'text-white');
