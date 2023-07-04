@@ -21,10 +21,9 @@ import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
 @Service
 public class RoomService {
 
+    private static final Long MAX_CAPACITY = 10L;
     private final RedisTemplate<String, Object> redisTemplate;
     private final RoomRepository roomRepository;
-
-    private static final Long MAX_CAPACITY = 10L;
 
     @Transactional
     public String createRoom(String username, RoomStatus status) {
@@ -44,6 +43,7 @@ public class RoomService {
     public void deleteDbRoom(String roomSecretId) {
         roomRepository.deleteBySecretId(roomSecretId);
     }
+
     @Transactional
     public void deleteCacheRoom(String roomSecretId) {
         redisTemplate.delete(COUNT.getKey(roomSecretId));

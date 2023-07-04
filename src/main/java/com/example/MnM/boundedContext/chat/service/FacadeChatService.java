@@ -40,8 +40,8 @@ public class FacadeChatService {
                 .map(Object::toString)
                 .toList();
 
-         String firstPerson = values.get(0);
-         String secondPerson = values.get(1);
+        String firstPerson = values.get(0);
+        String secondPerson = values.get(1);
 
         try {
             inspectSentimentService.chatInspectSentiment(chat)
