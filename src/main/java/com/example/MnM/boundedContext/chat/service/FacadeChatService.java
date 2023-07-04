@@ -1,7 +1,6 @@
 package com.example.MnM.boundedContext.chat.service;
 
 import com.example.MnM.base.exception.NotFoundParticipantException;
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
 import com.example.MnM.boundedContext.chat.infra.InspectSentimentService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
@@ -31,6 +30,7 @@ public class FacadeChatService {
     private final MemberRepository memberRepository;
     private final TransactionTemplate transactionTemplate;
     private final RoomService roomService;
+    private final EmotionService emotionService;
 
     public void inspectChat(String roomSecretId, String chat) {
 
@@ -53,22 +53,8 @@ public class FacadeChatService {
                                     .orElseThrow(() -> new NotFoundParticipantException("존재 하지 않는 유저입니다."));
                             Member second = memberRepository.findByUsername(secondPerson)
                                     .orElseThrow(() -> new NotFoundParticipantException("존재 하지 않는 유저입니다."));
-
-                            EmotionDegree firstDegree = EmotionDegree.builder()
-                                    .magnitude(emotionDegree.magnitude())
-                                    .score(emotionDegree.score())
-                                    .mbti(second.getMbti())
-                                    .build();
-
-                            first.addBestEmotion(firstDegree);
-
-                            EmotionDegree secondDegree = EmotionDegree.builder()
-                                    .magnitude(emotionDegree.magnitude())
-                                    .score(emotionDegree.score())
-                                    .mbti(first.getMbti())
-                                    .build();
-
-                            second.addBestEmotion(secondDegree);
+                            emotionService.saveIfLargerScore(first,second.getMbti(),emotionDegree);
+                            emotionService.saveIfLargerScore(second,first.getMbti(),emotionDegree);
                         });
                     });
         } catch (IOException e) {
