@@ -59,7 +59,6 @@ class MemberControllerTest {
     @DisplayName("soft delete test")
     @Builder
     public void softDeleteTest() {
-        //String encryptedValue = stringEncryptor.encrypt("myValue");
         Member member = Member.builder()
                 .username("test001")
                 .name("홍길동")
