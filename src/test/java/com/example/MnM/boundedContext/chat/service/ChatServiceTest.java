@@ -4,6 +4,7 @@ import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
 import com.example.MnM.boundedContext.chat.entity.ChatMessage;
 import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.repository.ChatRepository;
+import com.example.MnM.boundedContext.room.entity.RedisRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.MnM.boundedContext.chat.entity.RedisChat.CHAT;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -41,17 +44,22 @@ class ChatServiceTest {
     @Mock
     FacadeChatService facadeChatService;
 
+    @Mock
+    SetOperations<String,Object> setOperations;
+
 
     @DisplayName("너무 적은 채팅은 저장 안함")
     @Test
     void notSaveChat() {
 
         given(redisTemplate.opsForList()).willReturn(listOperations);
+        given(redisTemplate.opsForSet()).willReturn(setOperations);
 
         List<Object> list = new ArrayList<>();
 
         String roomSecretId = "roomSecretId";
         when(listOperations.range(CHAT.getKey(roomSecretId), 0, -1)).thenReturn(list);
+        when(setOperations.size(COUNT.getKey(roomSecretId))).thenReturn(1L);
 
         chatService.saveChatToDb(roomSecretId);
 
@@ -65,6 +73,7 @@ class ChatServiceTest {
     void saveChatToDbTest() {
 
         given(redisTemplate.opsForList()).willReturn(listOperations);
+        given(redisTemplate.opsForSet()).willReturn(setOperations);
 
         List<Object> list = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -73,6 +82,7 @@ class ChatServiceTest {
 
         String roomSecretId = "roomSecretId";
         when(listOperations.range(CHAT.getKey(roomSecretId), 0, -1)).thenReturn(list);
+        when(setOperations.size(COUNT.getKey(roomSecretId))).thenReturn(7L);
 
         chatService.saveChatToDb(roomSecretId);
 
