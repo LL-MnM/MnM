@@ -35,8 +35,9 @@ public class LikeablePersonServiceTest {
     @DisplayName("호감 생성")
     void createLike() throws Exception {
 
-        Member memberUser3 = memberService.findByName("홍길동").orElseThrow();
-        likeablePersonService.like(memberUser3, "임꺽정");
+        Optional<Member> memberUser3 = memberService.findByUserName("홍길동");
+
+        likeablePersonService.like(memberUser3.get(), "임꺽정");
         assertThat(likeablePersonRepository.count() == 1);
     }
 
@@ -45,8 +46,9 @@ public class LikeablePersonServiceTest {
         // 따로 실행하면 성공합니다.
     void deleteLike() throws Exception {
 
-        Member memberUser3 = memberService.findByName("홍길동").orElseThrow();
-        likeablePersonService.like(memberUser3, "임꺽정");
+        Optional<Member> memberUser3 = memberService.findByUserName("홍길동");
+
+        likeablePersonService.like(memberUser3.get(), "임꺽정");
         assertThat(likeablePersonRepository.count() == 1);
         Optional<LikeablePerson> byId = likeablePersonService.findById(1L);
         likeablePersonService.cancel(byId.get(), 1L);
@@ -57,10 +59,12 @@ public class LikeablePersonServiceTest {
     @DisplayName("호감 수정")
         // 따로 실행하면 성공합니다.
     void modifyLike() throws Exception {
-        Member memberUser3 = memberService.findByName("홍길동").orElseThrow();
-        likeablePersonService.like(memberUser3, "임꺽정");
+
+        Optional<Member> memberUser3 = memberService.findByUserName("홍길동");
+
+        likeablePersonService.like(memberUser3.get(), "임꺽정");
         assertThat(likeablePersonRepository.findById(1L).get().getToMember().getName().equals("임꺽정"));
-        likeablePersonService.modify(memberUser3, 1L, "박준수");
+        likeablePersonService.modify(memberUser3.get(), 1L, "박준수");
         assertThat(likeablePersonRepository.findById(1L).get().getToMember().getName().equals("박준수"));
 
     }

@@ -8,6 +8,11 @@
 </head>
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
 <main class="pt-2">
+  <script>
+    function deleteUser() {
+      confirm('변경 사항을 저장하시겠습니까?');
+    }
+  </script>
   <table class="table" style="width: 500px">
     <tr>
       <th>이름</th>
@@ -53,10 +58,11 @@
       <th>자기소개</th>
       <td th:text="${@rq.member.getIntroduce()}" colspan="2"></td>
     </tr>
-
-
   </table>
-
+  <div>
+    <a href="/member/delete" class="btn btn-secondary flex justify-end " onclick="deleteUser()" >회원 탈퇴</a>
+    <a href="/member/editMyPage" class="btn btn-secondary flex justify-start ">회원 수정</a>
+  </div>
 </main>
 </body>
 </html>

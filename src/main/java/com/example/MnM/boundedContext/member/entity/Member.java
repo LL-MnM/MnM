@@ -1,8 +1,9 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
+
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -19,18 +20,18 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 public class Member extends BaseEntity {
+
     private String username; //id
     private String password; //pw
     private String name; //이름
@@ -40,6 +41,7 @@ public class Member extends BaseEntity {
     private String providerType; //소셜로그인을 위한 제공자 타입
 
     private boolean deleted = Boolean.FALSE; //soft delete
+    //Todo : dateTime으로 교체 ->sql문 수정해야함
 
     //여기까지 회원기본정보, 아래로는 개인정보
 
@@ -54,12 +56,13 @@ public class Member extends BaseEntity {
     private String introduce; //자기소개
 
 
-    public Member(String userId, String username, String password) {
-        this.username = userId;
-        this.name = username;
-        this.password = password;
-    }
 
+    public Member(String username, String password, String providerType) {
+        this.username = username;
+        this.password =password;
+        this.providerType = providerType;
+
+    }
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

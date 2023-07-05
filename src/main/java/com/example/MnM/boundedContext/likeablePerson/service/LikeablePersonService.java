@@ -27,32 +27,33 @@ public class LikeablePersonService {
     }
 
     @Transactional
-    public RsData<LikeablePerson> like(Member member, String name) {
-        Optional<Member> optionalMember = memberService.findByName(name);
-        if (optionalMember.isEmpty()) {
-            return RsData.of("F-1", "존재하지 않는 유저 입니다.");
+        public RsData<LikeablePerson> like (Member member, String name){
+            Optional<Member> optionalMember = memberService.findByName(name);
+
+            if (optionalMember.isEmpty()) {
+                return RsData.of("F-1", "존재하지 않는 유저 입니다.");
+            }
+
+            if (member.getName().equals(name)) {
+                return RsData.of("F-2", "본인을 호감상대로 등록할 수 없습니다.");
+            }
+            LikeablePerson likeablePerson = LikeablePerson
+                    .builder()
+                    .fromMember(member)
+                    .toMember(optionalMember.get())
+                    .build();
+
+            likeablePersonRepository.save(likeablePerson); // 저장
+
+            // 너가 좋아하는 호감표시 생겼어.
+            member.addFromLikeablePerson(likeablePerson);
+
+            // 너를 좋아하는 호감표시 생겼어.
+            Optional<Member> memberOptional = memberRepository.findByName(name);
+            memberOptional.get().addToLikeablePerson(likeablePerson);
+
+            return RsData.of("S-1", "호감을 표시하셨습니다.", likeablePerson);
         }
-
-        if (member.getName().equals(name)) {
-            return RsData.of("F-2", "본인을 호감상대로 등록할 수 없습니다.");
-        }
-        LikeablePerson likeablePerson = LikeablePerson
-                .builder()
-                .fromMember(member)
-                .toMember(optionalMember.get())
-                .build();
-
-        likeablePersonRepository.save(likeablePerson); // 저장
-
-        // 너가 좋아하는 호감표시 생겼어.
-        member.addFromLikeablePerson(likeablePerson);
-
-        // 너를 좋아하는 호감표시 생겼어.
-        Optional<Member> memberOptional = memberRepository.findByName(name);
-        memberOptional.get().addToLikeablePerson(likeablePerson);
-
-        return RsData.of("S-1", "호감을 표시하셨습니다.", likeablePerson);
-    }
 
     @Transactional
     public RsData<LikeablePerson> cancel(LikeablePerson likeablePerson, Long memberId) {

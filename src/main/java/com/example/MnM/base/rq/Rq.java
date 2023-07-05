@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -57,28 +58,12 @@ public class Rq {
     // 로그인 된 회원의 객체
     public Member getMember() {
         if (isLogout()) return null;
-
         // 데이터가 없는지 체크
         if (member == null) {
             member = memberService.findByUserName(user.getUsername()).orElse(null);
         }
-
         return member;
     }
-
-    /*public Member setMemberAuthorities(Member m, String Authorities) {
-        if (isLogout()) return null;
-        // 데이터가 없는지 체크
-        if (member == null) {
-            member = memberService.findByUserName(user.getUsername()).orElse(null);
-            user.getAuthorities().stream().filter()
-        }
-        return member;
-    }*/
-
-
-
-
 
     // 뒤로가기 + 메세지
     public String historyBack(String msg) {
