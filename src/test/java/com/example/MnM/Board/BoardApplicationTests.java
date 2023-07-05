@@ -5,6 +5,7 @@ import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.repository.QuestionRepository;
 import com.example.MnM.boundedContext.board.service.QuestionService;
 import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,10 +37,15 @@ class BoardApplicationTests {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     Member member;
     @BeforeAll
     void test_CreateQuestions_Setup() {
         member = new Member("1","testUser","1234");
+
+        memberRepository.save(member);
 
         for (int i = 1; i <= 100; i++) {
             String subject = String.format("Sample Question %d", i);

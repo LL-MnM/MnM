@@ -28,10 +28,10 @@
                 </a>
                 <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
-                   th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
+                   th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
                    th:text="수정"></a>
                 <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/question/delete/${question.id}|}" class="btn btn-sm btn-outline-secondary"                   sec:authorize="isAuthenticated()"
-                   th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.userId}"
+                   th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
                    th:text="삭제"></a>
             </div>
         </div>
@@ -56,15 +56,15 @@
             <a onclick="return confirm('추천하시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
                th:href="@{|/answer/vote/${answer.id}|}">
                 좋아요
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.userId)}"></span>
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.username)}"></span>
             </a>
             <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
                sec:authorize="isAuthenticated()"
-               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.userId}"
+               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
                th:text="수정"></a>
             <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/answer/delete/${answer.id}|}"
                class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.userId}"
+               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
                th:text="삭제"></a>
         </div>
     </div>

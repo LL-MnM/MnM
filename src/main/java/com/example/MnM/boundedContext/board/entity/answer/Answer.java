@@ -42,9 +42,9 @@ public class Answer extends BaseEntity {
     }
 
     @ManyToMany
-    private Set<Member> userId = new LinkedHashSet<>();
+    private Set<Member> username = new LinkedHashSet<>();
 
     public void addVoter(Member voter) {
-        userId.add(voter);
+        username.add(voter);
     }
 }
