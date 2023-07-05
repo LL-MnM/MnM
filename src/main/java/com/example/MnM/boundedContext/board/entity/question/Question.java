@@ -5,13 +5,16 @@ import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode(callSuper = true,of = "id")
 @Entity
 public class Question extends BaseEntity {
     @Column(length = 200)
@@ -28,7 +31,9 @@ public class Question extends BaseEntity {
     private Member member;
 
     @ManyToMany
-    private Set<Member> userId = new LinkedHashSet<>();
+    @JoinTable(name = "question_voter", joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "voter_id"))
+    private Set<Member> voters = new HashSet<>();
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
@@ -45,7 +50,7 @@ public class Question extends BaseEntity {
     }
 
     public void addVoter(Member voter) {
-        this.userId.add(voter);
+        voters.add(voter);
     }
 
     public void setView(int view) {

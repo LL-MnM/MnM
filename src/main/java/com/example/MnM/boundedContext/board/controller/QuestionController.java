@@ -6,6 +6,7 @@ import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.entity.question.QuestionForm;
 import com.example.MnM.boundedContext.board.service.QuestionService;
 import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.security.Principal;
 public class QuestionController {
     private final QuestionService questionService;
     private final Rq rq;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/question/list")
     public String list(Model model , @RequestParam(defaultValue = "0") int page,String kw) {
@@ -107,15 +109,14 @@ public class QuestionController {
     @GetMapping("question/vote/{id}")
     public String questionVote(Principal principal, @PathVariable("id") Integer id) {
         Question question = questionService.getQuestion(id);
-        Member voter = question.getMember();
 
-//        if (!voter.getUserId().equals(principal.getName())) {
-//            return "redirect:/error";
-//        }
+        String userId = principal.getName();
+        Member voter = memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
         questionService.vote(question, voter);
 
         return "redirect:/question/detail/%d".formatted(id);
     }
+
 }
 
