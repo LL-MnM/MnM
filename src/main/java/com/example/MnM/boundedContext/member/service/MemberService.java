@@ -57,9 +57,8 @@ public class MemberService {
         String introduce = memberDto.getIntroduce();
         MultipartFile profileImage  = memberDto.getProfileImage();
 
-        System.out.println(profileImage.getOriginalFilename()+"--------------------------------------------11");
         String url = fileUpLoad(profileImage, username);
-        System.out.println(url+"--------------------------------------------11");
+        System.out.println(url + "---------------------------------------");
 
         if (findByUserName(username).isPresent() || username.equals("admin")) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
@@ -153,8 +152,11 @@ public class MemberService {
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
         Optional<Member> opMember = findByUserName(username);
-
+            if(!opMember.isPresent()){
+                System.out.println("somethings wrong---------------------------------------------");
+            }
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
+
 
         MemberDto memberDto = MemberDto.builder()
                 .username(username)
