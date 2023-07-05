@@ -1,12 +1,12 @@
 package com.example.MnM.boundedContext.member.controller;
 
-import com.example.MnM.base.config.JasyptConfig;
+
 import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import groovy.transform.builder.Builder;
-import org.jasypt.encryption.StringEncryptor;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-@ContextConfiguration(classes = JasyptConfig.class)
 class MemberControllerTest {
     @Autowired
     MockMvc mvc;
