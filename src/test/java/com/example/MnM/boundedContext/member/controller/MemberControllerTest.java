@@ -7,6 +7,7 @@ import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import groovy.transform.builder.Builder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,41 +45,20 @@ class MemberControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    Member member;
 
-    @Test
-    @DisplayName("soft delete test")
-    @Builder
+    @BeforeEach
     public void Test() {
-
-        System.out.println("hi");
-
-    }
-
-
-    @Test
-    @DisplayName("soft delete test")
-    @Builder
-    public void softDeleteTest() {
-        Member member = Member.builder()
+        member = Member.builder()
                 .username("test001")
                 .name("홍길동")
                 .password("1234")
                 .build();//testcase
-
-        memberRepository.save(member);
-        assertThat(memberService.findByUserName(member.getUsername())).isNotNull();
-        assertThat(member.isDeleted()).isFalse();
-
-        memberService.deleteMember(member);
-
-        Optional<Member> afterDelete = memberService.findByUserName(member.getUsername());
-        assertThat(afterDelete).isNotEmpty();
-        assertThat(afterDelete.get().isDeleted()).isTrue();
     }
 
     @Test
     @WithUserDetails(value = "user1")
-    @DisplayName("마이페이지 테스트")
+    @DisplayName("마이페이지")
     void MypageTest() throws Exception {
         ResultActions resultActions = mvc
                 .perform(get("/member/me"))
@@ -92,7 +72,7 @@ class MemberControllerTest {
 
     @Test
     @WithUserDetails(value = "user1")
-    @DisplayName("modify")
+    @DisplayName("회원 수정")
     void memberModify() throws Exception {
 
         ResultActions resultActions = mvc
@@ -114,7 +94,7 @@ class MemberControllerTest {
 
     @Test
     @WithUserDetails(value = "user1")
-    @DisplayName("delete, 회원 탈퇴")
+    @DisplayName("회원 탈퇴")
     void t003() throws Exception {
         ResultActions resultActions = mvc
                 .perform(get("/member/delete")
@@ -126,6 +106,22 @@ class MemberControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         assertThat(memberService.findByUserName("user1")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("soft delete test")
+    @Builder
+    public void softDeleteTest() {
+
+        memberRepository.save(member);
+        assertThat(memberService.findByUserName(member.getUsername())).isNotNull();
+        assertThat(member.isDeleted()).isFalse();
+
+        memberService.deleteMember(member);
+
+        Optional<Member> afterDelete = memberService.findByUserName(member.getUsername());
+        assertThat(afterDelete).isNotEmpty();
+        assertThat(afterDelete.get().isDeleted()).isTrue();
     }
 }
 
