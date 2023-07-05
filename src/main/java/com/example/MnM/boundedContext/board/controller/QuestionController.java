@@ -8,6 +8,7 @@ import com.example.MnM.boundedContext.board.service.QuestionService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,9 +69,9 @@ public class QuestionController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("question/modify/{id}")
-    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
+    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, @Autowired Rq rq) {
         Question question = this.questionService.getQuestion(id);
-        if(!question.getMember().getUsername().equals(principal.getName())) {
+        if (!question.getMember().getUsername().equals(rq.getMember().getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
