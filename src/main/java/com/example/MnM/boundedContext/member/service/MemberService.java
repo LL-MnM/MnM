@@ -1,12 +1,16 @@
 package com.example.MnM.boundedContext.member.service;
 
 import com.example.MnM.base.rsData.RsData;
-import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -50,7 +54,7 @@ public class MemberService {
 
 
 
-        if (Optional.ofNullable(findByUserName(username)).isPresent() || username.equals("admin")) {
+        if (findByUserName(username).isPresent() || username.equals("admin")) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
@@ -83,8 +87,8 @@ public class MemberService {
         return memberRepository.findByName(name);
     }
 
-    public Member findByUserName(String username) {//유저 아이디로 찾기
-        return memberRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
+    public Optional<Member> findByUserName(String username) {//유저 아이디로 찾기
+        return memberRepository.findByUsername(username);
     }
 
     public Member saveMember(Member member) {
@@ -106,13 +110,36 @@ public class MemberService {
         return RsData.of("S-1", "회원탈퇴 성공");
     }
 
+    private void forceAuthentication(Member member) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        List<GrantedAuthority> updatedAuthorities = (List<GrantedAuthority>) member.getGrantedAuthorities();
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities()), auth.getCredentials(), updatedAuthorities);
+
+        new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    public void renewAuthentication(Member member) {
+        User user = new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
+
+        UsernamePasswordAuthenticationToken authentication =
+                UsernamePasswordAuthenticationToken.authenticated(
+                        user,
+                        null,
+                        member.getGrantedAuthorities()
+                );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
     public List<Member> findByMbti(String mbti){return memberRepository.findByMbti(mbti); }
 
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
-        Optional<Member> opMember = Optional.ofNullable(findByUserName(username));
+        Optional<Member> opMember = findByUserName(username);
 
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
@@ -126,12 +153,8 @@ public class MemberService {
 
     public Member modify(Member member, MemberDto memberDto) {
         Member modifiedMember = member.toBuilder()
-                .username(memberDto.getUsername())
                 .name(memberDto.getName())
                 .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
-                .email(memberDto.getEmail())
-                .providerType(memberDto.getProviderTypeCode())
                 .nickname(memberDto.getNickname())
                 .age(memberDto.getAge())
                 .height(memberDto.getHeight())
@@ -143,6 +166,7 @@ public class MemberService {
                 .createDate(LocalDateTime.now())
                 .profileImage(memberDto.getProfileImage())
                 .build();
+
         return memberRepository.save(modifiedMember);
 
     }

@@ -7,7 +7,6 @@ import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import com.example.MnM.boundedContext.recommend.service.MemberMbtiService;
 import jakarta.validation.Valid;
-import lombok.*;
 import org.springframework.context.ApplicationEventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,8 +53,6 @@ public class MemberController {
         return rq.redirectWithMsg("/member/me", joinRs);
     }
 
-
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public String showMe(Model model) {
@@ -66,25 +63,28 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String MemberDelete() {
-        Member member = memberService.findByUserName(rq.getMember().getUsername());
-        memberService.delete(member);
-        return rq.redirectWithMsg("member/login", "회원이 탈퇴되었습니다.");
+        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
+        memberService.delete(member.get());
+        //Todo : 쿠키 삭제
+        return rq.redirectWithMsg("/", "회원이 탈퇴되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/editMyPage")
     public String showEditMyPage(Model model) {
-        Member member = memberService.findByUserName(rq.getMember().getUsername());
+        Member member = rq.getMember();
         model.addAttribute("member", member);
         return "member/editMyPage";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editMyPage")
-    public String editMyPage(@Valid MemberDto memberDto) {
-        Member member = memberService.findByUserName(rq.getMember().getUsername());
+    public String editMyPage(@Valid MemberDto memberDto, BindingResult bindingResult) {
+        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
 
-        memberService.modify(member, memberDto);
+        memberService.modify(member.get(), memberDto);
+        //Todo : 사용자 정보 갱신
+        //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
     }
 

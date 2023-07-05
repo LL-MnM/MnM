@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev, naver
+    active: dev, aws
     include: secret
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -78,4 +78,3 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     password: mnmsecretkey
-

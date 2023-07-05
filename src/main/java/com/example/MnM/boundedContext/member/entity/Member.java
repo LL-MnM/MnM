@@ -32,6 +32,7 @@ import java.util.Set;
 @Getter
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 public class Member extends BaseEntity {
+
     private String username; //id
     private String password; //pw
     private String name; //이름
@@ -41,6 +42,7 @@ public class Member extends BaseEntity {
     private String providerType; //소셜로그인을 위한 제공자 타입
 
     private boolean deleted = Boolean.FALSE; //soft delete
+    //Todo : dateTime으로 교체 ->sql문 수정해야함
 
     //여기까지 회원기본정보, 아래로는 개인정보
 

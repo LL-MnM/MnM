@@ -30,4 +30,5 @@ public class NaverObjectConfigure{
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, region))
                 .build();
     }
+
 }
