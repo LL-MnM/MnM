@@ -3,10 +3,9 @@ package com.example.MnM.boundedContext.chat.service;
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
 import com.example.MnM.boundedContext.chat.entity.ChatMessage;
 import com.example.MnM.boundedContext.chat.repository.ChatRepository;
-import com.example.MnM.boundedContext.room.dto.DeleteRoomDto;
+import com.example.MnM.boundedContext.room.entity.RedisRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,6 @@ public class ChatService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ChatRepository chatRepository;
     private final FacadeChatService facadeChatService;
-    private final ApplicationEventPublisher publisher;
 
     public void saveChatToCache(String roomSecretId, ChatMessageDto messageDto) {
         redisTemplate.opsForList().rightPush(CHAT.getKey(roomSecretId), messageDto);
@@ -36,6 +34,10 @@ public class ChatService {
     public void saveChatToDb(String roomSecretId) {
 
         List<Object> list = redisTemplate.opsForList().range(CHAT.getKey(roomSecretId), 0, -1);
+        Long roomSize = redisTemplate.opsForSet().size(RedisRoom.COUNT.getKey(roomSecretId));
+
+        if (list.size() <= 5 || roomSize <= 1)
+            return;
 
         StringBuilder sb = new StringBuilder();
 
@@ -44,21 +46,18 @@ public class ChatService {
         for (Object dto : list) {
             ChatMessageDto messageDto = (ChatMessageDto) dto;
             String message = messageDto.getMessage();
-            String sender = messageDto.getSender();
+            String senderName = messageDto.getSenderName();
 
             ChatMessage chatMessage = ChatMessage.builder()
                     .message(message)
-                    .writer(sender)
-                    .writerId(messageDto.getSenderId())
+                    .writer(senderName)
                     .roomId(roomSecretId)
                     .build();
             entities.add(chatMessage);
 
-            sb.append(sender).append(": ").append(message).append("\n");
+            sb.append(senderName).append(": ").append(message).append("\n");
         }
         facadeChatService.inspectChat(roomSecretId, sb.toString());
-
-        redisTemplate.delete(CHAT.getKey(roomSecretId));
 
         chatRepository.saveAll(entities);
 
@@ -67,6 +66,5 @@ public class ChatService {
 
     public void deleteCacheChat(String roomId) {
         redisTemplate.delete(CHAT.getKey(roomId));
-        publisher.publishEvent(new DeleteRoomDto(roomId));
     }
 }

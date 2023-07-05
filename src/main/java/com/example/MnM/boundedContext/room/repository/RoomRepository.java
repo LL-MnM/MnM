@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface RoomRepository extends JpaRepository<ChatRoom, Long> {
 
     void deleteBySecretId(String roomId);
+
     Optional<ChatRoom> findBySecretId(String roomId);
 }

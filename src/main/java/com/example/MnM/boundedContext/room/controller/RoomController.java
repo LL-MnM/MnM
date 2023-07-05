@@ -29,23 +29,23 @@ public class RoomController {
     @GetMapping("/rooms")
     public String roomList(Model model) {
         List<ChatRoom> rooms = roomService.findAll();
-        model.addAttribute("rooms",rooms);
+        model.addAttribute("rooms", rooms);
 
         return "chat/rooms";
     }
 
     @PostMapping("/create/room/group")
     public String createGroupRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getId(),rq.getMember().getUsername(), RoomStatus.GROUP);
+        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.GROUP);
 
-        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId),"채팅 방이 생성되었습니다.");
+        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
 
     @PostMapping("/create/room/single")
     public String createSingleRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getId(),rq.getMember().getUsername(),RoomStatus.SINGLE);
+        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.SINGLE);
 
-        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId),"채팅 방이 생성되었습니다.");
+        return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
 
     @GetMapping("/room/{roomId}")

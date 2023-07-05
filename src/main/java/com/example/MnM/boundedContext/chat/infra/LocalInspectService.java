@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
-@Profile({"dev","test"})
+@Profile({"dev", "test"})
 public class LocalInspectService implements InspectSentimentService {
     @Override
     public CompletableFuture<SentimentDto> chatInspectSentiment(String msg) {

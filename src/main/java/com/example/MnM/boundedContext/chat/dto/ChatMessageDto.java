@@ -11,12 +11,15 @@ import lombok.*;
 public class ChatMessageDto {
 
     private String roomId;
-    private String sender;
-    private Long senderId;
+    private String senderName;
     private String message;
     private ChatStatus status;
 
     public void statusToDelete() {
         status = ChatStatus.DELETE;
+    }
+
+    public void addUserInfo(String sender) {
+        this.senderName = sender;
     }
 }

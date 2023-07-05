@@ -4,6 +4,7 @@ import com.example.MnM.base.exception.NotFoundParticipantException;
 import com.example.MnM.boundedContext.chat.infra.InspectSentimentService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +29,8 @@ public class FacadeChatService {
     private final InspectSentimentService inspectSentimentService;
     private final MemberRepository memberRepository;
     private final TransactionTemplate transactionTemplate;
+    private final RoomService roomService;
+    private final EmotionService emotionService;
 
     public void inspectChat(String roomSecretId, String chat) {
 
@@ -38,26 +41,27 @@ public class FacadeChatService {
                 .map(Object::toString)
                 .toList();
 
-        Long firstPerson = Long.parseLong(values.get(0));
-        Long secondPerson = Long.parseLong(values.get(1));
+        String firstPerson = values.get(0);
+        String secondPerson = values.get(1);
 
         try {
             inspectSentimentService.chatInspectSentiment(chat)
                     .thenAccept((emotionDegree) -> {
                         transactionTemplate.executeWithoutResult((status) -> {
 
-                            Member first = memberRepository.findById(firstPerson)
+                            Member first = memberRepository.findByUsername(firstPerson)
                                     .orElseThrow(() -> new NotFoundParticipantException("존재 하지 않는 유저입니다."));
-                            Member second = memberRepository.findById(secondPerson)
+                            Member second = memberRepository.findByUsername(secondPerson)
                                     .orElseThrow(() -> new NotFoundParticipantException("존재 하지 않는 유저입니다."));
-
-                            first.addBestEmotion(emotionDegree, second.getMbti());
-                            second.addBestEmotion(emotionDegree, first.getMbti());
+                            emotionService.saveIfLargerScore(first,second.getMbti(),emotionDegree);
+                            emotionService.saveIfLargerScore(second,first.getMbti(),emotionDegree);
                         });
                     });
         } catch (IOException e) {
             log.error("inspectSentimentService error", e);
             throw new RuntimeException(e);
+        } finally {
+            roomService.deleteCacheRoom(roomSecretId);
         }
 
     }

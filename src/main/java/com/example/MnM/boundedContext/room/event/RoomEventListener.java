@@ -14,7 +14,6 @@ public class RoomEventListener {
 
     @EventListener(DeleteRoomDto.class)
     public void deleteRoomEvent(DeleteRoomDto dto) {
-        String roomId = dto.getRoomId();
-        roomService.deleteRoom(roomId);
+        roomService.deleteDbRoom(dto.getRoomId());
     }
 }

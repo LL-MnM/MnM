@@ -1,11 +1,13 @@
 package com.example.MnM.boundedContext.member.entity;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
-import com.example.MnM.boundedContext.chat.dto.SentimentDto;
-import com.example.MnM.boundedContext.chat.entity.EmotionDegree;
+
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
-import com.example.MnM.boundedContext.member.dto.MemberDto;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,12 +20,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -55,11 +54,6 @@ public class Member extends BaseEntity {
     private String hobby; //취미
     private String profileImage; //프로필사진, 임시로 만듬
     private String introduce; //자기소개
-
-    @Builder.Default
-    @ElementCollection
-    @CollectionTable(name = "bestMatch", joinColumns = @JoinColumn(name = "member_id"))
-    private Set<EmotionDegree> bestMatch = new HashSet<>();
 
 
 
@@ -105,10 +99,5 @@ public class Member extends BaseEntity {
 
     public void changeUsername(String name) {
         this.name = name;
-    }
-
-    public void addBestEmotion(SentimentDto sentimentDto, String mbti) {
-        this.bestMatch.add(new EmotionDegree(sentimentDto.magnitude(), sentimentDto.score(), mbti));
-
     }
 }
