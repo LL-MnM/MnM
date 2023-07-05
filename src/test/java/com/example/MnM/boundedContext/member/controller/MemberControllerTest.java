@@ -41,6 +41,7 @@ class MemberControllerTest {
 
     @Autowired
     private MemberService memberService;
+    @Autowired
     private MemberRepository memberRepository;
 
 
@@ -92,7 +93,7 @@ class MemberControllerTest {
     @Test
     @WithUserDetails(value = "user1")
     @DisplayName("modify")
-    void t002() throws Exception {
+    void memberModify() throws Exception {
 
         ResultActions resultActions = mvc
                 .perform(post("/member/editMyPage")
@@ -103,7 +104,7 @@ class MemberControllerTest {
 
         resultActions
                 .andExpect(handler().handlerType(MemberController.class))
-                .andExpect(handler().methodName("modify"))
+                .andExpect(handler().methodName("editMyPage"))
                 .andExpect(status().is3xxRedirection());
 
         Optional<Member> findMember = memberService.findByUserName("user1");
@@ -124,8 +125,7 @@ class MemberControllerTest {
                 .andExpect(handler().methodName("MemberDelete"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThatThrownBy(() -> memberService.findByUserName("user1"))
-                .isInstanceOf(DataNotFoundException.class);
+        assertThat(memberService.findByUserName("user1")).isEmpty();
     }
 }
 
