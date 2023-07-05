@@ -40,6 +40,7 @@ stompClient.connect(headers, function (frame) {
     });
 
     window.addEventListener("beforeunload", function (event) {
+        sendExit();
         exitRoom();
     });
 });
@@ -148,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.classList.add('hidden');
     });
     exitButton.addEventListener('click', (navigateAway => {
-        exitRoom();
+        sendExit()
     }));
     enterButton.addEventListener('click', () => {
         const modal = document.querySelector('#exit');
@@ -156,8 +157,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function exitRoom() {
+function sendExit() {
     sendMessage(`${username}님이 나갔습니다.`, "EXIT");
+
+}
+function exitRoom() {
     stompClient.disconnect();
     window.location.href = 'http://localhost:8080/chat/rooms';
 }
