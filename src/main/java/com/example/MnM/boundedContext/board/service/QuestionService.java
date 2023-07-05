@@ -89,8 +89,8 @@ public class QuestionService {
     public void delete(Question question) {
         questionRepository.delete(question);
     }
-    public void vote(Question question, Member member1) {
-        question.addVoter(member1);
+    public void vote(Question question, Member voter) {
+        question.addVoter(voter);
         questionRepository.save(question);
     }
 }
