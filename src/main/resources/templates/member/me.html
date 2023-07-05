@@ -10,11 +10,11 @@
 <main class="pt-2">
   <script>
     function deleteUser() {
-      confirm('변경 사항을 저장하시겠습니까?');
+      confirm('회원을 탈퇴 하시겠습니까?');
     }
   </script>
-  <div class="avatar">
-    <div class="w-24 rounded">
+  <div class="avatar flex items-center justify-center">
+    <div class="w-52 rounded">
       <img th:src="${@rq.member.getProfileImage()}" />
     </div>
   </div>

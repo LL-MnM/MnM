@@ -86,14 +86,15 @@
             }
         }
     </script>
+    <div class="avatar flex items-center justify-center">
+        <div class="w-52 rounded">
+            <img th:src="${@rq.member.getProfileImage()}" />
+        </div>
+    </div>
 
-    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST">
+    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST" enctype="multipart/form-data">
+
         <table class="table" style="width: 500px">
-
-            <!--<tr>
-                <th>아이디</th>
-                <td colspan="2"><div class="badge badge-secondary" name="username" type="text" th:value="${member.getUsername()}"></div></td>
-            </tr>-->
             <tr>
                 <th>이름</th>
                 <td colspan="2"><input name="name" type="text" th:value="${member.getName()}" class="input input-bordered input-secondary w-full max-w-xs"></td>
