@@ -87,6 +87,9 @@ tasks.named('test') {
 jacoco {
 	toolVersion = "0.8.7"
 }
+jar {
+	enabled = false
+}
 
 jacocoTestReport {
 	reports {
