@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.MnM.boundedContext.chat.entity.RedisChat.CHAT;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class ChatService {
     public void saveChatToDb(String roomSecretId) {
 
         List<Object> list = redisTemplate.opsForList().range(CHAT.getKey(roomSecretId), 0, -1);
-        Long roomSize = redisTemplate.opsForSet().size(RedisRoom.COUNT.getKey(roomSecretId));
+        Long roomSize = redisTemplate.opsForSet().size(COUNT.getKey(roomSecretId));
 
         if (list.size() <= 5 || roomSize <= 1)
             return;
