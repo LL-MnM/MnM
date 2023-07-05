@@ -1,9 +1,9 @@
 package com.example.MnM.boundedContext.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @AllArgsConstructor
@@ -41,7 +41,7 @@ public class MemberDto {
 
     private String introduce; //자기소개
 
-    private String profileImage;
+    private MultipartFile profileImage;
 
     private boolean deleted;
 }

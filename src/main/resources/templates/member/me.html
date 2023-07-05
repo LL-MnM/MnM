@@ -13,6 +13,12 @@
       confirm('변경 사항을 저장하시겠습니까?');
     }
   </script>
+  <div class="avatar">
+    <div class="w-24 rounded">
+      <img th:src="${@rq.member.getProfileImage()}" />
+    </div>
+  </div>
+
   <table class="table" style="width: 500px">
     <tr>
       <th>이름</th>
@@ -58,10 +64,12 @@
       <th>자기소개</th>
       <td th:text="${@rq.member.getIntroduce()}" colspan="2"></td>
     </tr>
+
+
   </table>
-  <div>
-    <a href="/member/delete" class="btn btn-secondary flex justify-end " onclick="deleteUser()" >회원 탈퇴</a>
-    <a href="/member/editMyPage" class="btn btn-secondary flex justify-start ">회원 수정</a>
+  <div class="flex justify-end gap-1">
+    <a href="/member/editMyPage" class="btn btn-secondary"> 회원 수정 </a>
+    <a href="/member/delete" class="btn btn-secondary" onclick="deleteUser()"> 회원 탈퇴 </a>
   </div>
 </main>
 </body>
