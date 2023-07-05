@@ -105,11 +105,12 @@ public class MemberService {
     }
 
     //hard delete
-    public RsData<Member> deleteMember(Member member){
+    public RsData<Member> deleteMember(Member member) {
         memberRepository.delete(member);
         return RsData.of("S-1", "회원탈퇴 성공");
     }
 
+    //아직 사용하지 않았습니다 회원 수정시 시큐리티에 정보 반영하는 코드입니다
     private void forceAuthentication(Member member) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -121,7 +122,7 @@ public class MemberService {
 
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
-
+    //아직 사용하지 않았습니다 회원 수정시 시큐리티에 정보 반영하는 코드입니다
     public void renewAuthentication(Member member) {
         User user = new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
 
