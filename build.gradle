@@ -84,15 +84,25 @@ tasks.named('test') {
 	finalizedBy 'jacocoTestReport'
 }
 
+jar {
+	enabled = false;
+}
+
 jacoco {
 	toolVersion = "0.8.7"
 }
 
 jacocoTestReport {
 	reports {
-		html.enabled true
-		xml.enabled true
-		csv.enabled false
+		html {
+			enabled true
+		}
+		xml {
+			enabled true
+		}
+		csv {
+			enabled false
+		}
 	}
 	finalizedBy 'jacocoTestCoverageVerification'
 }
