@@ -70,7 +70,7 @@ public class QuestionController {
     @GetMapping("question/modify/{id}")
     public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
         Question question = this.questionService.getQuestion(id);
-        if(!question.getMember().getUserId().equals(principal.getName())) {
+        if(!question.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
@@ -86,7 +86,7 @@ public class QuestionController {
             return "board/question_form";
         }
         Question question = this.questionService.getQuestion(id);
-        if (!question.getMember().getUserId().equals(principal.getName())) {
+        if (!question.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
@@ -97,7 +97,7 @@ public class QuestionController {
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
         Question question = this.questionService.getQuestion(id);
 
-        if (!question.getMember().getUserId().equals(principal.getName())) {
+        if (!question.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
@@ -111,7 +111,7 @@ public class QuestionController {
         Question question = questionService.getQuestion(id);
 
         String userId = principal.getName();
-        Member voter = memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
+        Member voter = memberRepository.findByUsername(userId).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
         questionService.vote(question, voter);
 

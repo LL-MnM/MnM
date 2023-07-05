@@ -15,7 +15,7 @@ VALUES ('INTP'),
        ('ESTP'),
        ('ESFJ'),
        ('ESFP');
-UPDATE Mbti
+UPDATE mbti
 SET best_mbti =
         CASE
             WHEN id = 1 THEN 'ENTP'

@@ -54,7 +54,7 @@ public class AnswerController {
     public String answerModify(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
         Answer answer = answerService.getAnswer(id);
 
-        if (!answer.getMember().getUserId().equals(principal.getName())) {
+        if (!answer.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
@@ -73,7 +73,7 @@ public class AnswerController {
 
         Answer answer = answerService.getAnswer(id);
 
-        if (!answer.getMember().getUserId().equals(principal.getName())) {
+        if (!answer.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
@@ -86,7 +86,7 @@ public class AnswerController {
     public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
         Answer answer = answerService.getAnswer(id);
 
-        if (!answer.getMember().getUserId().equals(principal.getName())) {
+        if (!answer.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
