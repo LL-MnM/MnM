@@ -4,6 +4,7 @@ import com.example.MnM.base.objectStorage.service.AmazonService;
 import com.example.MnM.base.objectStorage.service.S3FolderName;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
+import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
@@ -102,9 +103,6 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Member saveMember(Member member) {
-        return memberRepository.save(member);
-    }
 
 
     // soft-delete
@@ -112,12 +110,14 @@ public class MemberService {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
+        fileDelete(member.getUsername());
         memberRepository.save(deletedMember);
     }
 
     //hard delete
     public RsData<Member> deleteMember(Member member) {
         memberRepository.delete(member);
+        fileDelete(member.getUsername());
         return RsData.of("S-1", "회원탈퇴 성공");
     }
 
@@ -152,11 +152,7 @@ public class MemberService {
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
         Optional<Member> opMember = findByUserName(username);
-            if(!opMember.isPresent()){
-                System.out.println("somethings wrong---------------------------------------------");
-            }
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
-
 
         MemberDto memberDto = MemberDto.builder()
                 .username(username)
@@ -166,11 +162,7 @@ public class MemberService {
         return join(memberDto, providerTypeCode);
     }
 
-    public Member modify(Member member, MemberDto memberDto) {
-        if(!memberDto.getProfileImage().isEmpty()){
-            fileDelete(member.getUsername());
-        }
-        String url = fileUpLoad(memberDto.getProfileImage(), member.getUsername());
+    public RsData<Member> modify(Member member, MemberDto memberDto) {
 
         Member modifiedMember = member.toBuilder()
                 .name(memberDto.getName())
@@ -184,10 +176,22 @@ public class MemberService {
                 .locate(memberDto.getLocate())
                 .introduce(memberDto.getIntroduce())
                 .createDate(LocalDateTime.now())
+                .build();
+
+        return RsData.of("S-1", "회원정보를 수정하였습니다", memberRepository.save(modifiedMember));
+    }
+
+    public RsData<Member> modifyProfile(Member member, MemberProfileDto memberProfileDto) {
+        if(memberProfileDto.getProfileImage().isEmpty()){
+            return RsData.of("F-1", "프로필 사진이 없습니다.");
+        }
+
+        String url = fileUpLoad(memberProfileDto.getProfileImage(), member.getUsername());
+
+        Member modifiedProfileMember = member.toBuilder()
                 .profileImage(url)
                 .build();
 
-        return memberRepository.save(modifiedMember);
-
+        return RsData.of("S-1", "프로필 사진 교체 완료", memberRepository.save(modifiedProfileMember));
     }
 }
