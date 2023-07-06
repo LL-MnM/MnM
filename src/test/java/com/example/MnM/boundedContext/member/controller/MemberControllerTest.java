@@ -124,28 +124,5 @@ class MemberControllerTest {
         assertThat(afterDelete.get().isDeleted()).isTrue();
     }
 
-    @Test
-    @DisplayName("프로필 업로드")
-    @Builder
-    public void profileUploadTest() {
-
-
-    }
-
-    @Test
-    @DisplayName("soft delete test")
-    @Builder
-    public void softDeletseTest() {
-
-        memberRepository.save(member);
-        assertThat(memberService.findByUserName(member.getUsername())).isNotNull();
-        assertThat(member.isDeleted()).isFalse();
-
-        memberService.deleteMember(member);
-
-        Optional<Member> afterDelete = memberService.findByUserName(member.getUsername());
-        assertThat(afterDelete).isNotEmpty();
-        assertThat(afterDelete.get().isDeleted()).isTrue();
-    }
 }
 
