@@ -4,9 +4,30 @@
 <head>
     <meta charset="UTF-8" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>join</title>
+    <style>
+        .input-form {
+            max-width: 680px;
+
+            padding: 32px;
+
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
+        h4.mb-3 {
+            font-size: 2em;  /* 텍스트 크기 조정 */
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
-<main layout:fragment="content" class="flex-col flex items-center justify-center">
+<body layout:fragment="content" class="flex-col flex items-center justify-center">
+<main>
     <script>
         function MemberDto__submit(form) {
 
@@ -142,186 +163,140 @@
         }
     </script>
 
-    <h1>회원가입</h1>
-    <hr>
-    <form th:action="@{/member/join}" method="POST" class="flex flex-col justify-center" enctype="multipart/form-data" onsubmit="MemberDto__submit(this); return false;">
-        <table class="">
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="name">이름</label>
-                </td>
-                <td>
-                    <input id="name" name="name" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+    <div class="container">
+        <div class="input-form-backgroud row">
+            <div class="input-form col-md-12 mx-auto">
+                <h4 class="mb-3">회원가입</h4>
+                <form th:action="@{/member/join}" method="POST" class="flex flex-col justify-center" enctype="multipart/form-data" onsubmit="MemberDto__submit(this); return false;">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name">이름</label>
+                            <input id="name" name="name" type="text" class="input input-bordered input-secondary w-full max-w-xl">
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="username">아이디</label>
-                </td>
-                <td>
-                    <input id="username" name="username" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="username">아이디</label>
+                            <input type="text" class="input input-bordered input-secondary w-full max-w-xl" name="username" id="username" >
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="password">비밀번호</label>
-                </td>
-                <td>
-                    <input id="password" name="password" type="password" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password">비밀번호</label>
+                        <input class="input input-bordered input-secondary w-full max-w-xl" id="password" name="password" type="password">
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="password_check">비밀번호 확인</label>
-                </td>
-                <td>
-                    <input id="password_check" name="password_check" type="password" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_check">비밀번호 확인</label>
+                        <input class="input input-bordered input-secondary w-full max-w-xl" id="password_check" name="password_check" type="password">
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="nickname">닉네임</label>
-                </td>
-                <td>
-                    <input id="nickname" name="nickname" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
-
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="email">이메일</label>
-                </td>
-                <td>
-                    <input id="email" name="email" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
-
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="age">나이</label>
-                </td>
-                <td>
-                    <input id="age" name="age" type="number" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
-
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="height">키</label>
-                </td>
-                <td>
-                    <input id="height" name="height" type="number" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
-
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="gender">성별</label>
-                </td>
-                <td>
-                    <select id="gender" name="gender" class="border-2 rounded-md px-2">
-                        <option value="">-성별을 선택해주세요-</option>
-                        <option value="male">남자</option>
-                        <option value="female">여자</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="hobby">취미</label>
-                </td>
-                <td>
-                    <input id="hobby" name="hobby" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">이메일</label>
+                        <input type="email" class="input input-bordered input-secondary w-full max-w-xl" id="email" placeholder="you@example.com" required>
 
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="mbti">MBTI</label>
-                </td>
-                <td>
-                    <select id="mbti" name="mbti" class="border-2 rounded-md px-2">
-                        <option value="">-MBTI를 선택해주세요-</option>
-                        <option value="ENFP">ENFP</option>
-                        <option value="ENFJ">ENFJ</option>
-                        <option value="ENTP">ENTP</option>
-                        <option value="ENTJ">ENTJ</option>
-                        <option value="ESFP">ESFP</option>
-                        <option value="ESFJ">ESFJ</option>
-                        <option value="ESTP">ESTP</option>
-                        <option value="ENTJ">ENTJ</option>
-                        <option value="INFP">INFP</option>
-                        <option value="INFJ">INFJ</option>
-                        <option value="INTP">INTP</option>
-                        <option value="INTJ">INTJ</option>
-                        <option value="ISFP">ISFP</option>
-                        <option value="ISFJ">ISFJ</option>
-                        <option value="ISTP">ISTP</option>
-                        <option value="INTJ">INTJ</option>
-                    </select>
-                </td>
-            </tr>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nickname">닉네임</label>
+                        <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="nickname" >
+                    </div>
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="locate">지역</label>
-                </td>
-                <td>
-                    <select id="locate" name="locate" class="border-2 rounded-md px-2">
-                        <option value="">-지역을 선택해주세요-</option>
-                        <option value="서울">서울특별시</option>
-                        <option value="인천">인천광역시</option>
-                        <option value="대전">대전광역시</option>
-                        <option value="대구">대구광역시</option>
-                        <option value="부산">부산광역시</option>
-                        <option value="광주">광주광역시</option>
-                        <option value="울산">울산광역시</option>
-                        <option value="경기도">경기도</option>
-                        <option value="충북">충청북도</option>
-                        <option value="충남">충청남도</option>
-                        <option value="강원도">강원도</option>
-                        <option value="전북">전라북도</option>
-                        <option value="전남">전라남도</option>
-                        <option value="경북">경상북도</option>
-                        <option value="경남">경상남도</option>
-                    </select>
-                </td>
-            </tr>
+                    <div class="mb-3">
+                        <label for="age">나이</label>
+                        <input type="number" class="input input-bordered input-secondary w-full max-w-xl" id="age" name="age">
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="introduce">자기소개</label>
-                </td>
-                <td>
-                    <input id="introduce" name="introduce" type="text" class="border-2 rounded-md px-2">
-                </td>
-            </tr>
+                    </div>
+                    <div class="mb-3">
+                        <label for="height">키</label>
+                        <input type="number" class="input input-bordered input-secondary w-full max-w-xl" id="height" name="height">
 
-            <tr class="gap-5">
-                <td class="text-right pr-4">
-                    <label for="profileImage">프로필사진</label>
-                </td>
-                <td>
-                    <input id="profileImage" name="profileImage" type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs">
-                </td>
-            </tr>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender">성별</label>
+                        <select id="gender" name="gender" class="input input-bordered input-secondary w-full max-w-xl">
+                            <option value="">-성별을 선택해주세요-</option>
+                            <option value="male">남자</option>
+                            <option value="female">여자</option>
+                        </select>
 
+                    </div>
+                    <div class="mb-3">
+                        <label for="hobby">취미</label>
+                        <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="hobby" name="hobby">
 
-        </table>
+                    </div>
 
-        <div>
-            <input type="checkbox" id="personalInfoAgreement" name="personalInfoAgreement">
-            <label for="personalInfoAgreement">개인정보 수집 및 활용 동의</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="mbti">MBTI</label>
+                            <select id="mbti" name="mbti" class="custom-select input input-bordered input-secondary w-full max-w-xl">
+                                <option value="">-MBTI를 선택해주세요-</option>
+                                <option value="ENFP">ENFP</option>
+                                <option value="ENFJ">ENFJ</option>
+                                <option value="ENTP">ENTP</option>
+                                <option value="ENTJ">ENTJ</option>
+                                <option value="ESFP">ESFP</option>
+                                <option value="ESFJ">ESFJ</option>
+                                <option value="ESTP">ESTP</option>
+                                <option value="ENTJ">ENTJ</option>
+                                <option value="INFP">INFP</option>
+                                <option value="INFJ">INFJ</option>
+                                <option value="INTP">INTP</option>
+                                <option value="INTJ">INTJ</option>
+                                <option value="ISFP">ISFP</option>
+                                <option value="ISFJ">ISFJ</option>
+                                <option value="ISTP">ISTP</option>
+                                <option value="INTJ">INTJ</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="locate">지역</label>
+                            <select id="locate" name="locate" class="custom-select input input-bordered input-secondary w-full max-w-xl">
+                                <option value="">-지역을 선택해주세요-</option>
+                                <option value="서울">서울특별시</option>
+                                <option value="인천">인천광역시</option>
+                                <option value="대전">대전광역시</option>
+                                <option value="대구">대구광역시</option>
+                                <option value="부산">부산광역시</option>
+                                <option value="광주">광주광역시</option>
+                                <option value="울산">울산광역시</option>
+                                <option value="경기도">경기도</option>
+                                <option value="충북">충청북도</option>
+                                <option value="충남">충청남도</option>
+                                <option value="강원도">강원도</option>
+                                <option value="전북">전라북도</option>
+                                <option value="전남">전라남도</option>
+                                <option value="경북">경상북도</option>
+                                <option value="경남">경상남도</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="introduce">자기소개</label>
+                        <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="introduce" name="introduce">
+
+                    </div>
+                    <tr class="gap-5">
+                        <td class="text-right pr-4">
+                            <label for="profileImage">프로필사진</label>
+                        </td>
+                        <td>
+                            <input id="profileImage" name="profileImage" type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs">
+                        </td>
+                    </tr>
+                    <hr class="mb-4">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="personalInfoAgreement" name="personalInfoAgreement">
+                        <label class="custom-control-label" for="personalInfoAgreement">개인정보 수집 및 활용 동의</label>
+                    </div>
+                    <div class="mb-4"></div>
+                    <button class="btn btn-secondary btn-lg btn-block" type="submit">가입하기</button>
+                </form>
+            </div>
         </div>
-
-        <button type="submit" class="btn">회원가입</button>
-    </form>
+    </div>
 </main>
 </body>
 </html>

@@ -4,6 +4,22 @@
 <head>
   <meta charset="UTF-8" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>Login</title>
+  <style>
+    .input-form {
+      max-width: 680px;
+
+      padding: 32px;
+
+      background: #fff;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+    }
+
+  </style>
 </head>
 
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
@@ -41,9 +57,9 @@
   }
 </script>
 <main>
-  <section class="flex items-center justify-center">
-    <div class="container h-full px-6 py-24">
-      <div class="g-6 flex h-full flex-wrap items-center justify-center">
+  <div class="container">
+    <div class="input-form-backgroud row">
+      <div class="input-form col-md-12 mx-auto">
         <!-- container with form -->
         <div class="">
           <form th:action="@{/member/login}" method="post" onsubmit="LoginForm__submit(this); return false;">
@@ -69,7 +85,7 @@
 
             <!-- Remember me checkbox -->
             <div class="mb-6 flex items-center justify-between">
-              <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+              <div class="mb-[0.125rem] block min-h-[1.5rem] flex items-center">
                 <input
                         class="checkbox checkbox-secondary"
                         type="checkbox"
@@ -130,7 +146,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 </body>
 </html>
