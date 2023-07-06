@@ -34,13 +34,11 @@ public class AnswerService {
 
     public void modify(Answer answer, String content) {
         answer.updateAnswer(content);
-        answerRepository.save(answer);
     }
     public void delete(Answer answer) {
         answerRepository.delete(answer);
     }
     public void vote(Answer answer, Member voter) {
         answer.addVoter(voter);
-        answerRepository.save(answer);
     }
 }

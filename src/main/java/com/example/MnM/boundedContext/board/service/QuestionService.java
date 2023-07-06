@@ -82,13 +82,12 @@ public class QuestionService {
     }
     public void modify(Question question, String subject, String content) {
         question.updateQuestion(subject,content);
-        questionRepository.save(question);
+
     }
     public void delete(Question question) {
         questionRepository.delete(question);
     }
     public void vote(Question question, Member voter) {
         question.addVoter(voter);
-        questionRepository.save(question);
     }
 }
