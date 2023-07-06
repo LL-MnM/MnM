@@ -98,10 +98,11 @@ public class AnswerController {
     @GetMapping("/vote/{id}")
     public String answerVote(Principal principal, @PathVariable("id") Integer id) {
         Answer answer = answerService.getAnswer(id);
-        Member voter = answer.getMember();
+        Member voter = rq.getMember();
 
         answerService.vote(answer, voter);
 
         return "redirect:/question/detail/%d#answer_%d".formatted(answer.getQuestion().getId(), id);
     }
+
 }
