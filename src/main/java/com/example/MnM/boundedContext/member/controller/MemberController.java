@@ -44,14 +44,14 @@ public class MemberController {
 
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
-        RsData<Member> joinRs = memberService.join(memberDto);
         if(bindingResult.hasErrors()){
             return rq.redirectWithMsg("/member/join", "입력하신 정보를 다시 확인해주세요.");
         }
+        RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("/member/join", "로그인에 실패하였습니다.");
+            return rq.redirectWithMsg("/member/join", joinRs.getMsg());
         }
-        return rq.redirectWithMsg("/member/me", joinRs);
+        return rq.redirectWithMsg("/member/login", joinRs.getMsg());
     }
 
     @PreAuthorize("isAuthenticated()")

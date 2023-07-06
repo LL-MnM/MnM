@@ -57,9 +57,12 @@ public class MemberService {
         String hobby = memberDto.getHobby();
         String introduce = memberDto.getIntroduce();
         MultipartFile profileImage  = memberDto.getProfileImage();
+        String url = "";
 
-        String url = fileUpLoad(profileImage, username);
-        System.out.println(url + "---------------------------------------");
+        if(memberDto.getProfileImage() != null){
+            url = fileUpLoad(profileImage, username);
+        }
+
 
         if (findByUserName(username).isPresent() || username.equals("admin")) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
@@ -162,6 +165,7 @@ public class MemberService {
         return join(memberDto, providerTypeCode);
     }
 
+
     public RsData<Member> modify(Member member, MemberDto memberDto) {
 
         Member modifiedMember = member.toBuilder()
@@ -178,7 +182,9 @@ public class MemberService {
                 .createDate(LocalDateTime.now())
                 .build();
 
-        return RsData.of("S-1", "회원정보를 수정하였습니다", memberRepository.save(modifiedMember));
+        memberRepository.save(modifiedMember);
+
+        return RsData.of("S-1", "회원정보를 수정하였습니다");
     }
 
     public RsData<Member> modifyProfile(Member member, MemberProfileDto memberProfileDto) {
