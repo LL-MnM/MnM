@@ -8,6 +8,7 @@ import com.example.MnM.boundedContext.board.service.QuestionService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -69,7 +65,7 @@ public class QuestionController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("question/modify/{id}")
-    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, @Autowired Rq rq) {
+    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id) {
         Question question = this.questionService.getQuestion(id);
         if (!question.getMember().getUsername().equals(rq.getMember().getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -111,13 +107,11 @@ public class QuestionController {
     public String questionVote(Principal principal, @PathVariable("id") Integer id) {
         Question question = questionService.getQuestion(id);
 
-        String userId = principal.getName();
-        Member voter = memberRepository.findByUsername(userId).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
+        String username = principal.getName();
+        Member voter = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
         questionService.vote(question, voter);
 
         return "redirect:/question/detail/%d".formatted(id);
     }
-
 }
-

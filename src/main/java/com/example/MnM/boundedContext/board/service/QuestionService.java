@@ -75,10 +75,6 @@ public class QuestionService {
 
     public Question create(String subject, String content, Member member) {
 
-        System.out.println(member.getUsername());
-        System.out.println(member.getId());
-        System.out.println(member.getNickname());
-
         Question q = new Question();
         q.createQuestion(subject, content, member);
         questionRepository.save(q);
