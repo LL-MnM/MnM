@@ -56,7 +56,7 @@
             <a onclick="return confirm('추천하시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
                th:href="@{|/answer/vote/${answer.id}|}">
                 좋아요
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.username)}"></span>
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.votes)}"></span>
             </a>
             <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
                sec:authorize="isAuthenticated()"

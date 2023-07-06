@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.board.service;
 
 import com.example.MnM.boundedContext.board.entity.answer.Answer;
+import com.example.MnM.boundedContext.board.entity.answer.Vote;
 import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.repository.AnswerRepository;
@@ -39,6 +40,15 @@ public class AnswerService {
         answerRepository.delete(answer);
     }
     public void vote(Answer answer, Member voter) {
+        // 처음에 중복 투표를 확인한다.
+        Optional<Vote> existingVote = answer.getVotes().stream()
+                .filter(vote -> vote.getMember().getNickname().equals(voter.getNickname())) // 이 부분은 회원의 고유 식별자에 따라 다를 수 있음
+                .findFirst();
+
+        if (existingVote.isPresent()) {
+            throw new IllegalStateException("User already voted for this answer: " + voter.getNickname());
+        }
         answer.addVoter(voter);
     }
+
 }

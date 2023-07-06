@@ -8,7 +8,9 @@ import lombok.*;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -41,10 +43,13 @@ public class Answer extends BaseEntity {
         this.content = content;
     }
 
-    @ManyToMany
-    private Set<Member> username = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votes = new ArrayList<>();
 
     public void addVoter(Member voter) {
-        username.add(voter);
+        Vote newVote = new Vote();
+        newVote.setAnswer(this);
+        newVote.setMember(voter);
+        votes.add(newVote);
     }
 }
