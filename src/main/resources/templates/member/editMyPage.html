@@ -86,13 +86,8 @@
             }
         }
     </script>
-    <div class="avatar flex items-center justify-center">
-        <div class="w-52 rounded">
-            <img th:src="${@rq.member.getProfileImage()}" />
-        </div>
-    </div>
 
-    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST" enctype="multipart/form-data">
+    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST" >
 
         <table class="table" style="width: 500px">
             <tr>
@@ -186,10 +181,6 @@
             <tr>
                 <th>자기소개</th>
                 <td colspan="2"><input name="introduce" type="text" th:value="${member.getHobby()}" class="input input-bordered input-secondary w-full max-w-xs" ></td>
-            </tr>
-            <tr>
-                <th>프로필</th>
-                <td colspan="2"><input name="profileImage" type="file" th:value="${member.getProfileImage()}" class="file-input file-input-bordered file-input-secondary w-full max-w-xs"></td>
             </tr>
         </table>
     </form>
