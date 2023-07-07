@@ -19,16 +19,21 @@ import java.io.InputStream;
 public class TestController {
 
     private final ObjectStorageService s3Service;
+    private final ObjectRepository objectRepository;
 
     @ResponseBody
     @PostMapping("/make")
-    public String makeBucket(@RequestParam(value = "file") MultipartFile file, String name) {
-        return s3Service.uploadImage(file, S3FolderName.USER, name);
+    public ObjectFile makeBucket(@RequestParam(value = "file") MultipartFile file, String name) {
+        String url = s3Service.uploadImage(file, S3FolderName.USER, name);
+        ObjectFile objectFile = new ObjectFile();
+        objectFile.setUrl(url);
+        return objectRepository.save(objectFile);
     }
 
     @ResponseBody
     @GetMapping(value = "/show", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] makeBucket(String name) {
+        ObjectFile url = objectRepository.findByUrl(name);
         InputStream imageStream = s3Service.getImage(S3FolderName.USER, name);
         try {
             return IOUtils.toByteArray(imageStream);
