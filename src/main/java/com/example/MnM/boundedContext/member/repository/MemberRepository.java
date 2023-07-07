@@ -22,8 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByName(String name); //
 
-    Optional<Member> findByUsernameAndEmail(String username, String email);
-
     List<Member> findByMbti(String mbti);
 
 
@@ -34,5 +32,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Query(value = "DELETE FROM member WHERE id = ?1", nativeQuery = true)
     void deleteHardById(Long id);
+
+    Optional<Member> findByUsernameAndEmail(String userId, String email);
+
+    Optional<Member> findByEmail(String email);
 
 }

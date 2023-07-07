@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -110,6 +111,89 @@ public class MemberController {
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("/member/me", memberRsData);
+    }
+
+
+    @GetMapping("/emailVerification")
+    public String showEmailVerification() {
+        return "/member/emailVerification";
+    }
+
+
+    @PostMapping("/emailVerification")
+    public String emailVerification(String email) {
+        Member member = rq.getMember();
+
+        if (member.getEmail() != null && !member.getEmail().equals(email)) {
+            return rq.redirectWithMsg("/member/me", RsData.of("F-1", "기존 회원정보와 다른 이메일 주소입니다. 회원정보를 변경하거나, 기존 이메일 주소로 이메일 인증을 진행해주세요."));
+        }
+
+        RsData verificationRsData = memberService.sendVerificationMail(member, email);
+        return rq.redirectWithMsg("/member/me", verificationRsData);
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findUserId")
+    public String showFindUserId() {
+        return "/member/findUserId";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findUserId")
+    public String findUserId(String email) {
+        Member actor = memberService.findByEmail(email).orElse(null);
+
+        if (actor == null) {
+            return rq.historyBack(RsData.of("F-1", "해당 이메일로 가입된 계정이 존재하지 않습니다."));
+        }
+
+        String foundedUserId = actor.getUsername();
+        String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUserId);
+
+        return rq.redirectWithMsg("/usr/member/login?userId=%s".formatted(foundedUserId), RsData.of("S-1", successMsg));
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findPassword")
+    public String showFindPassword() {
+        return "/member/findPassword";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(String username, String email) {
+        Optional<Member> member = memberService.findByUsernameAndEmail(username, email);
+
+        if (member.isEmpty()) {
+            RsData userNotFoundRsData = RsData.of("F-1", "일치하는 회원이 존재하지 않습니다.");
+            return rq.redirectWithMsg("/member/findPassword", userNotFoundRsData);
+        }
+
+        RsData sendTempLoginPwToEmailResultData = memberService.sendTempPasswordToEmail(member.get());
+
+        if (sendTempLoginPwToEmailResultData.isFail()) {
+            return rq.redirectWithMsg("/member/findPassword", sendTempLoginPwToEmailResultData);
+        }
+
+        return rq.redirectWithMsg("/member/login", sendTempLoginPwToEmailResultData);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modifyPassword")
+    public String showModifyPassword() {
+        return "usr/member/modifyPassword";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modifyPassword")
+    public String modifyPassword(String oldPassword, String password, RedirectAttributes redirectAttributes) {
+        Member actor = rq.getMember();
+        RsData modifyRsData = memberService.modifyPassword(actor, password, oldPassword);
+        redirectAttributes.addFlashAttribute("message", modifyRsData.getMsg());
+        if (modifyRsData.isFail()) {
+            return rq.redirectWithMsg("/usr/member/modifyPassword", modifyRsData);
+        }
+        return rq.redirectWithMsg("/", modifyRsData);
     }
 
 }

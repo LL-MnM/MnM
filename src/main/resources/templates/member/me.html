@@ -13,11 +13,13 @@
       confirm('회원을 탈퇴 하시겠습니까?');
     }
   </script>
-
-  <div class="avatar">
-    <div class="w-52 rounded flex items-center justify-center">
-      <img th:src="${member.getProfileImage()}"/>
+  <div class = "flex items-center justify-center">
+    <div class="avatar">
+      <div class="w-52 rounded flex items-center justify-center">
+        <img th:src="${member.getProfileImage()}"/>
+      </div>
     </div>
+    <a href="/member/editProfile" class="btn btn-secondary flex justify-end gap-1"> 프로필 수정 </a>
   </div>
 
   <table class="table" style="width: 500px">
@@ -36,6 +38,12 @@
     <tr>
       <th>이메일</th>
       <td th:text="${member.getEmail()}" colspan="2"></td>
+    </tr>
+    <tr>
+      <th>이메일 인증 여부</th>
+      <td th:if="${member.emailVerified} == true" colspan="2">인증완료</td>
+      <td th:unless="${member.emailVerified}" colspan="2"><a href="/member/emailVerification" class="btn btn-secondary">이메일
+        인증하러 가기</a></td>
     </tr>
     <tr>
       <th>가입일</th>
@@ -68,7 +76,6 @@
 
   </table>
   <div class="flex justify-end gap-1">
-    <a href="/member/editProfile" class="btn btn-secondary"> 프로필 수정 </a>
     <a href="/member/editMyPage" class="btn btn-secondary"> 회원 수정 </a>
     <a href="/member/delete" class="btn btn-secondary" onclick="deleteUser()"> 회원 탈퇴 </a>
   </div>

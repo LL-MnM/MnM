@@ -39,9 +39,6 @@ public class EmailService {
     }
 
     private RsData trySend(String email, String title, String body) {
-        /*if (*//*AppConfig.isNotProd() && *//*!email.equals("skrlfxo97@gmail.com")) {
-            return RsData.of("S-0", "메일이 발송되었습니다.");
-        }*/
 
         try {
             emailSenderService.send(email, "no-reply@no-reply.com", title, body);
