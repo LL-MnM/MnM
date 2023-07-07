@@ -287,12 +287,13 @@ public class MemberService {
     }
 
     @Transactional
-    public RsData modifyPassword(Member actor, String password, String oldPassword) {
-        if (!passwordEncoder.matches(oldPassword, actor.getPassword())) {
+    public RsData modifyPassword(Member member, String password, String oldPassword) {
+        if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
             return RsData.of("F-1", "기존 비밀번호가 일치하지 않습니다.");
         }
 
-        actor.setPassword(passwordEncoder.encode(password));
+        Member modifiedMember = member.toBuilder().password(password).build();
+        memberRepository.save(modifiedMember);
 
         return RsData.of("S-1", "비밀번호가 변경되었습니다.");
     }

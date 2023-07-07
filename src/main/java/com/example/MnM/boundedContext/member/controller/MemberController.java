@@ -135,7 +135,7 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/findUserId")
     public String showFindUserId() {
-        return "/member/findUserId";
+        return "/member/findUsername";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -181,7 +181,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modifyPassword")
     public String showModifyPassword() {
-        return "usr/member/modifyPassword";
+        return "member/modifyPassword";
     }
 
     @PreAuthorize("isAuthenticated()")
