@@ -83,6 +83,7 @@
             <form class="!hidden" hidden th:action="|/member/logout|" method="POST"></form></li>
           <li th:if="${@rq.isLogout()}"><a href="/member/join">회원가입</a></li>
           <li ><a href="/about">소개</a></li>
+          <li th:if="${@rq.isLogin()}"><a href="/notification/list">알림</a>
         </ul>
       </div>
     </div>
