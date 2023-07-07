@@ -50,9 +50,14 @@ public class RoomService {
     }
 
     @Transactional
-    public Long enterRoom(String roomSecretId, String senderName) {
-        isExistRoom(roomSecretId);
-        return redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId), senderName);
+    public void enterRoom(String roomSecretId, String senderName) {
+
+        ChatRoom chatRoom =
+                roomRepository.findBySecretId(roomSecretId).orElseThrow(() -> new NotFoundRoomException("없는 방입니다"));
+
+        if (chatRoom.isGroup()) {
+            redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId), senderName);
+        }
     }
 
     @Transactional
@@ -76,11 +81,6 @@ public class RoomService {
     public boolean isRoomOwner(String roomId, String senderName) {
         ChatRoom chatRoom = findBySecretId(roomId);
         return chatRoom.getCreateUserName().equals(senderName);
-    }
-
-    public void checkSingleRoom(String roomSecretId, String userId) {
-
-        //TODO Single check
     }
 
     public void checkGroupRoom(String roomSecretId) {

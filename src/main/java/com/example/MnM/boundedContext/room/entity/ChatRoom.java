@@ -22,4 +22,9 @@ public class ChatRoom {
     private String createUserName;
     private RoomStatus status;
 
+
+    public boolean isGroup() {
+        return this.status.equals(RoomStatus.GROUP);
+    }
+
 }
