@@ -3,12 +3,14 @@ package com.example.MnM.boundedContext.member.service;
 import com.example.MnM.base.objectStorage.service.AmazonService;
 import com.example.MnM.base.objectStorage.service.S3FolderName;
 import com.example.MnM.base.rsData.RsData;
+import com.example.MnM.boundedContext.email.service.EmailService;
 import com.example.MnM.boundedContext.emailVerification.service.EmailVerificationService;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
+import com.example.MnM.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,6 +43,8 @@ public class MemberService {
     private final AmazonService amazonService;
 
     private final EmailVerificationService emailVerificationService;
+
+    private final EmailService emailService;
 
     private final MbtiService mbtiService;
 
@@ -174,6 +179,7 @@ public class MemberService {
         Optional<Member> opMember = findByUserName(username);
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
+
         MemberDto memberDto = MemberDto.builder()
                 .username(username)
                 .password("")
@@ -231,5 +237,68 @@ public class MemberService {
         member.setMemberEmailVerified(true);
 
         return RsData.of("S-1", "이메일인증이 완료되었습니다.");
+    }
+
+    public RsData sendVerificationMail(Member actor, String email) {
+        emailVerificationService.send(actor, email);
+        return RsData.of("S-1", "인증 메일을 성공적으로 `%s` 주소로 전송했습니다.".formatted(email));
+    }
+
+
+    public Optional<Member> findByUsernameAndEmail(String userId, String email) {
+        return memberRepository.findByUsernameAndEmail(userId, email);
+    }
+
+    @Transactional
+    public RsData sendTempPasswordToEmail(Member actor) {
+        String title = "[하루10분] 임시 패스워드 발송";
+        String tempPassword = Ut.getTempPassword(6);
+
+        String body = """
+                <!DOCTYPE html>
+                <html>
+                    <h1>임시 패스워드 : %s</h1>
+                    <a href="http://localhost:8080/usr/member/login" target="_blank">로그인 하러가기</a>
+                </html>
+                """.formatted(tempPassword);
+
+        RsData sendResultData = sendMail(actor.getEmail(), title, body);
+
+        if (sendResultData.isFail()) {
+            return sendResultData;
+        }
+
+        setTempPassword(actor, tempPassword);
+
+        return RsData.of("S-1", "계정의 이메일주소로 임시 패스워드가 발송되었습니다.");
+    }
+
+    public RsData sendMail(String to, String title, String body) {
+        return emailService.sendEmail(to, title, body);
+    }
+
+    //회원 수정, 삭제
+    @Transactional
+    public RsData<Member> setTempPassword(Member member, String tempPassword) {
+        Member modifiedMember = member.toBuilder().password(tempPassword).build();
+        memberRepository.save(modifiedMember);
+
+        return RsData.of("S-1", "회원정보를 수정하였습니다");
+    }
+
+    @Transactional
+    public RsData modifyPassword(Member actor, String password, String oldPassword) {
+        if (!passwordEncoder.matches(oldPassword, actor.getPassword())) {
+            return RsData.of("F-1", "기존 비밀번호가 일치하지 않습니다.");
+        }
+
+        actor.setPassword(passwordEncoder.encode(password));
+
+        return RsData.of("S-1", "비밀번호가 변경되었습니다.");
+    }
+
+
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 }

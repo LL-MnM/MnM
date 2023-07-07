@@ -1,7 +1,6 @@
 package com.example.MnM.boundedContext.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -17,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberDto {
 
     @NotBlank
-    @Pattern(regexp = "^(?!.*admin).*$", message = "단어 'admin'을 사용할 수 없습니다.")
+    @Pattern(regexp = "^(?!.*admin)[A-Za-z0-9]+$", message = "영문자와 숫자로만 이루어져야 하며, 단어 'admin'을 사용할 수 없습니다.")
     private String username;
     @NotBlank
     private String password;
@@ -32,7 +31,7 @@ public class MemberDto {
     @Positive
     private Integer height; //키
     @Positive
-    private Integer age; //나이;
+    private Integer age;
 
     private String locate; //지역
 
