@@ -1,5 +1,6 @@
 package com.example.MnM.base.config;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import com.example.MnM.base.websocket.CustomWebsocketInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat/connect")
-                .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins(AppConfig.getChatUrl())
                 .withSockJS();
     }
 

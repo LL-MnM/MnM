@@ -1,7 +1,7 @@
 const el = document.getElementById('messages')
 el.scrollTop = el.scrollHeight
 
-const socket = new SockJS('http://localhost:8080/chat/connect');
+const socket = new SockJS(`${url}/chat/connect`);
 const stompClient = Stomp.over(socket);
 
 

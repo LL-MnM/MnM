@@ -68,7 +68,7 @@ decorator:
       enable-logging: true
 custom:
   site:
-    baseUrl: http://localhost
+    baseUrl: http://localhost:8080
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
     key: "12345678"
