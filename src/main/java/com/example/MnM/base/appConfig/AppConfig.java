@@ -4,10 +4,14 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
 
 @Configuration
 public class AppConfig {
+    @Getter
+    private static String siteName;
+    @Getter
+    private static String siteBaseUrl;
+    private static String activeProfile;
     @Getter
     private static String key;
 
@@ -24,12 +28,22 @@ public class AppConfig {
         AppConfig.tokenValiditySeconds = tokenValiditySeconds;
     }
 
+
     @Getter
     private static String chatUrl;
 
     @Value("${custom.site.baseUrl}")
     public void setChatUrl(String chatUrl) {
         AppConfig.chatUrl = chatUrl;
+    }
+
+    public static boolean isNotProd() {
+        return !isProd();
+    }
+
+    public static boolean isProd() {
+        return activeProfile.equals("prod");
+
     }
 
 }

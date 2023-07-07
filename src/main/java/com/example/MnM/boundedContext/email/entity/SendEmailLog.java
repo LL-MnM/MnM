@@ -1,6 +1,7 @@
 package com.example.MnM.boundedContext.email.entity;
 
-import com.ll.exam.final__2022_10_08.app.base.entity.BaseEntity;
+
+import com.example.MnM.base.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
