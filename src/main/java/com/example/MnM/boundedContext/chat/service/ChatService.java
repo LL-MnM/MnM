@@ -3,7 +3,6 @@ package com.example.MnM.boundedContext.chat.service;
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
 import com.example.MnM.boundedContext.chat.entity.ChatMessage;
 import com.example.MnM.boundedContext.chat.repository.ChatRepository;
-import com.example.MnM.boundedContext.room.entity.RedisRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -35,7 +34,7 @@ public class ChatService {
     public void saveChatToDb(String roomSecretId) {
 
         List<Object> list = redisTemplate.opsForList().range(CHAT.getKey(roomSecretId), 0, -1);
-        Long roomSize = redisTemplate.opsForSet().size(COUNT.getKey(roomSecretId));
+        Long roomSize = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
 
         if (list.size() <= 5 || roomSize <= 1)
             return;

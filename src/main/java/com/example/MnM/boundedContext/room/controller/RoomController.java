@@ -4,7 +4,6 @@ import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.room.dto.EnterRoomDto;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
-import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

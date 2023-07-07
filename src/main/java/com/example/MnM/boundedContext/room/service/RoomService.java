@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.MEMBERS;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,8 +36,8 @@ public class RoomService {
     public String createSingleRoom(String inviter,String invitee ) {
         ChatRoom room = createRoom(inviter, RoomStatus.SINGLE);
 
-        redisTemplate.opsForSet().add(COUNT.getKey(room.getSecretId()),inviter);
-        redisTemplate.opsForSet().add(COUNT.getKey(room.getSecretId()),invitee);
+        redisTemplate.opsForSet().add(MEMBERS.getKey(room.getSecretId()),inviter);
+        redisTemplate.opsForSet().add(MEMBERS.getKey(room.getSecretId()),invitee);
 
         return room.getSecretId();
     }
@@ -61,7 +61,7 @@ public class RoomService {
 
     @Transactional
     public void deleteCacheRoom(String roomSecretId) {
-        redisTemplate.delete(COUNT.getKey(roomSecretId));
+        redisTemplate.delete(MEMBERS.getKey(roomSecretId));
     }
 
     @Transactional
@@ -71,18 +71,18 @@ public class RoomService {
                 roomRepository.findBySecretId(roomSecretId).orElseThrow(() -> new NotFoundRoomException("없는 방입니다"));
 
         if (chatRoom.isGroup()) {
-            redisTemplate.opsForSet().add(COUNT.getKey(roomSecretId), senderName);
+            redisTemplate.opsForSet().add(MEMBERS.getKey(roomSecretId), senderName);
         }
     }
 
     @Transactional
     public Long exitRoom(String roomSecretId, String senderName) {
         isExistRoom(roomSecretId);
-        return redisTemplate.opsForSet().remove(COUNT.getKey(roomSecretId), senderName);
+        return redisTemplate.opsForSet().remove(MEMBERS.getKey(roomSecretId), senderName);
     }
 
     private void isExistRoom(String roomSecretId) {
-        Boolean isExist = redisTemplate.hasKey(COUNT.getKey(roomSecretId));
+        Boolean isExist = redisTemplate.hasKey(MEMBERS.getKey(roomSecretId));
         if (isExist != null && !isExist)
             throw new NotFoundRoomException("생성되지 않은 방입니다.");
     }
@@ -100,7 +100,7 @@ public class RoomService {
 
     public void checkGroupRoom(String roomSecretId) {
 
-        Long people = redisTemplate.opsForSet().size(COUNT.getKey(roomSecretId));
+        Long people = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
 
         if (people > MAX_CAPACITY)
             throw new OverCapacityRoomException("정원 초과");
@@ -108,7 +108,7 @@ public class RoomService {
     }
 
     public void checkRoomMember(String roomSecretId, String senderName) {
-        if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(COUNT.getKey(roomSecretId), senderName)))
+        if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(MEMBERS.getKey(roomSecretId), senderName)))
             throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
     }
 

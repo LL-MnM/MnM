@@ -14,7 +14,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.MEMBERS;
 
 
 /*
@@ -35,7 +35,7 @@ public class FacadeChatService {
     public void inspectChat(String roomSecretId, String chat) {
 
         List<String> values = redisTemplate.opsForSet()
-                .members(COUNT.getKey(roomSecretId))
+                .members(MEMBERS.getKey(roomSecretId))
                 .stream()
                 .limit(2)
                 .map(Object::toString)
