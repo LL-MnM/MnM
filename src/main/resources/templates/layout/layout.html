@@ -32,11 +32,40 @@
 <!-- 데이지 UI 불러오기 -->
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
 
-<nav th:replace="header/header::header"></nav>
 
-<th:block layout:fragment="content"></th:block>
+<div class="min-h-screen flex flex-col pb-10">
+  <nav th:replace="header/header::header"></nav>
 
+  <th:block layout:fragment="content"></th:block>
+</div>
 
+<script th:inline="javascript">
+  if (params.msg) {
+    toastNotice(params.msg[0]);
+  }
+
+  if (params.errorMsg) {
+    toastWarning(params.errorMsg[0]);
+  }
+
+  // history.back 에 의해서 돌아온 경우에 실행됨
+  // 평소에도 실행됨
+  $(window).bind("pageshow", function (event) {
+    const localStorageKeyAboutHistoryBackErrorMsg = "historyBackErrorMsg___" + location.href;
+
+    if (localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg)) {
+      toastWarning(localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg));
+      localStorage.removeItem(localStorageKeyAboutHistoryBackErrorMsg);
+    } else {
+      const localStorageKeyAboutHistoryBackErrorMsg = "historyBackErrorMsg___null";
+
+      if (localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg)) {
+        toastWarning(localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg));
+        localStorage.removeItem(localStorageKeyAboutHistoryBackErrorMsg);
+      }
+    }
+  });
+</script>
 
 </body>
 </html>

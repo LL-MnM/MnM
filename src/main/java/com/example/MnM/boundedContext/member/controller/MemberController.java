@@ -50,8 +50,9 @@ public class MemberController {
         }
         RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("/member/join", joinRs.getMsg());
+            return rq.historyBack(joinRs);
         }
+
         return rq.redirectWithMsg("/member/login", joinRs.getMsg());
     }
 
@@ -125,7 +126,7 @@ public class MemberController {
         Member member = rq.getMember();
 
         if (member.getEmail() != null && !member.getEmail().equals(email)) {
-            return rq.redirectWithMsg("/member/me", RsData.of("F-1", "기존 회원정보와 다른 이메일 주소입니다. 회원정보를 변경하거나, 기존 이메일 주소로 이메일 인증을 진행해주세요."));
+            return rq.historyBack(RsData.of("F-1", "기존 회원정보와 다른 이메일 주소입니다. 회원정보를 변경하거나, 기존 이메일 주소로 이메일 인증을 진행해주세요."));
         }
 
         RsData verificationRsData = memberService.sendVerificationMail(member, email);
@@ -133,13 +134,13 @@ public class MemberController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/findUserId")
+    @GetMapping("/findUsername")
     public String showFindUserId() {
         return "/member/findUsername";
     }
 
     @PreAuthorize("isAnonymous()")
-    @PostMapping("/findUserId")
+    @PostMapping("/findUsername")
     public String findUserId(String email) {
         Member member = memberService.findByEmail(email).orElse(null);
 
@@ -150,7 +151,7 @@ public class MemberController {
         String foundedUsername = member.getUsername();
         String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUsername);
 
-        return rq.redirectWithMsg("/usr/member/login?userId=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
+        return rq.redirectWithMsg("/member/login?username=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
     }
 
     @PreAuthorize("isAnonymous()")
@@ -166,13 +167,13 @@ public class MemberController {
 
         if (member.isEmpty()) {
             RsData userNotFoundRsData = RsData.of("F-1", "일치하는 회원이 존재하지 않습니다.");
-            return rq.redirectWithMsg("/member/findPassword", userNotFoundRsData);
+            return rq.historyBack(userNotFoundRsData);
         }
 
         RsData sendTempLoginPwToEmailResultData = memberService.sendTempPasswordToEmail(member.get());
 
         if (sendTempLoginPwToEmailResultData.isFail()) {
-            return rq.redirectWithMsg("/member/findPassword", sendTempLoginPwToEmailResultData);
+            return rq.historyBack(sendTempLoginPwToEmailResultData);
         }
 
         return rq.redirectWithMsg("/member/login", sendTempLoginPwToEmailResultData);
@@ -186,13 +187,12 @@ public class MemberController {
 
 
     @PostMapping("/modifyPassword")
-    public String modifyPassword(String oldPassword, String password, RedirectAttributes redirectAttributes) {
+    public String modifyPassword(String oldPassword, String password) {
         Member member = rq.getMember();
         RsData modifyRsData = memberService.modifyPassword(member, password, oldPassword);
-        redirectAttributes.addFlashAttribute("message", modifyRsData.getMsg());
 
         if (modifyRsData.isFail()) {
-            return rq.redirectWithMsg("/member/modifyPassword", modifyRsData);
+            return rq.historyBack(modifyRsData);
         }
         return rq.redirectWithMsg("/", modifyRsData);
     }
