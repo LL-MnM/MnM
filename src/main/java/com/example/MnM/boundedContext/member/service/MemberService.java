@@ -95,15 +95,18 @@ public class MemberService {
                 .profileImage(url)
                 .build();
 
-        emailVerificationService.send(member)
-                .addCallback(
-                        sendRsData -> {
-                            // 성공시 처리
-                        },
-                        error -> log.error(error.getMessage())
-                );
+        Member saveMember = memberRepository.save(member);
 
-        return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
+        emailVerificationService.send(saveMember, email)
+                .thenAccept(sendRsData -> {
+                    // 성공시 처리
+                })
+                .exceptionally(error -> {
+                    log.error(error.getMessage());
+                    return null; // 에러 처리
+                });
+
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", saveMember);
     }
     public String fileUpLoad(MultipartFile multipartFile, String username){
         return amazonService.uploadImage(multipartFile, S3FolderName.USER, username);

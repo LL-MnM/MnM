@@ -13,9 +13,11 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -24,16 +26,18 @@ public class EmailVerificationService {
     private final EmailVerificationRepository emailVerificationRepository;
 
     @Async
-    public void send(Member member, String email) {
+    public CompletableFuture<RsData<Long>> send(Member member, String email) {
         if (email == null) {
             email = member.getEmail();
         }
-        //TODO: 하드 코딩 제거하기
-        String title = "[하루10분 이메일인증] 안녕하세요 %s님. 링크를 클릭하여 이메일 인증을 완료해주세요.".formatted(member.getUsername());
+        String title = "[%s 이메일인증] 안녕하세요 %s님. 링크를 클릭하여 이메일 인증을 완료해주세요.".formatted(AppConfig.getSiteName(), member.getUsername());
         String url = "<a href=\""+ genEmailVerificationUrl(member) + "\">이메일 인증 링크</a>";
 
-        emailService.sendEmail(email, title, url);
+        RsData<Long> sendEmailRs = emailService.sendEmail(email, title, url);
+
+        return CompletableFuture.completedFuture(sendEmailRs);
     }
+
 
     public String genEmailVerificationUrl(Member member) {
         return genEmailVerificationUrl(member.getId());
@@ -56,8 +60,7 @@ public class EmailVerificationService {
             code = genEmailVerificationCode(memberId);
         }
 
-        //TODO: 하드 코딩 제거하기
-        return "http://localhost:8080/emailVerification/verify?memberId=%d&code=%s".formatted(memberId, code);
+        return AppConfig.getSiteBaseUrl() + "/emailVerification/verify?memberId=%d&code=%s".formatted(memberId, code);
     }
 
     public String genEmailVerificationCode(long memberId) {
