@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.room.controller;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.room.dto.EnterRoomDto;
@@ -59,6 +60,7 @@ public class RoomController {
         Member member = rq.getMember();
         EnterRoomDto enterRoomDto = new EnterRoomDto(member.getUsername(), member.getId());
 
+        model.addAttribute("url", AppConfig.getChatUrl());
         model.addAttribute("room", room);
         model.addAttribute("enterPerson", enterRoomDto);
 
