@@ -33,11 +33,11 @@
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
 
 
-<div class="min-h-screen flex flex-col pb-10">
-  <nav th:replace="header/header::header"></nav>
 
-  <th:block layout:fragment="content"></th:block>
-</div>
+<nav th:replace="header/header::header"></nav>
+
+<th:block layout:fragment="content"></th:block>
+
 
 <script th:inline="javascript">
   if (params.msg) {
