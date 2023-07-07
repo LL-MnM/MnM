@@ -26,17 +26,32 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     @Transactional
-    public String createRoom(String username, RoomStatus status) {
+    public String createGroupRoom(String username) {
+        ChatRoom room = createRoom(username, RoomStatus.GROUP);
+
+        return room.getSecretId();
+    }
+
+    @Transactional
+    public String createSingleRoom(String inviter,String invitee ) {
+        ChatRoom room = createRoom(inviter, RoomStatus.SINGLE);
+
+        redisTemplate.opsForSet().add(COUNT.getKey(room.getSecretId()),inviter);
+        redisTemplate.opsForSet().add(COUNT.getKey(room.getSecretId()),invitee);
+
+        return room.getSecretId();
+    }
+
+    @Transactional
+    public ChatRoom createRoom(String username, RoomStatus status) {
         String roomSecretId = UUID.randomUUID().toString();
 
-        ChatRoom room = roomRepository.save(ChatRoom.builder()
+        return roomRepository.save(ChatRoom.builder()
                 .secretId(roomSecretId)
                 .createUserName(username)
                 .status(status)
                 .roomName("%s의 방".formatted(username))
                 .build());
-
-        return room.getSecretId();
     }
 
     @Transactional
@@ -92,7 +107,7 @@ public class RoomService {
 
     }
 
-    public void isRoomMember(String roomSecretId, String senderName) {
+    public void checkRoomMember(String roomSecretId, String senderName) {
         if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(COUNT.getKey(roomSecretId), senderName)))
             throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
     }

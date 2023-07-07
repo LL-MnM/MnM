@@ -36,14 +36,14 @@ public class RoomController {
 
     @PostMapping("/create/room/group")
     public String createGroupRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.GROUP);
+        String roomId = roomService.createGroupRoom(rq.getMember().getUsername());
 
         return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
 
     @PostMapping("/create/room/single")
-    public String createSingleRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.SINGLE);
+    public String createSingleRoom(String username) {
+        String roomId = roomService.createSingleRoom(rq.getMember().getUsername(), username);
 
         return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
@@ -52,6 +52,10 @@ public class RoomController {
     public String entranceRoom(Model model, @PathVariable String roomId) {
 
         ChatRoom room = roomService.findBySecretId(roomId);
+
+        if (!room.isGroup()) {
+            roomService.checkRoomMember(roomId,rq.getMember().getUsername());
+        }
 
         Member member = rq.getMember();
         EnterRoomDto enterRoomDto = new EnterRoomDto(member.getUsername(), member.getId());

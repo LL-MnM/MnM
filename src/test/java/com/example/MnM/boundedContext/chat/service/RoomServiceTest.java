@@ -1,7 +1,9 @@
 package com.example.MnM.boundedContext.chat.service;
 
 import com.example.MnM.base.exception.NotFoundRoomException;
+import com.example.MnM.base.exception.NotRoomParticipants;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
+import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.repository.RoomRepository;
 import com.example.MnM.boundedContext.room.service.RoomService;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,6 +29,20 @@ class RoomServiceTest {
     @Autowired
     RoomRepository roomRepository;
 
+    @DisplayName("방 생성 검증")
+    @Test
+    void creatRoom() {
+
+        String secretRoomId = roomService.createGroupRoom("user3");
+
+        Optional<ChatRoom> bySecretId = roomRepository.findBySecretId(secretRoomId);
+
+        assertThat(bySecretId).isNotEmpty();
+        ChatRoom chatRoom = bySecretId.get();
+        assertThat(chatRoom.getCreateUserName()).isEqualTo("user3");
+        assertThat(chatRoom.getStatus()).isEqualTo(RoomStatus.GROUP);
+    }
+
     @DisplayName("방 주인 검증 성공")
     @Test
     void isRoomOwner() {
@@ -39,7 +57,7 @@ class RoomServiceTest {
 
         roomRepository.save(checkRoom);
 
-        assertThat(roomService.isRoomOwner(uniqueId,createUserName)).isTrue();
+        assertThat(roomService.isRoomOwner(uniqueId, createUserName)).isTrue();
     }
 
     @DisplayName("방 주인 검증 실패 - 존재하지 않는 방")
@@ -47,7 +65,7 @@ class RoomServiceTest {
     void notExistRoom() {
 
         assertThatThrownBy(() -> {
-            roomService.isRoomOwner("no","FakeOwner");
+            roomService.isRoomOwner("no", "FakeOwner");
         }).isInstanceOf(NotFoundRoomException.class);
     }
 
@@ -65,8 +83,19 @@ class RoomServiceTest {
 
         roomRepository.save(checkRoom);
 
-        assertThat(roomService.isRoomOwner(uniqueId,"FakeUser")).isFalse();
+        assertThat(roomService.isRoomOwner(uniqueId, "FakeUser")).isFalse();
 
+    }
+
+    @DisplayName("single room 입장 실패")
+    @Test
+    void failToEnterSingleRoom() {
+
+        String secretRoomId = roomService.createSingleRoom("user4", "user5");
+
+        assertThatThrownBy(() -> {
+            roomService.checkRoomMember(secretRoomId, "user3");
+        }).isInstanceOf(NotRoomParticipants.class);
     }
 
 }
