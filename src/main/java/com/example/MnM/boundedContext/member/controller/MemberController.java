@@ -178,20 +178,21 @@ public class MemberController {
         return rq.redirectWithMsg("/member/login", sendTempLoginPwToEmailResultData);
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/modifyPassword")
     public String showModifyPassword() {
         return "member/modifyPassword";
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @PostMapping("/modifyPassword")
     public String modifyPassword(String oldPassword, String password, RedirectAttributes redirectAttributes) {
-        Member actor = rq.getMember();
-        RsData modifyRsData = memberService.modifyPassword(actor, password, oldPassword);
+        Member member = rq.getMember();
+        RsData modifyRsData = memberService.modifyPassword(member, password, oldPassword);
         redirectAttributes.addFlashAttribute("message", modifyRsData.getMsg());
+
         if (modifyRsData.isFail()) {
-            return rq.redirectWithMsg("/usr/member/modifyPassword", modifyRsData);
+            return rq.redirectWithMsg("/member/modifyPassword", modifyRsData);
         }
         return rq.redirectWithMsg("/", modifyRsData);
     }
