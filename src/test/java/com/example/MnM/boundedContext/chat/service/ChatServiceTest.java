@@ -1,10 +1,8 @@
 package com.example.MnM.boundedContext.chat.service;
 
 import com.example.MnM.boundedContext.chat.dto.ChatMessageDto;
-import com.example.MnM.boundedContext.chat.entity.ChatMessage;
 import com.example.MnM.boundedContext.chat.entity.ChatStatus;
 import com.example.MnM.boundedContext.chat.repository.ChatRepository;
-import com.example.MnM.boundedContext.room.entity.RedisRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.MnM.boundedContext.chat.entity.RedisChat.CHAT;
-import static com.example.MnM.boundedContext.room.entity.RedisRoom.COUNT;
+import static com.example.MnM.boundedContext.room.entity.RedisRoom.MEMBERS;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -59,7 +57,7 @@ class ChatServiceTest {
 
         String roomSecretId = "roomSecretId";
         when(listOperations.range(CHAT.getKey(roomSecretId), 0, -1)).thenReturn(list);
-        when(setOperations.size(COUNT.getKey(roomSecretId))).thenReturn(1L);
+        when(setOperations.size(MEMBERS.getKey(roomSecretId))).thenReturn(1L);
 
         chatService.saveChatToDb(roomSecretId);
 
@@ -82,7 +80,7 @@ class ChatServiceTest {
 
         String roomSecretId = "roomSecretId";
         when(listOperations.range(CHAT.getKey(roomSecretId), 0, -1)).thenReturn(list);
-        when(setOperations.size(COUNT.getKey(roomSecretId))).thenReturn(7L);
+        when(setOperations.size(MEMBERS.getKey(roomSecretId))).thenReturn(7L);
 
         chatService.saveChatToDb(roomSecretId);
 
