@@ -19,15 +19,21 @@
         </div>
 
         <th:block th:each="member : ${mbtiForMember}">
-            <div class="flex items-center mb-2">
+            <div class="flex items-center mb-2" style="background-color: #f3f3f3; border-radius: 5px; padding: 10px;">
                 <ul>
-                    <li class="text-xl" th:text="${member.getName()}"></li>
+                    <li class="text-xl" style="font-family: 'Gotham'; color: #3c3c3c;"
+                        th:text="${member.getName()}"></li>
                 </ul>
+                <div style="flex-grow: 1;"></div>
                 <form method="post" th:action="@{|/notification/alarm/${member.getId()}|}">
-                    <button type="submit">채팅하기</button>
+                    <button style="background-color: #333; color: #fff; padding: 5px 10px; border: none; border-radius: 3px; font-family: 'Arial'; font-weight: bold;"
+                            type="submit">
+                        채팅하기
+                    </button>
                 </form>
             </div>
         </th:block>
+
         <div class="flex justify-end mt-4">
             <a class="text-black-500 hover:underline text-sm font-bold px-2 py-1" href="/">메인화면으로 돌아가기</a>
         </div>
