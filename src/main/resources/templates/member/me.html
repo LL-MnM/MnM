@@ -7,7 +7,7 @@
   <title>myPage</title>
 </head>
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
-<main class="pt-2">
+<main class="pt-2 ">
   <script>
     function deleteUser() {
       confirm('회원을 탈퇴 하시겠습니까?');
@@ -22,7 +22,7 @@
     <a href="/member/editProfile" class="btn btn-secondary flex justify-end gap-1"> 프로필 수정 </a>
   </div>
 
-  <table class="table" style="width: 500px">
+  <table class="table items-center justify-center" style="width: 500px">
     <tr>
       <th>이름</th>
       <td th:text="${member.getName()}" colspan="2"></td>

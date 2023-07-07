@@ -36,11 +36,11 @@
 <!-- 테일윈드 불러오기 -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<div class="min-h-screen flex flex-col pb-10">
-  <header layout:fragment="header"></header>
 
-  <main layout:fragment="main"></main>
-</div>
+<header layout:fragment="header"></header>
+
+<main layout:fragment="main"></main>
+
 
 <script th:inline="javascript">
   if (params.msg) {
