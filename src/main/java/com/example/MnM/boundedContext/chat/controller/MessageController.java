@@ -42,7 +42,7 @@ public class MessageController {
 
             }
             case SEND -> {
-                roomService.isRoomMember(roomId, messageDto.getSenderName());
+                roomService.checkRoomMember(roomId, messageDto.getSenderName());
             }
         }
         return messageDto;
@@ -63,7 +63,7 @@ public class MessageController {
 
             }
             case SEND -> {
-                roomService.isRoomMember(roomId, messageDto.getSenderName());
+                roomService.checkRoomMember(roomId, messageDto.getSenderName());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }

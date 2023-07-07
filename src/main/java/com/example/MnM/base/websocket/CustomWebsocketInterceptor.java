@@ -40,7 +40,7 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
     private void isValid(String roomStatus, String roomId, String senderName) {
 
         if (roomStatus.equals(SINGLE.name())) {
-            roomService.isRoomMember(roomId, senderName);
+            roomService.checkRoomMember(roomId, senderName);
             return;
         }
 
