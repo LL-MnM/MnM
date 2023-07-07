@@ -141,16 +141,16 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/findUserId")
     public String findUserId(String email) {
-        Member actor = memberService.findByEmail(email).orElse(null);
+        Member member = memberService.findByEmail(email).orElse(null);
 
-        if (actor == null) {
+        if (member == null) {
             return rq.historyBack(RsData.of("F-1", "해당 이메일로 가입된 계정이 존재하지 않습니다."));
         }
 
-        String foundedUserId = actor.getUsername();
-        String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUserId);
+        String foundedUsername = member.getUsername();
+        String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUsername);
 
-        return rq.redirectWithMsg("/usr/member/login?userId=%s".formatted(foundedUserId), RsData.of("S-1", successMsg));
+        return rq.redirectWithMsg("/usr/member/login?userId=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
     }
 
     @PreAuthorize("isAnonymous()")
