@@ -10,6 +10,7 @@ import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -92,6 +94,14 @@ public class MemberService {
                 .createDate(LocalDateTime.now())
                 .profileImage(url)
                 .build();
+
+        emailVerificationService.send(member)
+                .addCallback(
+                        sendRsData -> {
+                            // 성공시 처리
+                        },
+                        error -> log.error(error.getMessage())
+                );
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
     }
@@ -214,7 +224,8 @@ public class MemberService {
         }
 
         Member member = memberRepository.findById(id).get();
-        member.setEmailVerified(true);
+
+        member.setMemberEmailVerified(true);
 
         return RsData.of("S-1", "이메일인증이 완료되었습니다.");
     }

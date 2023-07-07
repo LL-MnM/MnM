@@ -19,7 +19,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.ArrayList;
@@ -64,6 +63,10 @@ public class Member extends BaseEntity {
         this.password =password;
         this.providerType = providerType;
 
+    }
+
+    public void setMemberEmailVerified(Boolean emailVerified){
+        this.emailVerified = emailVerified;
     }
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() { //시큐리티에 등록된 권한
