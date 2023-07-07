@@ -42,7 +42,6 @@ public class Member extends BaseEntity {
     private String providerType; //소셜로그인을 위한 제공자 타입
 
 
-
     private boolean deleted = Boolean.FALSE; //soft delete
     //Todo : dateTime으로 교체 ->sql문 수정해야함
 

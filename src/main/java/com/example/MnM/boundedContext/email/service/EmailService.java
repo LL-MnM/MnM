@@ -1,10 +1,11 @@
 package com.example.MnM.boundedContext.email.service;
 
-import com.ll.exam.final__2022_10_08.app.AppConfig;
-import com.ll.exam.final__2022_10_08.app.base.dto.RsData;
-import com.ll.exam.final__2022_10_08.app.email.entity.SendEmailLog;
-import com.ll.exam.final__2022_10_08.app.email.repository.SendEmailLogRepository;
-import com.ll.exam.final__2022_10_08.app.emailSender.service.EmailSenderService;
+
+import com.example.MnM.base.appConfig.AppConfig;
+import com.example.MnM.base.rsData.RsData;
+import com.example.MnM.boundedContext.email.entity.SendEmailLog;
+import com.example.MnM.boundedContext.email.repository.SendEmailLogRepository;
+import com.example.MnM.boundedContext.emailSender.service.EmailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class EmailService {
     }
 
     private RsData trySend(String email, String title, String body) {
-        if (AppConfig.isNotProd() && email.equals("jangka2048@gmail.com") == false) {
+        if (AppConfig.isNotProd() && !email.equals("jangka2048@gmail.com")) {
             return RsData.of("S-0", "메일이 발송되었습니다.");
         }
 

@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.member.service;
 import com.example.MnM.base.objectStorage.service.AmazonService;
 import com.example.MnM.base.objectStorage.service.S3FolderName;
 import com.example.MnM.base.rsData.RsData;
+import com.example.MnM.boundedContext.emailVerification.service.EmailVerificationService;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
@@ -35,6 +36,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     private final AmazonService amazonService;
+
+    private final EmailVerificationService emailVerificationService;
 
     private final MbtiService mbtiService;
 
@@ -200,5 +203,19 @@ public class MemberService {
                 .build();
 
         return RsData.of("S-1", "프로필 사진 교체 완료", memberRepository.save(modifiedProfileMember));
+    }
+
+    @Transactional
+    public RsData verifyEmail(long id, String verificationCode) {
+        RsData verifyVerificationCodeRs = emailVerificationService.verifyVerificationCode(id, verificationCode);
+
+        if (!verifyVerificationCodeRs.isSuccess()) {
+            return verifyVerificationCodeRs;
+        }
+
+        Member member = memberRepository.findById(id).get();
+        member.setEmailVerified(true);
+
+        return RsData.of("S-1", "이메일인증이 완료되었습니다.");
     }
 }
