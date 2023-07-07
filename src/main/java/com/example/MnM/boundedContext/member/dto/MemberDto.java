@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class MemberDto {
 
+    @NotBlank
     @Pattern(regexp = "^(?!.*admin).*$", message = "단어 'admin'을 사용할 수 없습니다.")
     private String username;
     @NotBlank
