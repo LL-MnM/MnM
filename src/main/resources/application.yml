@@ -60,6 +60,17 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: nagt1997@gmail.com
+    password: NEED_TO_EMPTY
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 decorator:
   datasource:
@@ -68,7 +79,10 @@ decorator:
 custom:
   site:
     baseUrl: http://localhost:8080
+    baseUrlWithPort: http://localhost:8080
+
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
     key: "12345678"
+  siteName: "MnM"
 

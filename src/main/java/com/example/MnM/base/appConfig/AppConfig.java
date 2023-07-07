@@ -11,6 +11,7 @@ public class AppConfig {
     private static String siteName;
     @Getter
     private static String siteBaseUrl;
+
     private static String activeProfile;
     @Getter
     private static String key;
@@ -44,6 +45,21 @@ public class AppConfig {
     public static boolean isProd() {
         return activeProfile.equals("prod");
 
+    }
+
+    @Value("${spring.profiles.active}")
+    public void setActiveProfile(String value) {
+        activeProfile = value;
+    }
+
+    @Value("${custom.siteName}")
+    public void setSiteName(String siteName) {
+        AppConfig.siteName = siteName;
+    }
+
+    @Value("${custom.site.baseUrlWithPort}")
+    public void setSiteBaseUrl(String baseUrlWithPort) {
+        AppConfig.siteBaseUrl = baseUrlWithPort;
     }
 
 }
