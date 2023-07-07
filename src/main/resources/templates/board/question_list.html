@@ -1,21 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout.html}">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .list-form {
+            max-width: 1280px;
+
+            padding: 32px;
+
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
+
+    </style>
 </head>
 <body layout:fragment="content" class="flex flex-col items-center justify-center">
-<div class="container my-3">
+<div class="list-form container my-3 min-h-screen">
     <div class="flex my-3 w-full justify-between">
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" name="kw" placeholder="검색어" th:value="${param.kw}">
-                <a class="btn btn-outline-secondary">찾기</a>
+                <input type="text" class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}">
+                <a class="btn btn-secondary btn-outline-secondary">찾기</a>
             </div>
         </form>
     </div>
     <table class="table w-full">
-        <thead class="bg-dark text-white">
+        <thead class="text-black">
         <tr>
             <th class="w-1/6 text-center">번호</th>
             <th class="w-4/6">제목</th>
@@ -44,7 +60,7 @@
         </tbody>
     </table>
     <div class="flex justify-end mb-3">
-        <a th:href="@{/question/create}" class="btn btn-outline-primary">질문 등록하기</a>
+        <a th:href="@{/question/create}" class="btn btn-secondary">질문 등록하기</a>
     </div>
     <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
         <ul class="pagination justify-content-center list-none flex">
