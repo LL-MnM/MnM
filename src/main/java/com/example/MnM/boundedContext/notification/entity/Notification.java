@@ -23,5 +23,5 @@ public class Notification extends BaseEntity {
     private Member toMember; // 알람 받는 사람
     @ManyToOne
     @ToString.Exclude
-    private Member fromMember; // 알람을 발생시킨 행위를 한 사람(호감표시한 사람)
+    private Member fromMember; // 알람을 발생시킨 행위를 한 사람
 }
