@@ -54,7 +54,7 @@ public class MemberController {
         return rq.redirectWithMsg("/member/login", joinRs.getMsg());
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/me")
     public String showMe(Model model) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -64,7 +64,7 @@ public class MemberController {
     }
 
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/delete")
     public String MemberDelete() {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -74,7 +74,7 @@ public class MemberController {
         return rq.redirectWithMsg("/", "회원이 탈퇴되었습니다.");
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/editMyPage")
     public String showEditMyPage(Model model) {
         Member member = rq.getMember();
@@ -82,7 +82,7 @@ public class MemberController {
         return "member/editMyPage";
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @PostMapping("/editMyPage")
     public String editMyPage(@Valid MemberDto memberDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -93,7 +93,7 @@ public class MemberController {
         return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/editProfile")
     public String showEditProfile(Model model) {
         Member member = rq.getMember();
@@ -101,12 +101,10 @@ public class MemberController {
         return "member/editProfile";
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @PostMapping("/editProfile")
     public String showEditProfile(@Valid MemberProfileDto memberProfileDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
-
-        System.out.println(memberProfileDto.getProfileImage().getOriginalFilename() + "-------------------------------");
 
         RsData<Member> memberRsData= memberService.modifyProfile(member.get(), memberProfileDto);
         //Todo : 사용자 정보 갱신
