@@ -251,7 +251,7 @@ public class MemberService {
 
     @Transactional
     public RsData sendTempPasswordToEmail(Member actor) {
-        String title = "[하루10분] 임시 패스워드 발송";
+        String title = "[MnM] 임시 패스워드 발송";
         String tempPassword = Ut.getTempPassword(6);
 
         String body = """
@@ -280,7 +280,7 @@ public class MemberService {
     //회원 수정, 삭제
     @Transactional
     public RsData<Member> setTempPassword(Member member, String tempPassword) {
-        Member modifiedMember = member.toBuilder().password(tempPassword).build();
+        Member modifiedMember = member.toBuilder().password(passwordEncoder.encode(tempPassword)).build();
         memberRepository.save(modifiedMember);
 
         return RsData.of("S-1", "회원정보를 수정하였습니다");
@@ -292,7 +292,7 @@ public class MemberService {
             return RsData.of("F-1", "기존 비밀번호가 일치하지 않습니다.");
         }
 
-        Member modifiedMember = member.toBuilder().password(password).build();
+        Member modifiedMember = member.toBuilder().password(passwordEncoder.encode(password)).build();
         memberRepository.save(modifiedMember);
 
         return RsData.of("S-1", "비밀번호가 변경되었습니다.");
