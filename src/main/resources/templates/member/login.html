@@ -2,151 +2,152 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout.html}">
 <head>
-  <meta charset="UTF-8" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Login</title>
-  <style>
-    .input-form {
-      max-width: 680px;
+    <meta charset="UTF-8"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Login</title>
+    <style>
+        .input-form {
+            max-width: 680px;
 
-      padding: 32px;
+            padding: 32px;
 
-      background: #fff;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-    }
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
 
-  </style>
+    </style>
 </head>
 
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
 <script>
-  function LoginForm__submit(form) {
-    form.username.value = form.username.value.trim();
+    function LoginForm__submit(form) {
+        form.username.value = form.username.value.trim();
 
-    if (form.username.value.length === 0) {
-      alert('아이디를 입력해주세요.');
-      form.username.focus();
-      return;
+        if (form.username.value.length === 0) {
+            alert('아이디를 입력해주세요.');
+            form.username.focus();
+            return;
+        }
+
+        if (form.username.value.length < 4) {
+            alert('아이디를 4자 이상 입력해주세요.');
+            form.username.focus();
+            return;
+        }
+
+        form.password.value = form.password.value.trim();
+
+        if (form.password.value.length === 0) {
+            form.password.focus();
+            alert('비밀번호를 입력해주세요.');
+            return;
+        }
+
+        if (form.password.value.length < 4) {
+            alert('비밀번호를 4자 이상 입력해주세요.');
+            form.password.focus();
+            return;
+        }
+
+        form.submit(); // 폼 발송
     }
-
-    if (form.username.value.length < 4) {
-      alert('아이디를 4자 이상 입력해주세요.');
-      form.username.focus();
-      return;
-    }
-
-    form.password.value = form.password.value.trim();
-
-    if (form.password.value.length === 0) {
-      form.password.focus();
-      alert('비밀번호를 입력해주세요.');
-      return;
-    }
-
-    if (form.password.value.length < 4) {
-      alert('비밀번호를 4자 이상 입력해주세요.');
-      form.password.focus();
-      return;
-    }
-
-    form.submit(); // 폼 발송
-  }
 </script>
 <main>
-  <div class="container">
-    <div class="input-form-backgroud row">
-      <div class="input-form col-md-12 mx-auto">
-        <!-- container with form -->
-        <div class="">
-          <form th:action="@{/member/login}" method="post" onsubmit="LoginForm__submit(this); return false;">
-            <!-- ID input -->
-            <div class="relative mb-6" data-te-input-wrapper-init>
-              <input
-                      type="text"
-                      class="input input-bordered input-secondary w-full max-w-xl"
-                      id="exampleFormControlInput3"
-                      name="username"
-                      placeholder="아이디" />
+    <div class="container">
+        <div class="input-form-backgroud row">
+            <div class="input-form col-md-12 mx-auto">
+                <!-- container with form -->
+                <div class="">
+                    <form th:action="@{/member/login}" method="post" onsubmit="LoginForm__submit(this); return false;">
+                        <!-- ID input -->
+                        <div class="relative mb-6" data-te-input-wrapper-init>
+                            <input
+                                    type="text"
+                                    class="input input-bordered input-secondary w-full max-w-xl"
+                                    id="exampleFormControlInput3"
+                                    name="username"
+                                    placeholder="아이디"/>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="relative mb-6" data-te-input-wrapper-init>
+                            <input
+                                    type="password"
+                                    class="input input-bordered input-secondary w-full max-w-xl"
+                                    id="exampleFormControlInput33"
+                                    name="password"
+                                    placeholder="비밀번호"/>
+                        </div>
+
+                        <!-- Remember me checkbox -->
+                        <div class="mb-6 flex items-center justify-between">
+                            <div class="mb-[0.125rem] block min-h-[1.5rem] flex items-center">
+                                <input
+                                        class="checkbox checkbox-secondary"
+                                        type="checkbox"
+                                        name="remember"
+                                        id="exampleCheck3"
+                                        checked/>
+                                <label
+                                        class="inline-block pl-[0.15rem] hover:cursor-pointer"
+                                        for="exampleCheck3">
+                                    아이디 기억하기
+                                </label>
+                            </div>
+
+                            <!-- Forgot password link -->
+                            <a
+                                    href="#!"
+                                    class="ml-80 text-primary"
+                            >비밀번호 찾기</a>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button
+                                type="submit"
+                                class="btn btn-secondary w-full max-w-xl"
+                                data-te-ripple-init
+                                data-te-ripple-color="light">
+                            로그인
+                        </button>
+                        <!-- Social login buttons -->
+                        <div class="relative text-center">
+                            <p class="justify-center items-center mt-5 mb-5 text-gray-700">OR</p>
+
+                            <ul class="list-none flex justify-center">
+                                <a href="/oauth2/authorization/kakao" role="button" class="mx-2 mt-3">
+                                    <li><img th:src="@{/images/kakao.png}" alt="" class="w-20"></li>
+                                </a>
+
+                                <a href="/oauth2/authorization/naver" role="button" class="mx-2 mt-3">
+                                    <li><img th:src="@{/images/naver.png}" alt="" class="w-20"></li>
+                                </a>
+
+                                <a href="/oauth2/authorization/google" role="button" class="mx-2 mt-3">
+                                    <li><img th:src="@{/images/google.png}" alt="" class="w-20"></li>
+                                </a>
+
+                            </ul>
+                        </div>
+
+                        <!-- Register link -->
+                        <p class="mb-0 mt-5 pt-1 text-sm font-semibold">
+                            계정이 없으신가요?
+                            <a
+                                    href="/member/join"
+                                    class="text-[#DC4C64] transition duration-150 ease-in-out hover:text-[#DC4C64]-600 focus:text-[#DC4C64]-600 active:text-[#DC4C64]-700"
+                            >회원가입</a>
+                        </p>
+                    </form>
+                </div>
             </div>
-
-            <!-- Password input -->
-            <div class="relative mb-6" data-te-input-wrapper-init>
-              <input
-                      type="password"
-                      class="input input-bordered input-secondary w-full max-w-xl"
-                      id="exampleFormControlInput33"
-                      name="password"
-                      placeholder="비밀번호" />
-            </div>
-
-            <!-- Remember me checkbox -->
-            <div class="mb-6 flex items-center justify-between">
-              <div class="mb-[0.125rem] block min-h-[1.5rem] flex items-center">
-                <input
-                        class="checkbox checkbox-secondary"
-                        type="checkbox"
-                        name = "remember"
-                        id="exampleCheck3"
-                        checked />
-                <label
-                        class="inline-block pl-[0.15rem] hover:cursor-pointer"
-                        for="exampleCheck3">
-                  아이디 기억하기
-                </label>
-              </div>
-
-              <!-- Forgot password link -->
-              <a
-                      href="#!"
-                      class="ml-80 text-primary"
-              >비밀번호 찾기</a>
-            </div>
-
-            <!-- Submit button -->
-            <button
-                    type="submit"
-                    class="btn btn-secondary w-full max-w-xl"
-                    data-te-ripple-init
-                    data-te-ripple-color="light">
-              로그인
-            </button>
-            <!-- Social login buttons -->
-            <div class="relative text-center">
-              <p class="justify-center items-center mt-5 mb-5 text-gray-700">OR</p>
-
-              <ul class="list-none flex justify-center">
-                <a href="/oauth2/authorization/kakao" role="button" class="mx-2 mt-3">
-                  <li><img th:src="@{/images/kakao.png}" alt="" class="w-20"></li>
-                </a>
-
-                <a href="/oauth2/authorization/naver" role="button" class="mx-2 mt-3">
-                  <li><img th:src="@{/images/naver.png}" alt="" class="w-20"></li>
-                </a>
-
-                <a href="/oauth2/authorization/google" role="button" class="mx-2 mt-3">
-                  <li><img th:src="@{/images/google.png}" alt="" class="w-20"></li>
-                </a>
-
-              </ul>
-            </div>
-
-            <!-- Register link -->
-            <p class="mb-0 mt-5 pt-1 text-sm font-semibold">
-              계정이 없으신가요?
-              <a
-                      href="/member/join"
-                      class="text-[#DC4C64] transition duration-150 ease-in-out hover:text-[#DC4C64]-600 focus:text-[#DC4C64]-600 active:text-[#DC4C64]-700"
-              >회원가입</a>
-            </p>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
 </main>
 </body>
 </html>
