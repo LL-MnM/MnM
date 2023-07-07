@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev, aws
+    active: dev, naver
     include: secret
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -12,9 +12,9 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: false
-        format_sql: false
-        use_sql_comments: false
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
         default_batch_fetch_size: 200
         default_lazy_load_no_trans: true
     defer-datasource-initialization: true
@@ -72,3 +72,4 @@ custom:
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
     key: "12345678"
+

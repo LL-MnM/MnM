@@ -87,26 +87,9 @@
         }
     </script>
 
-    <div class="flex justify-end gap-1">
-        <button class="btn btn-secondary" onclick="submitEditForm()">적용하기</button>
-        <button class="btn btn-secondary" onclick="
-    if (hasUnsavedChanges()) {
-      if (!confirm('변경 사항이 저장되지 않습니다. 취소하시겠습니까?')) {
-        return;
-      }
-    }
-    window.location.href = 'http://localhost:8080/member/me';
-    ">취소
-        </button>
-    </div>
+    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST" >
 
-    <form id="myPageEditForm" th:action="@{/member/editMyPage}" method="POST">
         <table class="table" style="width: 500px">
-
-            <!--<tr>
-                <th>아이디</th>
-                <td colspan="2"><div class="badge badge-secondary" name="username" type="text" th:value="${member.getUsername()}"></div></td>
-            </tr>-->
             <tr>
                 <th>이름</th>
                 <td colspan="2"><input name="name" type="text" th:value="${member.getName()}" class="input input-bordered input-secondary w-full max-w-xs"></td>
@@ -199,13 +182,20 @@
                 <th>자기소개</th>
                 <td colspan="2"><input name="introduce" type="text" th:value="${member.getHobby()}" class="input input-bordered input-secondary w-full max-w-xs" ></td>
             </tr>
-            <tr>
-                <th>프로필(임시)</th>
-                <td colspan="2"><input name="profileImage" type="text" th:value="${member.getProfileImage()}" class="input input-bordered input-secondary w-full max-w-xs"></td>
-            </tr>
-
         </table>
     </form>
+    <div class="flex justify-end gap-1">
+        <button class="btn btn-secondary" onclick="submitEditForm()">적용하기</button>
+        <button class="btn btn-secondary" onclick="
+    if (hasUnsavedChanges()) {
+      if (!confirm('변경 사항이 저장되지 않습니다. 취소하시겠습니까?')) {
+        return;
+      }
+    }
+    window.location.href = 'http://localhost:8080/member/me';
+    ">취소
+        </button>
+    </div>
 
 </main>
 </body>

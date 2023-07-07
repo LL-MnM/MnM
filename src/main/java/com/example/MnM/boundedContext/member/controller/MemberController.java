@@ -3,6 +3,7 @@ package com.example.MnM.boundedContext.member.controller;
 import com.example.MnM.base.rq.Rq;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
+import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import com.example.MnM.boundedContext.recommend.service.MemberMbtiService;
@@ -43,33 +44,37 @@ public class MemberController {
 
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
-        RsData<Member> joinRs = memberService.join(memberDto);
         if(bindingResult.hasErrors()){
-            return rq.redirectWithMsg("/member/join", "입력하신 정보를 다시 확인해주세요.");
+            return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
+        RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("/member/join", "로그인에 실패하였습니다.");
+            return rq.redirectWithMsg("/member/join", joinRs.getMsg());
         }
-        return rq.redirectWithMsg("/member/me", joinRs);
+        return rq.redirectWithMsg("/member/login", joinRs.getMsg());
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/me")
     public String showMe(Model model) {
+        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
+        if(member.isEmpty()){return rq.redirectWithMsg("member/login", "회원이 없습니다");}
+        model.addAttribute("member", member.get());
         return "member/me";
     }
 
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/delete")
     public String MemberDelete() {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
+
         memberService.delete(member.get());
         //Todo : 쿠키 삭제
         return rq.redirectWithMsg("/", "회원이 탈퇴되었습니다.");
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @GetMapping("/editMyPage")
     public String showEditMyPage(Model model) {
         Member member = rq.getMember();
@@ -77,7 +82,7 @@ public class MemberController {
         return "member/editMyPage";
     }
 
-    @PreAuthorize("isAuthenticated()")
+
     @PostMapping("/editMyPage")
     public String editMyPage(@Valid MemberDto memberDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -86,6 +91,25 @@ public class MemberController {
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
+    }
+
+
+    @GetMapping("/editProfile")
+    public String showEditProfile(Model model) {
+        Member member = rq.getMember();
+        model.addAttribute("member", member);
+        return "member/editProfile";
+    }
+
+
+    @PostMapping("/editProfile")
+    public String showEditProfile(@Valid MemberProfileDto memberProfileDto, BindingResult bindingResult) {
+        Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
+
+        RsData<Member> memberRsData= memberService.modifyProfile(member.get(), memberProfileDto);
+        //Todo : 사용자 정보 갱신
+        //Todo : 쿠키 삭제 or 업데이트
+        return rq.redirectWithMsg("/member/me", memberRsData);
     }
 
 }

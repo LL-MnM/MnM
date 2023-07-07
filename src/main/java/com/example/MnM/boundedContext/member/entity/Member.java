@@ -19,6 +19,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class Member extends BaseEntity {
     private String email; //이메일
     private Boolean emailVerified; //이메일 인증 확인
     private String providerType; //소셜로그인을 위한 제공자 타입
+
+
 
     private boolean deleted = Boolean.FALSE; //soft delete
     //Todo : dateTime으로 교체 ->sql문 수정해야함

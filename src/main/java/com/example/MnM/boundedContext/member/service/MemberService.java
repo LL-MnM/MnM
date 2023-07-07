@@ -1,7 +1,10 @@
 package com.example.MnM.boundedContext.member.service;
 
+import com.example.MnM.base.objectStorage.service.AmazonService;
+import com.example.MnM.base.objectStorage.service.S3FolderName;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
+import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
@@ -16,9 +19,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -29,12 +34,14 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public RsData<Member> join(MemberDto memberDto){ //일반 로그인
-        return join(memberDto, "MnM");
-    }
+    private final AmazonService amazonService;
 
     private final MbtiService mbtiService;
 
+
+    public RsData<Member> join(MemberDto memberDto){ //일반 로그인
+        return join(memberDto, "MnM");
+    }
 
     @Transactional
     public RsData<Member> join(MemberDto memberDto, String providerTypeCode) {
@@ -50,11 +57,15 @@ public class MemberService {
         String mbti = memberDto.getMbti();
         String hobby = memberDto.getHobby();
         String introduce = memberDto.getIntroduce();
-        String profileImage  = memberDto.getProfileImage();
+        MultipartFile profileImage  = memberDto.getProfileImage();
+        String url = "";
+
+        if(memberDto.getProfileImage() != null && Objects.requireNonNull(memberDto.getProfileImage().getContentType()).startsWith("image/")){
+            url = fileUpLoad(profileImage, username);
+        }
 
 
-
-        if (findByUserName(username).isPresent() || username.equals("admin")) {
+        if (findByUserName(username).isPresent()) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
@@ -76,12 +87,17 @@ public class MemberService {
                 .locate(locate)
                 .introduce(introduce)
                 .createDate(LocalDateTime.now())
-                .profileImage(profileImage)
+                .profileImage(url)
                 .build();
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", memberRepository.save(member));
     }
-
+    public String fileUpLoad(MultipartFile multipartFile, String username){
+        return amazonService.uploadImage(multipartFile, S3FolderName.USER, username);
+    }
+    public void fileDelete(String username){
+        amazonService.deleteImage(S3FolderName.USER, username);
+    }
 
     public Optional<Member> findByName(String name) { //유저 이름으로 찾기
         return memberRepository.findByName(name);
@@ -91,9 +107,6 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Member saveMember(Member member) {
-        return memberRepository.save(member);
-    }
 
 
     // soft-delete
@@ -101,12 +114,14 @@ public class MemberService {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
+        fileDelete(member.getUsername());
         memberRepository.save(deletedMember);
     }
 
     //hard delete
     public RsData<Member> deleteMember(Member member) {
         memberRepository.delete(member);
+        fileDelete(member.getUsername());
         return RsData.of("S-1", "회원탈퇴 성공");
     }
 
@@ -141,7 +156,6 @@ public class MemberService {
     @Transactional
     public RsData<Member> whenSocialLogin(OAuth2User oAuth2User, String username, String providerTypeCode) {
         Optional<Member> opMember = findByUserName(username);
-
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
         MemberDto memberDto = MemberDto.builder()
@@ -152,7 +166,9 @@ public class MemberService {
         return join(memberDto, providerTypeCode);
     }
 
-    public Member modify(Member member, MemberDto memberDto) {
+
+    public RsData<Member> modify(Member member, MemberDto memberDto) {
+
         Member modifiedMember = member.toBuilder()
                 .name(memberDto.getName())
                 .email(memberDto.getEmail())
@@ -165,10 +181,24 @@ public class MemberService {
                 .locate(memberDto.getLocate())
                 .introduce(memberDto.getIntroduce())
                 .createDate(LocalDateTime.now())
-                .profileImage(memberDto.getProfileImage())
                 .build();
 
-        return memberRepository.save(modifiedMember);
+        memberRepository.save(modifiedMember);
 
+        return RsData.of("S-1", "회원정보를 수정하였습니다");
+    }
+
+    public RsData<Member> modifyProfile(Member member, MemberProfileDto memberProfileDto) {
+        if(memberProfileDto.getProfileImage().isEmpty()){
+            return RsData.of("F-1", "프로필 사진이 없습니다.");
+        }
+
+        String url = fileUpLoad(memberProfileDto.getProfileImage(), member.getUsername());
+
+        Member modifiedProfileMember = member.toBuilder()
+                .profileImage(url)
+                .build();
+
+        return RsData.of("S-1", "프로필 사진 교체 완료", memberRepository.save(modifiedProfileMember));
     }
 }
