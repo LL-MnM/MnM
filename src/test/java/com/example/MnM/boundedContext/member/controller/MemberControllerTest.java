@@ -110,7 +110,6 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("soft delete test")
-    @Builder
     public void softDeleteTest() {
 
         memberRepository.save(member);

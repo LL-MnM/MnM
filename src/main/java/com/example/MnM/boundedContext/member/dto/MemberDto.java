@@ -2,6 +2,7 @@ package com.example.MnM.boundedContext.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class MemberDto {
 
-    @NotBlank(message = "id는 필수 입니다")
-    private String username; //id
+    @Pattern(regexp = "^(?!.*admin).*$", message = "단어 'admin'을 사용할 수 없습니다.")
+    private String username;
     @NotBlank
     private String password;
     @NotBlank

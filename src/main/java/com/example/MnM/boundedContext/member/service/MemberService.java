@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -59,12 +60,12 @@ public class MemberService {
         MultipartFile profileImage  = memberDto.getProfileImage();
         String url = "";
 
-        if(memberDto.getProfileImage() != null){
+        if(memberDto.getProfileImage() != null && Objects.requireNonNull(memberDto.getProfileImage().getContentType()).startsWith("image/")){
             url = fileUpLoad(profileImage, username);
         }
 
 
-        if (findByUserName(username).isPresent() || username.equals("admin")) {
+        if (findByUserName(username).isPresent()) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 

@@ -45,7 +45,7 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return rq.redirectWithMsg("/member/join", "입력하신 정보를 다시 확인해주세요.");
+            return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
         RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
