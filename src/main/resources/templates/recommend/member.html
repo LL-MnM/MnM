@@ -23,7 +23,9 @@
                 <ul>
                     <li class="text-xl" th:text="${member.getName()}"></li>
                 </ul>
-
+                <form method="post" th:action="@{|/notification/alarm/${member.getId()}|}">
+                    <button type="submit">채팅하기</button>
+                </form>
             </div>
         </th:block>
         <div class="flex justify-end mt-4">

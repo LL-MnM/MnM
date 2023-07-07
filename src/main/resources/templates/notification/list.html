@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>알림</title>
+</head>
+
+<body>
+
+<div class="flex-grow flex items-center justify-center" layout:fragment="content">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-regular fa-bell"></i>
+            알림
+        </h1>
+
+        <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
+            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
+        </div>
+
+        <div th:each="notification : ${notifications}">
+            <div class="flex items-center gap-2 mb-2 notification"
+                 style="background-color: #f3f3f3; border-radius: 5px; padding: 10px;">
+                <span class="notification-icon" style="font-size: 18px; color: #333;"></span>
+                <span class="notification-text" style="font-size: 14px; color: #555;"
+                      th:text="${notification.getFromMember().getName() + '님이 채팅방을 생성하였습니다.'}"></span>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
