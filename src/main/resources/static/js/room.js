@@ -123,6 +123,10 @@ function showMessageOutput(messageData) {
         let firstElementChild = messages.firstElementChild;
         // 초과된 메시지 삭제
         messages.removeChild(firstElementChild);
+        replaceOrAddClass(messages.children[0],"opacity-50","opacity-25");
+        replaceOrAddClass(messages.children[1],"opacity-75","opacity-50");
+        messages.children[2].classList.add("opacity-75");
+
         chatCount--;
     }
 
@@ -131,6 +135,14 @@ function showMessageOutput(messageData) {
     chatCount++;
     // 스크롤을 최신 메시지 위치로 이동합니다.
     messages.scrollTop = messages.scrollHeight;
+}
+
+function replaceOrAddClass(element, oldClass, newClass) {
+    if (element.classList.contains(oldClass)) {
+        element.classList.replace(oldClass, newClass);
+    } else {
+        element.classList.add(newClass);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
