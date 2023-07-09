@@ -102,12 +102,22 @@ public class RoomService {
 
         Long people = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
 
-        if (people > MAX_CAPACITY)
+        if (people >= MAX_CAPACITY)
             throw new OverCapacityRoomException("정원 초과");
 
     }
 
-    public void checkRoomMember(String roomSecretId, String senderName) {
+    public ChatRoom checkValidate(String roomId, String username) {
+        ChatRoom room = findBySecretId(roomId);
+
+        if (!room.isGroup()) {
+            checkSingleRoomParticipants(roomId,username);
+        }
+        checkGroupRoom(room.getSecretId());
+        return room;
+    }
+
+    public void checkSingleRoomParticipants(String roomSecretId, String senderName) {
         if (Boolean.FALSE.equals(redisTemplate.opsForSet().isMember(MEMBERS.getKey(roomSecretId), senderName)))
             throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
     }

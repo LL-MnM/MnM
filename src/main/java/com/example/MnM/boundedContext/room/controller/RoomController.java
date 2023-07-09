@@ -51,19 +51,14 @@ public class RoomController {
     @GetMapping("/room/{roomId}")
     public String entranceRoom(Model model, @PathVariable String roomId) {
 
-        ChatRoom room = roomService.findBySecretId(roomId);
-
-        if (!room.isGroup()) {
-            roomService.checkRoomMember(roomId,rq.getMember().getUsername());
-        }
 
         Member member = rq.getMember();
+        ChatRoom room = roomService.checkValidate(roomId, member.getUsername());
         EnterRoomDto enterRoomDto = new EnterRoomDto(member.getUsername(), member.getId());
 
         model.addAttribute("url", AppConfig.getChatUrl());
         model.addAttribute("room", room);
         model.addAttribute("enterPerson", enterRoomDto);
-
 
         return "chat/room";
     }

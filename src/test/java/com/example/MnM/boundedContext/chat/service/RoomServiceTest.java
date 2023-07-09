@@ -94,7 +94,7 @@ class RoomServiceTest {
         String secretRoomId = roomService.createSingleRoom("user4", "user5");
 
         assertThatThrownBy(() -> {
-            roomService.checkRoomMember(secretRoomId, "user3");
+            roomService.checkSingleRoomParticipants(secretRoomId, "user3");
         }).isInstanceOf(NotRoomParticipants.class);
     }
 
