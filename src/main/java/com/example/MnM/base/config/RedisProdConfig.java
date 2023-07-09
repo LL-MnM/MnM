@@ -29,11 +29,13 @@ import java.util.List;
 public class RedisProdConfig {
 
     @Value("${spring.data.redis.cluster.nodes}")
-    List<String> nodes;
+    private List<String> nodes;
 
     @Value("${spring.data.redis.database}")
     private int database;
 
+    @Value("${spring.data.redis.cluster.password}")
+    private String password;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -54,6 +56,7 @@ public class RedisProdConfig {
     public RedisConnectionFactory redisConnectionFactory() {
 
         RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(nodes);
+        redisClusterConfiguration.setPassword(password);
 
         ClusterTopologyRefreshOptions clusterTopologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
                 .enableAllAdaptiveRefreshTriggers()
