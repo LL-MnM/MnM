@@ -3,6 +3,7 @@ package com.example.MnM.base.objectStorage;
 import com.amazonaws.util.IOUtils;
 import com.example.MnM.base.objectStorage.service.S3FolderName;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class TestController {
 
     private final ObjectStorageService s3Service;
     private final ObjectRepository objectRepository;
+    private final RedisTemplate<String,Object> redisTemplate;
 
     @ResponseBody
     @PostMapping("/make")
@@ -27,6 +29,7 @@ public class TestController {
         String url = s3Service.uploadImage(file, S3FolderName.USER, name);
         ObjectFile objectFile = new ObjectFile();
         objectFile.setUrl(url);
+        redisTemplate.opsForValue().set("helloworld",1);
         return objectRepository.save(objectFile);
     }
 
@@ -35,6 +38,7 @@ public class TestController {
     public byte[] makeBucket(String name) {
         ObjectFile url = objectRepository.findByUrl(name);
         InputStream imageStream = s3Service.getImage(S3FolderName.USER, name);
+        redisTemplate.opsForValue().get("helloworld");
         try {
             return IOUtils.toByteArray(imageStream);
         } catch (IOException e) {
