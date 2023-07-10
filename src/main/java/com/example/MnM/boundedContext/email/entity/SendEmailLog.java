@@ -12,17 +12,28 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @Entity
-@Setter
 @Getter
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @ToString(callSuper = true)
 public class SendEmailLog extends BaseEntity {
-    private String resultCode;
-    private String message;
+    private String resultCode; //
+    private String message; //
     private String email;
     private String subject;
     private String body;
-    private LocalDateTime sendEndDate;
-    private LocalDateTime failDate;
+    private LocalDateTime sendEndDate; //
+    private LocalDateTime failDate; //
+
+    public void setSuccessSendEmailLog(String resultCode, String message, LocalDateTime dateTime){
+        this.resultCode = resultCode;
+        this.message = message;
+        this.sendEndDate  = dateTime;
+    }
+
+    public void setFailSendEmailLog(String resultCode, String message, LocalDateTime dateTime){
+        this.resultCode = resultCode;
+        this.message = message;
+        this.failDate  = dateTime;
+    }
 }
