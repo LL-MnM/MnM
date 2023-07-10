@@ -93,9 +93,9 @@ public class MessageController {
     }
 
     private ChatMessageDto finishGroupChat(ChatMessageDto messageDto) {
+        roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
         roomService.deleteDbRoom(messageDto.getRoomId());
         roomService.deleteCacheRoom(messageDto.getRoomId());
-        roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
         messageDto.statusToDelete();
         return messageDto;
     }
