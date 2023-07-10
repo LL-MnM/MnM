@@ -1,10 +1,10 @@
 package com.example.MnM.boundedContext.room.controller;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import com.example.MnM.base.rq.Rq;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.room.dto.EnterRoomDto;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
-import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,14 +36,14 @@ public class RoomController {
 
     @PostMapping("/create/room/group")
     public String createGroupRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.GROUP);
+        String roomId = roomService.createGroupRoom(rq.getMember().getUsername());
 
         return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
 
     @PostMapping("/create/room/single")
-    public String createSingleRoom() {
-        String roomId = roomService.createRoom(rq.getMember().getUsername(), RoomStatus.SINGLE);
+    public String createSingleRoom(String username) {
+        String roomId = roomService.createSingleRoom(rq.getMember().getUsername(), username);
 
         return rq.redirectWithMsg("/chat/room/%s".formatted(roomId), "채팅 방이 생성되었습니다.");
     }
@@ -53,9 +53,14 @@ public class RoomController {
 
         ChatRoom room = roomService.findBySecretId(roomId);
 
+        if (!room.isGroup()) {
+            roomService.checkRoomMember(roomId,rq.getMember().getUsername());
+        }
+
         Member member = rq.getMember();
         EnterRoomDto enterRoomDto = new EnterRoomDto(member.getUsername(), member.getId());
 
+        model.addAttribute("url", AppConfig.getChatUrl());
         model.addAttribute("room", room);
         model.addAttribute("enterPerson", enterRoomDto);
 

@@ -37,13 +37,12 @@ public class MessageController {
             case EXIT -> {
 
                 if (isRoomOwnerExit(messageDto)) {
-                    return finishChat(messageDto);
+                    return finishGroupChat(messageDto);
                 }
 
             }
             case SEND -> {
-                roomService.isRoomMember(roomId, messageDto.getSenderName());
-                chatService.saveChatToCache(roomId, messageDto);
+                roomService.checkRoomMember(roomId, messageDto.getSenderName());
             }
         }
         return messageDto;
@@ -51,13 +50,24 @@ public class MessageController {
 
     @MessageMapping("/singleChat/{roomId}")
     @SendTo("/single/chat/{roomId}")
-    public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto) {
+    public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto,
+                                       Principal principal) {
 
-        chatService.saveChatToCache(roomId, messageDto);
+        messageDto.addUserInfo(principal.getName());
+        switch (messageDto.getStatus()) {
+            case EXIT -> {
 
-        Long exitRoom = roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
+                if (isRoomOwnerExit(messageDto)) {
+                    return finishSingleChat(messageDto);
+                }
 
-        return isRoomOwnerExit(messageDto) || exitRoom == 0L ? finishChat(messageDto) : messageDto;
+            }
+            case SEND -> {
+                roomService.checkRoomMember(roomId, messageDto.getSenderName());
+                chatService.saveChatToCache(roomId, messageDto);
+            }
+        }
+        return messageDto;
     }
 
 
@@ -75,9 +85,17 @@ public class MessageController {
         return status.equals(EXIT);
     }
 
-    private ChatMessageDto finishChat(ChatMessageDto messageDto) {
+    private ChatMessageDto finishSingleChat(ChatMessageDto messageDto) {
         publisher.publishEvent(new SaveChatDto(messageDto.getRoomId()));
         roomService.deleteDbRoom(messageDto.getRoomId());
+        messageDto.statusToDelete();
+        return messageDto;
+    }
+
+    private ChatMessageDto finishGroupChat(ChatMessageDto messageDto) {
+        roomService.deleteDbRoom(messageDto.getRoomId());
+        roomService.deleteCacheRoom(messageDto.getRoomId());
+        roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
         messageDto.statusToDelete();
         return messageDto;
     }

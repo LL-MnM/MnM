@@ -2,14 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout.html}">
+<head>
+    <title>main</title>
+    <style>
+        .main-form {
+            max-width: 680px;
 
+            padding: 32px;
 
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
+    </style>
+</head>
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
-  <main class="max-w-2xl w-full px-4">
+<main class="main-form max-w-2xl w-full px-4">
     <a href="/about">
-      <img class="mx-auto" src="https://imgur.com/VlgimwR.png" alt="이미지" />
+        <img class="mx-auto" src="https://imgur.com/VlgimwR.png" alt="이미지"/>
     </a>
-  </main>
+</main>
 
 </body>
 </html>

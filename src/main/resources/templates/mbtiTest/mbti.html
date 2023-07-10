@@ -4,8 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MBTI 연애유형</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -22,6 +20,22 @@
         Kakao.init('6693ea9aa4dc1079f960b1d9aa1e16b9');
         Kakao.isInitialized();
     </script>
+    <style>
+        .mbti-form {
+            max-width: 1280px;
+
+            padding: 32px;
+
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
+
+    </style>
 </head>
 
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
@@ -32,10 +46,10 @@
     <p>15팀 MnM의 MBTI 테스트 입니다!<br>
         아래에 있는 시작하기 버튼을 눌러 시작해주세요.<br><br>
         약 1분 소요 예정</p>
-    <button type="button" class="btn btn-light mt-3" onclick="js:begin()">시작하기</button>
+    <button type="button" class="btn btn-secondary mt-3" onclick="js:begin()">시작하기</button>
 </section>
-<section id="qna">
-    <div class="status mx-auto mt-5">
+<section id="qna" class="mbti-form">
+    <div class="status mx-auto mt-3">
 
         <div class="statusBar"></div>
         <div class="countStatus"></div>
@@ -44,7 +58,7 @@
     <div class="qBox my-5 p-3 mx-auto"></div>
 
     <div class="answerBox"></div>
-    <button id="backButton" type="button" class="btn btn-light mt-3">이전으로</button>
+    <button id="backButton" type="button" class="btn btn-secondary mt-3">이전으로</button>
 </section>
 <section id="result" class="mx-auto my-5 px-3 py-5">
     <h2>당신의 결과는?</h2>
@@ -53,10 +67,11 @@
 
     </div>
     <div class="resultDesc"></div>
-    <button id="fitButton" type="button" class="btn btn-light mt-3">환상의 케미</button>
-    <a class="btn btn-light mt-3" th:href="@{/}">홈</a>
-    <a href="javascript:setShare()" class="btn btn-light mt-3">공유</a>
-    <button id="notFitButton" type="button" class="btn btn-light mt-3">환장의 케미</button>
+    <button id="fitButton" type="button" class="btn btn-secondary mt-3">환상의 케미</button>
+    <a class="btn btn-secondary mt-3" th:href="@{/}">홈</a>
+    <a href="javascript:setShare()" class="btn btn-secondary mt-3">공유</a>
+    <button id="notFitButton" type="button" class="btn btn-secondary mt-3">환장의 케미</button>
+
 </section>
 <script src="/mbtiTest/data.js"></script>
 <script src="/mbtiTest/start.js"></script>

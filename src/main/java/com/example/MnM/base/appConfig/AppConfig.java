@@ -24,4 +24,12 @@ public class AppConfig {
         AppConfig.tokenValiditySeconds = tokenValiditySeconds;
     }
 
+    @Getter
+    private static String chatUrl;
+
+    @Value("${custom.site.baseUrl}")
+    public void setChatUrl(String chatUrl) {
+        AppConfig.chatUrl = chatUrl;
+    }
+
 }
