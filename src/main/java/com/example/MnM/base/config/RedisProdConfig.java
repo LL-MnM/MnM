@@ -69,20 +69,16 @@ public class RedisProdConfig {
                 .topologyRefreshOptions(clusterTopologyRefreshOptions)
                 .build();
 
-        log.info("redisInfo.getConnectIp : {}",redisInfo.getConnectIp());
+        log.info("redisInfo.getConnectIp : {}", redisInfo.getConnectIp());
         for (String node : redisInfo.getNodes()) {
-            log.info("nodes : {}",node);
+            log.info("nodes : {}", node);
         }
 
         MappingSocketAddressResolver resolver = MappingSocketAddressResolver.create(DnsResolvers.UNRESOLVED,
                 hostAndPort -> {
-                    if (hostAndPort.getHostText().startsWith("127.0.0.1")) {
-                        log.info("custom : {}",hostAndPort.getHostText());
-                        return HostAndPort.of(redisInfo.getConnectIp(), hostAndPort.getPort());
-                    }
-
-                    return hostAndPort;
-                });
+                    return HostAndPort.of(redisInfo.getConnectIp(), hostAndPort.getPort());
+                }
+        );
 
         ClientResources clientResources = ClientResources.builder()
                 .socketAddressResolver(resolver)
