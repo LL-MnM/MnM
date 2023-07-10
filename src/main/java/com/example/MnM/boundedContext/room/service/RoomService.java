@@ -98,15 +98,6 @@ public class RoomService {
         return chatRoom.getCreateUserName().equals(senderName);
     }
 
-    public void checkGroupRoom(String roomSecretId) {
-
-        Long people = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
-
-        if (people >= MAX_CAPACITY)
-            throw new OverCapacityRoomException("정원 초과");
-
-    }
-
     public ChatRoom checkValidate(String roomId, String username) {
         ChatRoom room = findBySecretId(roomId);
 
@@ -115,6 +106,15 @@ public class RoomService {
         }
         checkGroupRoom(room.getSecretId());
         return room;
+    }
+
+    public void checkGroupRoom(String roomSecretId) {
+
+        Long people = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
+
+        if (people >= MAX_CAPACITY)
+            throw new OverCapacityRoomException("정원 초과");
+
     }
 
     public void checkSingleRoomParticipants(String roomSecretId, String senderName) {

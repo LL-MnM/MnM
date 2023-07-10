@@ -12,13 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ConfigurationProperties(prefix = "spring.cluster")
+@ConfigurationProperties(prefix = "spring.data.redis.cluster")
 @Configuration
 public class RedisInfo {
-    private String host;
-    private int port;
-    private String password;
-    private RedisInfo master;
-    private List<RedisInfo> slaves;
 
+    private int maxRedirects;
+    private String password;
+    private String connectIp;
+    private List<String> nodes;
 }
+
