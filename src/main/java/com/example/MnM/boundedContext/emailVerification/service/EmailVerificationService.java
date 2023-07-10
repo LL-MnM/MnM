@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 
 
@@ -25,6 +27,7 @@ public class EmailVerificationService {
     private final EmailService emailService;
     private final EmailVerificationRepository emailVerificationRepository;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
     public CompletableFuture<RsData<Long>> send(Member member, String email) {
         if (email == null) {

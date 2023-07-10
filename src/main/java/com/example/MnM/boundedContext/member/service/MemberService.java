@@ -280,8 +280,7 @@ public class MemberService {
     //회원 수정, 삭제
     @Transactional
     public RsData<Member> setTempPassword(Member member, String tempPassword) {
-        Member modifiedMember = member.toBuilder().password(passwordEncoder.encode(tempPassword)).build();
-        memberRepository.save(modifiedMember);
+        member.changePassword(passwordEncoder.encode(tempPassword));
 
         return RsData.of("S-1", "회원정보를 수정하였습니다");
     }
@@ -291,9 +290,7 @@ public class MemberService {
         if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
             return RsData.of("F-1", "기존 비밀번호가 일치하지 않습니다.");
         }
-
-        Member modifiedMember = member.toBuilder().password(passwordEncoder.encode(password)).build();
-        memberRepository.save(modifiedMember);
+        member.changePassword(passwordEncoder.encode(password));
 
         return RsData.of("S-1", "비밀번호가 변경되었습니다.");
     }

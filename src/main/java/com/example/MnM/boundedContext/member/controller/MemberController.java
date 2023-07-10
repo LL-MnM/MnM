@@ -47,12 +47,26 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            System.out.println(memberDto.getUsername() + "222222222" + memberDto.getEmail() + "22222222222222222" + memberDto.getNickname());
+            String username = memberDto.getUsername();
+            String password = memberDto.getPassword();
+            String name = memberDto.getName();
+            String email = memberDto.getEmail();
+            String nickname = memberDto.getNickname();
+            Integer height = memberDto.getHeight();
+            Integer age = memberDto.getAge();
+            String locate =memberDto.getLocate();
+            String gender = memberDto.getGender();
+            String mbti = memberDto.getMbti();
+            String hobby = memberDto.getHobby();
+            String introduce = memberDto.getIntroduce();
+
+            System.out.println(username + "22" + password + "22" + name + "22" + email + "22" + nickname + "22" + height + "22" + age + "22" + locate + "22" +gender + "22" + mbti + "22" + hobby + "22" + introduce);
+
             return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
         RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.historyBack(joinRs);
+            return rq.redirectWithMsg("member/join",joinRs);
         }
 
         return rq.redirectWithMsg("/member/login", joinRs.getMsg());

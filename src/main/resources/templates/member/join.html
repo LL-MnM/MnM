@@ -36,7 +36,7 @@
             form.name.value = form.name.value.trim();
 
             if (form.name.value.length === 0) {
-                alert('이름을 입력해주세요.');
+                toastWarning('이름을 입력해주세요.');
                 form.name.focus();
                 console.log()
                 return;
@@ -45,13 +45,13 @@
             form.username.value = form.username.value.trim();
 
             if (form.username.value.length === 0) {
-                alert('아이디를 입력해주세요.');
+                toastWarning('아이디를 입력해주세요.');
                 form.username.focus();
                 return;
             }
 
             if (form.username.value.length < 4) {
-                alert('아이디를 4자 이상 입력해주세요.');
+                toastWarning('아이디를 4자 이상 입력해주세요.');
                 form.username.focus();
                 return;
             }
@@ -59,19 +59,19 @@
             form.password.value = form.password.value.trim();
 
             if (form.password.value.length === 0) {
-                alert('비밀번호를 입력해주세요.');
+                toastWarning('비밀번호를 입력해주세요.');
                 form.password.focus();
                 return;
             }
 
             if (form.password.value.length < 4) {
-                alert('비밀번호를 4자 이상 입력해주세요.');
+                toastWarning('비밀번호를 4자 이상 입력해주세요.');
                 form.password.focus();
                 return;
             }
 
             if (form.password_check.value !== form.password.value) {
-                alert('비밀번호를 확인해주세요.');
+                toastWarning('비밀번호를 확인해주세요.');
                 form.password_check.value = '';
                 form.password_check.focus();
                 return;
@@ -80,7 +80,7 @@
             form.nickname.value = form.nickname.value.trim();
 
             if (form.nickname.value.length === 0) {
-                alert('닉네임을 입력해주세요.');
+                toastWarning('닉네임을 입력해주세요.');
                 form.nickname.focus();
                 return;
             }
@@ -88,11 +88,11 @@
             form.email.value = form.email.value.trim();
 
             if (form.email.value.length === 0) {
-                alert('이메일을 입력해주세요.');
+                toastWarning('이메일을 입력해주세요.');
                 form.email.focus();
                 return;
             } else if (!validateEmail(form.email.value)) {
-                alert('올바른 형식의 이메일 주소를 입력해주세요.');
+                toastWarning('올바른 형식의 이메일 주소를 입력해주세요.');
                 form.email.focus();
                 return;
             }
@@ -100,32 +100,32 @@
             form.age.value = form.age.value.trim();
 
             if (form.age.value.length === 0) {
-                alert('나이를 입력해주세요.');
+                toastWarning('나이를 입력해주세요.');
                 form.age.focus();
                 return;
             }
 
             form.height.value = form.height.value.trim();
             if (form.height.value.length === 0) {
-                alert('키를 입력해주세요.');
+                toastWarning('키를 입력해주세요.');
                 form.height.focus();
                 return;
             }
 
             if (form.gender.value === '') {
-                alert('성별을 선택해주세요.');
+                toastWarning('성별을 선택해주세요.');
                 form.gender.focus();
                 return;
             }
 
             if (form.locate.value === '') {
-                alert('사는 지역을 선택해주세요.');
+                toastWarning('사는 지역을 선택해주세요.');
                 form.locate.focus();
                 return;
             }
 
             if (form.mbti.value === '') {
-                alert('mbti를 선택해주세요.');
+                toastWarning('mbti를 선택해주세요.');
                 form.mbti.focus();
                 return;
             }
@@ -133,7 +133,7 @@
             form.hobby.value = form.hobby.value.trim();
 
             if (form.hobby.value.length === 0) {
-                alert('취미를 입력해주세요.');
+                toastWarning('취미를 입력해주세요.');
                 form.hobby.focus();
                 return;
             }
@@ -141,14 +141,14 @@
             form.introduce.value = form.introduce.value.trim();
 
             if (form.introduce.value.length === 0) {
-                alert('취미를 입력해주세요.');
+                toastWarning('취미를 입력해주세요.');
                 form.introduce.focus();
                 return;
             }
 
 
             if (!form.personalInfoAgreement.checked) {
-                alert('개인정보 수집 및 활용 약관에 동의해주세요.')
+                toastWarning('개인정보 수집 및 활용 약관에 동의해주세요.')
                 form.personalInfoAgreement.focus();
                 return;
             }
@@ -202,13 +202,13 @@
                     <div class="mb-3">
                         <label for="email">이메일</label>
                         <input type="email" class="input input-bordered input-secondary w-full max-w-xl" id="email"
-                               placeholder="you@example.com">
+                               placeholder="you@example.com" name = "email">
 
 
                     </div>
                     <div class="mb-3">
                         <label for="nickname">닉네임</label>
-                        <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="nickname">
+                        <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="nickname" name = "nickname">
                     </div>
 
                     <div class="mb-3">

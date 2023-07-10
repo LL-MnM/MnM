@@ -105,4 +105,6 @@ public class Member extends BaseEntity {
     public void changeUsername(String name) {
         this.name = name;
     }
+
+    public void changePassword(String password){this.password = password;}
 }
