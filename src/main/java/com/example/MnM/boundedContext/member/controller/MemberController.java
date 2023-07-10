@@ -43,9 +43,11 @@ public class MemberController {
         return "member/join";
     }
 
+
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
+            System.out.println(memberDto.getUsername() + "222222222" + memberDto.getEmail() + "22222222222222222");
             return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
         RsData<Member> joinRs = memberService.join(memberDto);
