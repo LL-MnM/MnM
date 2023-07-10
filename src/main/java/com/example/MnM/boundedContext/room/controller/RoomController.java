@@ -30,7 +30,7 @@ public class RoomController {
     private final Rq rq;
 
     @GetMapping("/rooms")
-    public String roomList(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+    public String roomList(Model model, @RequestParam(value="page", defaultValue="1") int page) {
         Page<ChatRoom> paging = this.roomService.getList(page);
         model.addAttribute("paging", paging);
 

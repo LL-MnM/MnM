@@ -48,13 +48,13 @@
     </div>
 </div>
 <div th:if="${!paging.isEmpty()}" class="btn-group mt-2 flex flex-row">
-        <button type="button" class="btn" th:classappend="${!paging.hasPrevious} ? 'btn-disabled'" th:onclick="|location.href='@{|?page=${paging.number-1}|}'|">이전</button>
-        <button type="button" th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-            th:if="${page >= paging.number-5 and page <= paging.number+5}"
-            th:classappend="${page == paging.number} ? 'btn-active'"
+        <button type="button" class="btn" th:classappend="${!paging.hasPrevious} ? 'btn-disabled'" th:onclick="|location.href='@{|?page=${paging.number}|}'|">이전</button>
+        <button type="button" th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+            th:if="${page >= paging.number-4 and page <= paging.number+6}"
+            th:classappend="${page == paging.number+1} ? 'btn-active'"
             class="btn" th:onclick="|location.href='@{|?page=${page}|}'|" th:text="${page}">
         </button>
-        <button type="button" class="btn" th:classappend="${!paging.hasNext} ? 'btn-disabled'" th:onclick="|location.href='@{|?page=${paging.number+1}|}'|">다음</button>
+        <button type="button" class="btn" th:classappend="${!paging.hasNext} ? 'btn-disabled'" th:onclick="|location.href='@{|?page=${paging.number+2}|}'|">다음</button>
 </div>
 <form th:action="@{/chat/create/room/group}" method="post" class="my-3">
     <input type="hidden" name="name" class="hidden"/>

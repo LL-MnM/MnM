@@ -143,7 +143,7 @@ public class RoomService {
     }
 
     public Page<ChatRoom> getList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         return this.roomRepository.findAll(pageable);
     }
 }
