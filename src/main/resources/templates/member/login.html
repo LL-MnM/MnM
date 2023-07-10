@@ -5,22 +5,6 @@
     <meta charset="UTF-8"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Login</title>
-    <style>
-        .input-form {
-            max-width: 680px;
-
-            padding: 32px;
-
-            background: #fff;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-        }
-
-    </style>
 </head>
 
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
@@ -59,8 +43,7 @@
 </script>
 <main>
     <div class="container">
-        <div class="input-form-backgroud row">
-            <div class="input-form col-md-12 mx-auto">
+            <div class="shadow-form col-md-12 mx-auto">
                 <!-- container with form -->
                 <div class="">
                     <form th:action="@{/member/login}" method="post" onsubmit="LoginForm__submit(this); return false;">
@@ -146,7 +129,6 @@
                     </form>
                 </div>
             </div>
-        </div>
     </div>
 </main>
 </body>
