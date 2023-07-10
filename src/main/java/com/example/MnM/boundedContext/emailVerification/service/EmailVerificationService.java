@@ -69,7 +69,7 @@ public class EmailVerificationService {
         EmailVerification emailVerification = EmailVerification.builder()
                 .memberId(memberId)
                 .code(code)
-                .expireDate(LocalDateTime.now().plusSeconds(60 * 60 * 1))
+                .expireDate(LocalDateTime.now().plusSeconds(60 * 60))
                 .build();
 
         emailVerificationRepository.save(emailVerification);

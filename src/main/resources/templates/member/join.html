@@ -33,26 +33,26 @@
     <script>
         function MemberDto__submit(form) {
 
-            form.username.value = form.username.value.trim();
+            form.name.value = form.name.value.trim();
 
-            if (form.username.value.length === 0) {
+            if (form.name.value.length === 0) {
                 alert('이름을 입력해주세요.');
-                form.username.focus();
+                form.name.focus();
                 console.log()
                 return;
             }
 
-            form.userId.value = form.userId.value.trim();
+            form.username.value = form.username.value.trim();
 
-            if (form.userId.value.length === 0) {
+            if (form.username.value.length === 0) {
                 alert('아이디를 입력해주세요.');
-                form.userId.focus();
+                form.username.focus();
                 return;
             }
 
-            if (form.userId.value.length < 4) {
+            if (form.username.value.length < 4) {
                 alert('아이디를 4자 이상 입력해주세요.');
-                form.userId.focus();
+                form.username.focus();
                 return;
             }
 
@@ -169,8 +169,10 @@
         <div class="input-form-backgroud row">
             <div class="input-form col-md-12 mx-auto">
                 <h4 class="mb-3">회원가입</h4>
+
                 <form th:action="@{/member/join}" method="POST" class="flex flex-col justify-center" enctype="multipart/form-data"
                       onsubmit="MemberDto__submit(this); return false;">
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name">이름</label>
@@ -307,7 +309,9 @@
                     </div>
                     <div class="mb-4"></div>
                     <button class="btn btn-secondary btn-lg btn-block" type="submit">가입하기</button>
+
                 </form>
+
             </div>
         </div>
     </div>
