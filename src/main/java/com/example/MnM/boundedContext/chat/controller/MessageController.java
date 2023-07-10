@@ -42,7 +42,7 @@ public class MessageController {
 
             }
             case SEND -> {
-                roomService.checkRoomMember(roomId, messageDto.getSenderName());
+                roomService.checkSingleRoomParticipants(roomId, messageDto.getSenderName());
             }
         }
         return messageDto;
@@ -63,7 +63,7 @@ public class MessageController {
 
             }
             case SEND -> {
-                roomService.checkRoomMember(roomId, messageDto.getSenderName());
+                roomService.checkSingleRoomParticipants(roomId, messageDto.getSenderName());
                 chatService.saveChatToCache(roomId, messageDto);
             }
         }
@@ -93,9 +93,9 @@ public class MessageController {
     }
 
     private ChatMessageDto finishGroupChat(ChatMessageDto messageDto) {
+        roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
         roomService.deleteDbRoom(messageDto.getRoomId());
         roomService.deleteCacheRoom(messageDto.getRoomId());
-        roomService.exitRoom(messageDto.getRoomId(), messageDto.getSenderName());
         messageDto.statusToDelete();
         return messageDto;
     }

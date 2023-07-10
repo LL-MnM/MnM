@@ -13,6 +13,9 @@ const sendButton = document.getElementById('sendButton');
 const csrfToken = $("meta[name='_csrf']").attr("content");
 const csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
+let chatCount = 0;
+const maxChatCount = 9;
+
 const headers = {
     'senderName': username,
     'roomId': roomId,
@@ -114,11 +117,32 @@ function showMessageOutput(messageData) {
     detailsElement.appendChild(senderElement2);
     messageElement.appendChild(detailsElement);
 
+    //메시지가 일정 개수를 넘어가면 맨 위에 것을 삭제
+
+    if (chatCount >= maxChatCount) {
+        let firstElementChild = messages.firstElementChild;
+        // 초과된 메시지 삭제
+        messages.removeChild(firstElementChild);
+        replaceOrAddClass(messages.children[0],"opacity-50","opacity-25");
+        replaceOrAddClass(messages.children[1],"opacity-75","opacity-50");
+        messages.children[2].classList.add("opacity-75");
+
+        chatCount--;
+    }
+
     // 완성된 메시지를 메시지 목록에 추가합니다.
     messages.appendChild(messageElement);
-
+    chatCount++;
     // 스크롤을 최신 메시지 위치로 이동합니다.
     messages.scrollTop = messages.scrollHeight;
+}
+
+function replaceOrAddClass(element, oldClass, newClass) {
+    if (element.classList.contains(oldClass)) {
+        element.classList.replace(oldClass, newClass);
+    } else {
+        element.classList.add(newClass);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

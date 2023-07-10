@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import static com.example.MnM.boundedContext.room.entity.RoomStatus.SINGLE;
 import static org.springframework.messaging.simp.stomp.StompCommand.CONNECT;
@@ -29,7 +30,7 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
 
         StompCommand command = headerAccessor.getCommand();
 
-        if (command == CONNECT) {
+        if (command == CONNECT && isNotEmpty(roomStatus,roomId,senderName)) {
             isValid(roomStatus, roomId, senderName);
             roomService.enterRoom(roomId, senderName);
         }
@@ -37,15 +38,18 @@ public class CustomWebsocketInterceptor implements ChannelInterceptor {
         return message;
     }
 
+    private boolean isNotEmpty(String roomStatus, String roomId, String senderName) {
+        return StringUtils.hasText(roomStatus) && StringUtils.hasText(roomId) && StringUtils.hasText(senderName);
+    }
+
     private void isValid(String roomStatus, String roomId, String senderName) {
 
         if (roomStatus.equals(SINGLE.name())) {
-            roomService.checkRoomMember(roomId, senderName);
+            roomService.checkSingleRoomParticipants(roomId, senderName);
             return;
         }
 
         roomService.checkGroupRoom(roomId);
-
     }
 
 }

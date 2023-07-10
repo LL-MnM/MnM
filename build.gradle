@@ -44,7 +44,8 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	//database
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'com.mysql:mysql-connector-j:8.0.33'
+
 	implementation 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
@@ -135,21 +136,3 @@ jacocoTestCoverageVerification {
 
 	}
 }
-
-//sonarqube {
-//	properties {
-//
-//		property "sonar.projectKey" ,"mnm"
-//		property "sonar.projectName",'mnm'
-//		property "sonar.host.url", "http://localhost:9000"
-//		property "sonar.token","sqp_04241f5a03aa0b2dbf612ac7a8273c06aeaa061f"
-//		property "sonar.language", "java"
-//		property "sonar.sourceEncoding", "UTF-8"
-//		property "sonar.sources", "src/main/java"
-//		property "sonar.tests", "src/test/java"
-//		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco xml 파일 위치
-//		property "sonar.java.binaries", "${buildDir}/classes"
-//		property "sonar.test.inclusions", "**/*Test.java"
-//		property "sonar.exclusions", "**/util/**, **/support/**, **/dto/**" // 제외할 클래스들
-//	}
-//}
