@@ -190,5 +190,5 @@ function sendExit() {
 }
 function exitRoom() {
     stompClient.disconnect();
-    window.location.href = 'http://localhost:8080/chat/rooms';
+    window.location.href = `${url}/chat/rooms`;
 }
