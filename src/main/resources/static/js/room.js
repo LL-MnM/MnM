@@ -41,7 +41,10 @@ stompClient.connect(headers, function (frame) {
             sendButton.click();
         }
     });
-
+    window.onpopstate = function () {
+        sendExit();
+        exitRoom();
+    }
     window.addEventListener("beforeunload", function (event) {
         sendExit();
         exitRoom();
