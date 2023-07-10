@@ -51,14 +51,12 @@ public class EmailService {
 
     @Transactional
     public void setCompleted(SendEmailLog sendEmailLog, String resultCode, String message) {
-        if (resultCode.startsWith("S-")) {
-            sendEmailLog.setSendEndDate(LocalDateTime.now());
-        } else {
-            sendEmailLog.setFailDate(LocalDateTime.now());
-        }
 
-        sendEmailLog.setResultCode(resultCode);
-        sendEmailLog.setMessage(message);
+        if (resultCode.startsWith("S-")) {
+            sendEmailLog.setSuccessSendEmailLog(resultCode, message, LocalDateTime.now());
+        } else {
+            sendEmailLog.setFailSendEmailLog(resultCode, message, LocalDateTime.now());
+        }
 
         emailLogRepository.save(sendEmailLog);
     }
