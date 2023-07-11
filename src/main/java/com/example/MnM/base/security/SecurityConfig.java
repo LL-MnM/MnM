@@ -38,7 +38,7 @@ public class SecurityConfig {
                 )
                 .logout(
                         logout -> logout
-                                .logoutUrl("/member/logout").logoutSuccessUrl("/")
+                                .logoutUrl("/member/logout")
                 )
                 .oauth2Login(
                         oauth2Login -> oauth2Login

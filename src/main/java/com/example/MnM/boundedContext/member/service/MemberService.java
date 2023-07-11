@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.member.service;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import com.example.MnM.base.objectStorage.service.AmazonService;
 import com.example.MnM.base.objectStorage.service.S3FolderName;
 import com.example.MnM.base.rsData.RsData;
@@ -71,7 +72,7 @@ public class MemberService {
         String hobby = memberDto.getHobby();
         String introduce = memberDto.getIntroduce();
         MultipartFile profileImage  = memberDto.getProfileImage();
-        String url = "";
+        String url = AppConfig.getDefaultURL();
 
         if(memberDto.getProfileImage() != null && Objects.requireNonNull(memberDto.getProfileImage().getContentType()).startsWith("image/")){
             url = fileUpLoad(profileImage, username);

@@ -76,7 +76,7 @@ public class MemberController {
 
         RsData<Member> rsData =  memberService.delete(member.get());
         memberService.deleteCooKie(rq.getReq(), rq.getResp());
-        return rq.redirectWithMsg("logout", rsData);
+        return rq.redirectWithMsg("login", rsData);
     }
 
 
@@ -92,7 +92,7 @@ public class MemberController {
     public String editMyPage(@Valid MemberDto memberDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
 
-        memberService.modify(member.get(), memberDto);
+        RsData<Member> rsData = memberService.modify(member.get(), memberDto);
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("me", "회원 정보를 수정하였습니다.");
