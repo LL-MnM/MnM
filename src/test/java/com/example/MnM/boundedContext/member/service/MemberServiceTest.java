@@ -54,7 +54,7 @@ class MemberServiceTest {
                 .username("test1")
                 .password(passwordEncoder.encode("1234"))
                 .email("test1@test.com")
-                .profileImage(AppConfig.getTestURL())
+                .profileImage(AppConfig.getDefaultURL())
                 .build();
         memberRepository.save(memberTest);
     }
