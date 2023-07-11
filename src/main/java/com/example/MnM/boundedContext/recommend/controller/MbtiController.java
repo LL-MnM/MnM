@@ -25,7 +25,7 @@ public class MbtiController {
         Member member = rq.getMember();
         List<Member> mbtiForMember = memberMbtiService.findMbtiForMember(member);
         model.addAttribute("mbtiForMember", mbtiForMember);
-        return "/recommend/member";
+        return "recommend/member";
     }
 
 }
