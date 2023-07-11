@@ -15,6 +15,8 @@ public class AppConfig {
     private static String activeProfile;
     @Getter
     private static String key;
+    @Getter
+    private static String testURL;
 
     @Value("${custom.cookie.key}")
     public void setLikeablePersonFromMax(String key) {
@@ -60,6 +62,11 @@ public class AppConfig {
     @Value("${custom.site.baseUrlWithPort}")
     public void setSiteBaseUrl(String baseUrlWithPort) {
         AppConfig.siteBaseUrl = baseUrlWithPort;
+    }
+
+    @Value("${custom.site.testURL}")
+    public void setTestURL(String testURL) {
+        AppConfig.testURL = testURL;
     }
 
 }
