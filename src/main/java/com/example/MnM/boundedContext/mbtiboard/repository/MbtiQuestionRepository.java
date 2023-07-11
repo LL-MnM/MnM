@@ -13,4 +13,8 @@ public interface MbtiQuestionRepository extends JpaRepository<MbtiQuestion, Inte
     MbtiQuestion findBySubjectAndContent(String subject, String content);
     List<MbtiQuestion> findBySubjectLike(String subject);
     Page<MbtiQuestion> findAll(Specification<MbtiQuestion> spec, Pageable pageable);
+
+
+    List<MbtiQuestion> findByMbti(String mbti);
+    Page<MbtiQuestion> findByMbti(String mbti, Pageable pageable);
 }

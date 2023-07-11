@@ -13,9 +13,35 @@
                 <button type="submit" class="btn btn-outline-secondary">찾기</button>
             </div>
         </form>
+
+        <!-- MBTI 필터 (오른쪽 위치) -->
+        <form th:action="@{/mbti/question/list}" method="get" class="w-1/2" id="mbtiFilterForm">
+            <div class="flex justify-end">
+                <select name="filterMbti" class="form-control" id="mbtiSelect">
+                    <option value="">전체 MBTI</option>
+                    <option value="INFJ">INFJ</option>
+                    <option value="INFP">INFP</option>
+                    <option value="INTJ">INTJ</option>
+                    <option value="INTP">INTP</option>
+                    <option value="ENFJ">ENFJ</option>
+                    <option value="ENFP">ENFP</option>
+                    <option value="ENTJ">ENTJ</option>
+                    <option value="ENTP">ENTP</option>
+                    <option value="ISFJ">ISFJ</option>
+                    <option value="ISFP">ISFP</option>
+                    <option value="ISTJ">ISTJ</option>
+                    <option value="ISTP">ISTP</option>
+                    <option value="ESFJ">ESFJ</option>
+                    <option value="ESFP">ESFP</option>
+                    <option value="ESTJ">ESTJ</option>
+                    <option value="ESTP">ESTP</option>
+                </select>
+                <button type="submit" class="btn btn-primary">필터</button>
+            </div>
+        </form>
     </div>
     <table class="table w-full">
-        <thead class="bg-dark text-white">
+        <thead class="bg-primary-500 text-white">
         <tr>
             <th class="w-1/6 text-center">번호</th>
             <th class="w-4/6">제목</th>
@@ -29,7 +55,7 @@
         <tr th:each="q, loop: ${paging}">
             <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="w-4/6">
-                <a th:text="${q.subject}" th:href="@{|/mbti/question/detail/${q.id}|}" class="text-primary-500"></a>
+                <a th:text="${q.subject}" th:href="@{|/mbti/question/detail/${q.id}|}" class="text-primary-600"></a>
                 <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
                 <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}" th:text="${#lists.size(q.answerList)}"></span>
             </td>
@@ -52,24 +78,24 @@
     </div>
     <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
         <ul class="pagination justify-content-center list-none flex">
-            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${paging.number == 0} ? 'disabled'">
-                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=0|}">
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${paging.number == 0} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=0|}">
                     <span>&laquo;</span>
                 </a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.number - 1}|}">이전</a>
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.number - 1}|}">이전</a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-black mx-2" th:classappend="${paging.number == page} ? 'active'"
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500 mx-2" th:classappend="${paging.number == page} ? 'active'"
                 th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number - 5 and page <= paging.number + 5}">
-                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${page}|}" th:text="${page}"></a>
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${page}|}" th:text="${page}"></a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.number + 1}|}">다음</a>
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.number + 1}|}">다음</a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
-                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.totalPages - 1}|}">
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.totalPages - 1}|}">
                     <span>&raquo;</span>
                 </a>
             </li>

@@ -25,37 +25,40 @@ import java.util.Optional;
 public class MbtiQuestionService {
     private final MbtiQuestionRepository mbtiQuestionRepository;
 
-    public Page<MbtiQuestion> getList(int page, String kw) {
-
+    public Page<MbtiQuestion> getList(int page, String kw, String filterMbti) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-        if ( kw == null || kw.trim().length() == 0 ) {
-            return mbtiQuestionRepository.findAll(pageable);
-        }
+        Specification<MbtiQuestion> spec = search(kw, filterMbti);
 
-        Specification<MbtiQuestion> spec = search(kw);
         return mbtiQuestionRepository.findAll(spec, pageable);
     }
 
-    private Specification<MbtiQuestion> search(String kw) {
-        return new Specification<>() {
-            private static final long serialVersionUID = 1L;
+    private Specification<MbtiQuestion> search(String kw, String filterMbti) {
+        return (Specification<MbtiQuestion>) (root, query, criteriaBuilder) -> {
+            query.distinct(true);
+            List<Predicate> predicates = new ArrayList<>();
 
-            @Override
-            public Predicate toPredicate(Root<MbtiQuestion> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                query.distinct(true);
-                Join<MbtiQuestion, Member> u1 = q.join("member", JoinType.LEFT);
-                Join<MbtiQuestion, MbtiAnswer> a = q.join("answerList", JoinType.LEFT);
+            if (kw != null && !kw.trim().isEmpty()) {
+                Join<MbtiQuestion, Member> u1 = root.join("member", JoinType.LEFT);
+                Join<MbtiQuestion, MbtiAnswer> a = root.join("answerList", JoinType.LEFT);
                 Join<MbtiAnswer, Member> u2 = a.join("member", JoinType.LEFT);
-                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"),
-                        cb.like(q.get("content"), "%" + kw + "%"),
-                        cb.like(u1.get("nickname"), "%" + kw + "%"),
-                        cb.like(a.get("content"), "%" + kw + "%"),
-                        cb.like(u2.get("nickname"), "%" + kw + "%"));
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(root.get("subject"), "%" + kw + "%"),
+                        criteriaBuilder.like(root.get("content"), "%" + kw + "%"),
+                        criteriaBuilder.like(u1.get("nickname"), "%" + kw + "%"),
+                        criteriaBuilder.like(a.get("content"), "%" + kw + "%"),
+                        criteriaBuilder.like(u2.get("nickname"), "%" + kw + "%")
+                ));
             }
+
+            if (filterMbti != null && !filterMbti.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("mbti"), filterMbti));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 
@@ -91,4 +94,3 @@ public class MbtiQuestionService {
         question.addVoter(voter);
     }
 }
-

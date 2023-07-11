@@ -28,8 +28,8 @@ public class MbtiQuestionController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/mbti/question/list")
-    public String list(Model model, @RequestParam(defaultValue = "0") int page, String kw) {
-        Page<MbtiQuestion> paging = mbtiQuestionService.getList(page, kw);
+    public String list(Model model, @RequestParam(defaultValue = "0") int page, String kw,@RequestParam(defaultValue = "") String filterMbti) {
+        Page<MbtiQuestion> paging = mbtiQuestionService.getList(page, kw,filterMbti);
 
         model.addAttribute("paging", paging);
 
