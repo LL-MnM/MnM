@@ -11,6 +11,9 @@ import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.recommend.service.MbtiService;
 import com.example.MnM.standard.util.Ut;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -131,15 +134,17 @@ public class MemberService {
 
 
     // soft-delete
-    public void delete(Member member) {
+    public RsData<Member> delete(Member member) {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
         fileDelete(member.getUsername());
         memberRepository.save(deletedMember);
+        return RsData.of("S-1", "회원탈퇴 성공");
     }
 
     //hard delete
+    @Transactional
     public RsData<Member> deleteMember(Member member) {
         memberRepository.delete(member);
         fileDelete(member.getUsername());
@@ -298,5 +303,21 @@ public class MemberService {
 
     public Optional<Member> findByEmail(String email) {
         return memberRepository.findByEmail(email);
+    }
+
+    public void deleteCooKie(HttpServletRequest request, HttpServletResponse response){
+        String cookieName = "remember-me";
+        Cookie[] cookies =  request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
     }
 }
