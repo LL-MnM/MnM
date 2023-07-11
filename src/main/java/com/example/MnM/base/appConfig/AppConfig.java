@@ -17,6 +17,8 @@ public class AppConfig {
     private static String key;
     @Getter
     private static String testURL;
+    @Getter
+    private static String defaultURL;
 
     @Value("${custom.cookie.key}")
     public void setLikeablePersonFromMax(String key) {
@@ -67,6 +69,11 @@ public class AppConfig {
     @Value("${custom.site.testURL}")
     public void setTestURL(String testURL) {
         AppConfig.testURL = testURL;
+    }
+
+    @Value("${custom.site.defaultURL}")
+    public void setdefaultURL(String defaultURL) {
+        AppConfig.defaultURL = defaultURL;
     }
 
 }
