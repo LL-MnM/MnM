@@ -46,19 +46,18 @@ public class MbtiQuestionService {
 
             @Override
             public Predicate toPredicate(Root<MbtiQuestion> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                query.distinct(true);  // 중복을 제거
+                query.distinct(true);
                 Join<MbtiQuestion, Member> u1 = q.join("member", JoinType.LEFT);
                 Join<MbtiQuestion, MbtiAnswer> a = q.join("answerList", JoinType.LEFT);
                 Join<MbtiAnswer, Member> u2 = a.join("member", JoinType.LEFT);
-                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
-                        cb.like(q.get("content"), "%" + kw + "%"),      // 내용
-                        cb.like(u1.get("nickname"), "%" + kw + "%"),    // 질문 작성자
-                        cb.like(a.get("content"), "%" + kw + "%"),      // 답변 내용
-                        cb.like(u2.get("nickname"), "%" + kw + "%"));   // 답변 작성자
+                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"),
+                        cb.like(q.get("content"), "%" + kw + "%"),
+                        cb.like(u1.get("nickname"), "%" + kw + "%"),
+                        cb.like(a.get("content"), "%" + kw + "%"),
+                        cb.like(u2.get("nickname"), "%" + kw + "%"));
             }
         };
     }
-
 
     public MbtiQuestion getMbtiQuestion(Integer id) {
         Optional<MbtiQuestion> question = this.mbtiQuestionRepository.findById(id);
@@ -72,26 +71,24 @@ public class MbtiQuestionService {
         }
     }
 
-
-    public MbtiQuestion create(String subject, String content, Member member) {
-
+    public MbtiQuestion create(String subject, String content, Member member, String mbti) {
         MbtiQuestion q = new MbtiQuestion();
-        q.createQuestion(subject, content, member);
+        q.createQuestion(subject, content, member, mbti);
         mbtiQuestionRepository.save(q);
         return q;
     }
 
-
-    public void modify(MbtiQuestion question, String subject, String content) {
-        question.updateQuestion(subject,content);
+    public void modify(MbtiQuestion question, String subject, String content, String mbti) {
+        question.updateQuestion(subject, content, mbti);
         mbtiQuestionRepository.save(question);
     }
 
     public void delete(MbtiQuestion question) {
         mbtiQuestionRepository.delete(question);
     }
+
     public void vote(MbtiQuestion question, Member voter) {
         question.addVoter(voter);
-}
+    }
 }
 
