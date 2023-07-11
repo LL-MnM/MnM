@@ -126,12 +126,12 @@ public class RoomService {
             throw new NotRoomParticipants("이 방의 참여자가 아닙니다.");
     }
 
-    public ChatRoom findById(Long id) {
-        return roomRepository.findById(id).orElseThrow();
-    }
-
     public Page<ChatRoom> getList(int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         return roomRepository.findAllByStatus(RoomStatus.GROUP,pageable);
+    }
+
+    public ChatRoom findById(Long id) {
+        return roomRepository.findById(id).orElseThrow();
     }
 }
