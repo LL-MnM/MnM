@@ -34,7 +34,7 @@ public class SecurityConfig {
         http
                 .formLogin(
                         formLogin -> formLogin
-                                .loginPage("/member/login")
+                                .loginPage("/member/login").defaultSuccessUrl("/member/me")
                 )
                 .logout(
                         logout -> logout
@@ -42,7 +42,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(
                         oauth2Login -> oauth2Login
-                                .loginPage("/member/login")
+                                .loginPage("/member/login").defaultSuccessUrl("/member/me")
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAuthority("ADMIN")
