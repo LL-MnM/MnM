@@ -130,20 +130,8 @@ public class RoomService {
         return roomRepository.findById(id).orElseThrow();
     }
 
-    //TODO 0명인 방은 안 보이게
-    public List<ChatRoom> findAll() {
-        List<ChatRoom> rooms = roomRepository.findAll();
-
-//        List<Object> values = redisTemplate.opsForList().range(MEMBERS.getKey(roomSecretId), 0, 9)
-//                .stream()
-//                .filter(value -> !value.equals("0"))
-//                .collect(Collectors.toList());
-
-        return roomRepository.findAll();
-    }
-
     public Page<ChatRoom> getList(int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
-        return this.roomRepository.findAll(pageable);
+        return roomRepository.findAllByStatus(RoomStatus.GROUP,pageable);
     }
 }
