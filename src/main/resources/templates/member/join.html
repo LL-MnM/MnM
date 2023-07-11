@@ -125,7 +125,7 @@
             form.introduce.value = form.introduce.value.trim();
 
             if (form.introduce.value.length === 0) {
-                toastWarning('취미를 입력해주세요.');
+                toastWarning('자기소개를 입력해주세요.');
                 form.introduce.focus();
                 return;
             }
@@ -171,12 +171,20 @@
 
                         </div>
                     </div>
+
                     <div class="mb-3">
                         <label for="password">비밀번호</label>
                         <input class="input input-bordered input-secondary w-full max-w-xl" id="password"
                                name="password" type="password">
 
                     </div>
+                    <div class="mb-3">
+                        <label for="password_check">비밀번호 확인</label>
+                        <input class="input input-bordered input-secondary w-full max-w-xl" id="password_check"
+                               name="password_check" type="password">
+
+                    </div>
+
 
                     
                     <div class="mb-3">
@@ -191,18 +199,7 @@
                         <input type="text" class="input input-bordered input-secondary w-full max-w-xl" id="nickname" name = "nickname">
 
                     </div>
-                <div class="mb-3">
-                    <label for="password">비밀번호</label>
-                    <input class="input input-bordered input-secondary w-full max-w-xl" id="password"
-                           name="password" type="password">
 
-                </div>
-                <div class="mb-3">
-                    <label for="password_check">비밀번호 확인</label>
-                    <input class="input input-bordered input-secondary w-full max-w-xl" id="password_check"
-                           name="password_check" type="password">
-
-                  </div>
 
                 <div class="mb-3">
                     <label for="age">나이</label>
