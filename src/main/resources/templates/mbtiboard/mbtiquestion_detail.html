@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout.html}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body layout:fragment="content" class="flex flex-col items-center justify-center">
+<div class="container mx-auto my-3 w-11/12">
+    <h2 class="border-b-2 py-2 text-dark" th:text="${mbtiQuestion.subject}"></h2>
+    <div class="card my-4 bg-gray-100 shadow-md rounded-lg">
+        <div class="card-body p-4">
+            <div class="card-text text-dark whitespace-pre-line m-4" th:text="${mbtiQuestion.content}"></div>
+            <div class="flex justify-end m-4">
+                <div th:if="${mbtiQuestion.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2"></div>
+                    <div th:text="${#temporals.format(mbtiQuestion.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+                <div th:if="${mbtiQuestion.modifyDate == null}" class="bg-primary-500 text-white px-2 py-1 text-start">
+                    <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
+            <div class="my-3 m-4">
+                <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                   th:href="@{|/mbti/question/vote/${mbtiQuestion.id}|}">
+                    좋아요
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(mbtiQuestion.voters)}"></span>
+                </a>
+                <a th:href="@{|/mbti/question/modify/${mbtiQuestion.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${mbtiQuestion.member != null and #authentication.getPrincipal().getUsername() == mbtiQuestion.member.username}"
+                   th:text="수정"></a>
+                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/mbti/question/delete/${mbtiQuestion.id}|}" class="btn btn-sm btn-outline-secondary"                   sec:authorize="isAuthenticated()"
+                   th:if="${mbtiQuestion.member != null and #authentication.getPrincipal().getUsername() == mbtiQuestion.member.username}"
+                   th:text="삭제"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<h5 class="border-b-2 my-3 py-2 text-dark mx-auto w-11/12"
+    th:text="|${#lists.size(mbtiQuestion.answerList)}개의 답변이 있습니다.|"></h5>
+
+<div th:id="|answer_${answer.id}|" class="card my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${mbtiQuestion.answerList}">
+    <div class="card-body border-t border-black p-4">
+        <div class="card-text text-dark whitespace-pre-line m-4" th:text="${answer.content}"></div>
+        <div class="flex justify-end m-4">
+            <div th:if="${answer.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                <div class="mb-2"></div>
+                <div th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+            <div th:if="${answer.modifyDate == null}" class="bg-primary-500 text-white px-2 py-1 text-start">
+                <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+        </div>
+        <div class="my-3 m-4">
+            <a onclick="return confirm('추천하시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
+               th:href="@{|/mbti/answer/vote/${answer.id}|}">
+                좋아요
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.votes)}"></span>
+            </a>
+            <a th:href="@{|/mbti/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
+               th:text="수정"></a>
+            <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/mbti/answer/delete/${answer.id}|}"
+               class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
+               th:text="삭제"></a>
+        </div>
+    </div>
+</div>
+
+<!-- 답변 작성 -->
+<form th:action="@{|/mbti/answer/create/${mbtiQuestion.id}|}" th:object="${mbtiAnswerForm}" method="post" class="my-3 w-11/12 mx-auto">
+    <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert" th:if="${#fields.hasAnyErrors()}">
+        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-red-700" />
+    </div>
+
+    <textarea required maxlength="200" placeholder="200자 이하" th:field="*{content}" rows="10" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full m-4"></textarea>
+    <input type="submit" value="답변등록" class="btn bg-blue-600 text-white px-5 py-2 rounded-lg my-2 m-4">
+</form>
+</div>
+</body>
+</html>
