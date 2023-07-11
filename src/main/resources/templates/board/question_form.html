@@ -4,7 +4,7 @@
 <head>
     <title>question_form</title>
     <style>
-        .question-form {
+        .shadow-form {
             max-width: 800px;
 
             padding: 32px;
@@ -17,12 +17,13 @@
             -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
             box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
         }
+
     </style>
 </head>
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
 <main>
     <div class="container w-screen">
-        <div class="question-form mx-auto">
+        <div class="shadow-form mx-auto">
             <h5 class="my-3 border-b-2 pb-2">질문등록</h5>
 
             <form th:action="@{/question/create}" method="post" th:object="${questionForm}"

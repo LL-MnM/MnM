@@ -7,6 +7,10 @@ import com.example.MnM.boundedContext.room.entity.ChatRoom;
 import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,5 +140,10 @@ public class RoomService {
 //                .collect(Collectors.toList());
 
         return roomRepository.findAll();
+    }
+
+    public Page<ChatRoom> getList(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return this.roomRepository.findAll(pageable);
     }
 }
