@@ -106,4 +106,12 @@ public class Rq {
 
         return Ut.json.toStr(parameterMap);
     }
+
+    public HttpServletRequest getReq(){
+        return this.req;
+    }
+
+    public HttpServletResponse getResp(){
+        return this.resp;
+    }
 }

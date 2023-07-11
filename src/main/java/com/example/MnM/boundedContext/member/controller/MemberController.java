@@ -7,6 +7,8 @@ import com.example.MnM.boundedContext.member.dto.MemberProfileDto;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import com.example.MnM.boundedContext.recommend.service.MemberMbtiService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.context.ApplicationEventPublisher;
 import lombok.RequiredArgsConstructor;
@@ -47,36 +49,21 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            String username = memberDto.getUsername();
-            String password = memberDto.getPassword();
-            String name = memberDto.getName();
-            String email = memberDto.getEmail();
-            String nickname = memberDto.getNickname();
-            Integer height = memberDto.getHeight();
-            Integer age = memberDto.getAge();
-            String locate =memberDto.getLocate();
-            String gender = memberDto.getGender();
-            String mbti = memberDto.getMbti();
-            String hobby = memberDto.getHobby();
-            String introduce = memberDto.getIntroduce();
-
-            System.out.println(username + "22" + password + "22" + name + "22" + email + "22" + nickname + "22" + height + "22" + age + "22" + locate + "22" +gender + "22" + mbti + "22" + hobby + "22" + introduce);
-
-            return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
+            return rq.redirectWithMsg("join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
         RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("member/join",joinRs);
+            return rq.redirectWithMsg("join",joinRs);
         }
 
-        return rq.redirectWithMsg("/member/login", joinRs.getMsg());
+        return rq.redirectWithMsg("login", joinRs.getMsg());
     }
 
 
     @GetMapping("/me")
     public String showMe(Model model) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
-        if(member.isEmpty()){return rq.redirectWithMsg("member/login", "회원이 없습니다");}
+        if(member.isEmpty()){return rq.redirectWithMsg("login", "회원이 없습니다");}
         model.addAttribute("member", member.get());
         return "member/me";
     }
@@ -87,9 +74,9 @@ public class MemberController {
     public String MemberDelete() {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
 
-        memberService.delete(member.get());
-        //Todo : 쿠키 삭제
-        return rq.redirectWithMsg("/", "회원이 탈퇴되었습니다.");
+        RsData<Member> rsData =  memberService.delete(member.get());
+        memberService.deleteCooKie(rq.getReq(), rq.getResp());
+        return rq.redirectWithMsg("logout", rsData);
     }
 
 
@@ -108,7 +95,7 @@ public class MemberController {
         memberService.modify(member.get(), memberDto);
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
-        return rq.redirectWithMsg("/member/me", "회원 정보를 수정하였습니다.");
+        return rq.redirectWithMsg("me", "회원 정보를 수정하였습니다.");
     }
 
 
@@ -127,13 +114,13 @@ public class MemberController {
         RsData<Member> memberRsData= memberService.modifyProfile(member.get(), memberProfileDto);
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
-        return rq.redirectWithMsg("/member/me", memberRsData);
+        return rq.redirectWithMsg("me", memberRsData);
     }
 
 
     @GetMapping("/emailVerification")
     public String showEmailVerification() {
-        return "/member/emailVerification";
+        return "member/emailVerification";
     }
 
 
@@ -146,13 +133,13 @@ public class MemberController {
         }
 
         RsData verificationRsData = memberService.sendVerificationMail(member, email);
-        return rq.redirectWithMsg("/member/me", verificationRsData);
+        return rq.redirectWithMsg("me", verificationRsData);
     }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/findUsername")
     public String showFindUserId() {
-        return "/member/findUsername";
+        return "member/findUsername";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -167,13 +154,13 @@ public class MemberController {
         String foundedUsername = member.getUsername();
         String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUsername);
 
-        return rq.redirectWithMsg("/member/login?username=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
+        return rq.redirectWithMsg("login?username=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
     }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/findPassword")
     public String showFindPassword() {
-        return "/member/findPassword";
+        return "member/findPassword";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -192,7 +179,7 @@ public class MemberController {
             return rq.historyBack(sendTempLoginPwToEmailResultData);
         }
 
-        return rq.redirectWithMsg("/member/login", sendTempLoginPwToEmailResultData);
+        return rq.redirectWithMsg("login", sendTempLoginPwToEmailResultData);
     }
 
 
@@ -210,7 +197,7 @@ public class MemberController {
         if (modifyRsData.isFail()) {
             return rq.historyBack(modifyRsData);
         }
-        return rq.redirectWithMsg("/", modifyRsData);
+        return rq.redirectWithMsg("me", modifyRsData);
     }
 
 }
