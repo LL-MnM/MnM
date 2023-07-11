@@ -34,7 +34,7 @@ public class LikeablePersonController {
             List<LikeablePerson> likeablePeople = member.getFromLikeablePeople();
             model.addAttribute("likeablePeople", likeablePeople);
         }
-        return "/likeablePerson/fromList";
+        return "likeablePerson/fromList";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -45,12 +45,12 @@ public class LikeablePersonController {
             List<LikeablePerson> likeablePeople = member.getToLikeablePeople();
             model.addAttribute("likeablePeople", likeablePeople);
         }
-        return "/likeablePerson/toList";
+        return "likeablePerson/toList";
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like")
     public String showLike() {
-        return "/likeablePerson/like";
+        return "likeablePerson/like";
     }
 
     @PreAuthorize("isAuthenticated()")
