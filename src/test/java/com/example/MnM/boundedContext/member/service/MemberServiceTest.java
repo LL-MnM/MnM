@@ -1,5 +1,6 @@
 package com.example.MnM.boundedContext.member.service;
 
+import com.example.MnM.base.appConfig.AppConfig;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.dto.MemberDto;
 import com.example.MnM.boundedContext.member.entity.Member;
@@ -38,7 +39,6 @@ class MemberServiceTest {
     private MemberRepository memberRepository;
 
 
-    private String testUrl =  "https://nagtstorage.kr.object.ncloudstorage.com/USER/nagil";
 
     MultipartFile mockFile = new MockMultipartFile(
             "filename",   // 파일 이름
@@ -54,7 +54,7 @@ class MemberServiceTest {
                 .username("test1")
                 .password(passwordEncoder.encode("1234"))
                 .email("test1@test.com")
-                .profileImage(testUrl)
+                .profileImage(AppConfig.getTestURL())
                 .build();
         memberRepository.save(memberTest);
     }
