@@ -31,7 +31,7 @@ function parseMsg(msg) {
 function toastNotice(msg) {
     const [pureMsg, needToShow] = parseMsg(msg);
 
-    if (needToShow) {
+        if (needToShow) {
         toastr["success"](pureMsg, "알림");
     }
 }

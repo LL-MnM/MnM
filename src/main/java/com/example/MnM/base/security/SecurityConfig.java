@@ -45,12 +45,10 @@ public class SecurityConfig {
                                 .loginPage("/member/login")
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                       .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                                .hasAuthority("ADMIN")
-                        .requestMatchers("/mbtiTest", "member/me", "member/editMyPage", "member/delete", "member/editProfile")
-                                .hasAuthority("USER")
-                                .anyRequest()
-                                .permitAll()
+                       .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAuthority("ADMIN")
+                        .requestMatchers("/mbtiTest", "member/me", "member/editMyPage", "member/delete", "member/editProfile", "member/emailVerification", "member/modifyPassword")
+                        .hasAuthority("USER").anyRequest().permitAll()
+
                 )//추후 관리자 페이지나 api문서 화면, 등등 설정함
                 .rememberMe(rememberMe -> rememberMe //쿠키 적용, 아이디 기억하기 기능
                         .rememberMeParameter("remember")

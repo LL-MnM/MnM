@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -42,15 +43,32 @@ public class MemberController {
         return "member/join";
     }
 
+
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
+            String username = memberDto.getUsername();
+            String password = memberDto.getPassword();
+            String name = memberDto.getName();
+            String email = memberDto.getEmail();
+            String nickname = memberDto.getNickname();
+            Integer height = memberDto.getHeight();
+            Integer age = memberDto.getAge();
+            String locate =memberDto.getLocate();
+            String gender = memberDto.getGender();
+            String mbti = memberDto.getMbti();
+            String hobby = memberDto.getHobby();
+            String introduce = memberDto.getIntroduce();
+
+            System.out.println(username + "22" + password + "22" + name + "22" + email + "22" + nickname + "22" + height + "22" + age + "22" + locate + "22" +gender + "22" + mbti + "22" + hobby + "22" + introduce);
+
             return rq.redirectWithMsg("/member/join", "회원가입 실패, 입력하신 정보를 다시 확인해주세요.");
         }
         RsData<Member> joinRs = memberService.join(memberDto);
         if (joinRs.isFail()) {
-            return rq.redirectWithMsg("/member/join", joinRs.getMsg());
+            return rq.redirectWithMsg("member/join",joinRs);
         }
+
         return rq.redirectWithMsg("/member/login", joinRs.getMsg());
     }
 
@@ -110,6 +128,89 @@ public class MemberController {
         //Todo : 사용자 정보 갱신
         //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("/member/me", memberRsData);
+    }
+
+
+    @GetMapping("/emailVerification")
+    public String showEmailVerification() {
+        return "/member/emailVerification";
+    }
+
+
+    @PostMapping("/emailVerification")
+    public String emailVerification(String email) {
+        Member member = rq.getMember();
+
+        if (member.getEmail() != null && !member.getEmail().equals(email)) {
+            return rq.historyBack(RsData.of("F-1", "기존 회원정보와 다른 이메일 주소입니다. 회원정보를 변경하거나, 기존 이메일 주소로 이메일 인증을 진행해주세요."));
+        }
+
+        RsData verificationRsData = memberService.sendVerificationMail(member, email);
+        return rq.redirectWithMsg("/member/me", verificationRsData);
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findUsername")
+    public String showFindUserId() {
+        return "/member/findUsername";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findUsername")
+    public String findUserId(String email) {
+        Member member = memberService.findByEmail(email).orElse(null);
+
+        if (member == null) {
+            return rq.historyBack(RsData.of("F-1", "해당 이메일로 가입된 계정이 존재하지 않습니다."));
+        }
+
+        String foundedUsername = member.getUsername();
+        String successMsg = "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(foundedUsername);
+
+        return rq.redirectWithMsg("/member/login?username=%s".formatted(foundedUsername), RsData.of("S-1", successMsg));
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findPassword")
+    public String showFindPassword() {
+        return "/member/findPassword";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(String username, String email) {
+        Optional<Member> member = memberService.findByUsernameAndEmail(username, email);
+
+        if (member.isEmpty()) {
+            RsData userNotFoundRsData = RsData.of("F-1", "일치하는 회원이 존재하지 않습니다.");
+            return rq.historyBack(userNotFoundRsData);
+        }
+
+        RsData sendTempLoginPwToEmailResultData = memberService.sendTempPasswordToEmail(member.get());
+
+        if (sendTempLoginPwToEmailResultData.isFail()) {
+            return rq.historyBack(sendTempLoginPwToEmailResultData);
+        }
+
+        return rq.redirectWithMsg("/member/login", sendTempLoginPwToEmailResultData);
+    }
+
+
+    @GetMapping("/modifyPassword")
+    public String showModifyPassword() {
+        return "member/modifyPassword";
+    }
+
+
+    @PostMapping("/modifyPassword")
+    public String modifyPassword(String oldPassword, String password) {
+        Member member = rq.getMember();
+        RsData modifyRsData = memberService.modifyPassword(member, password, oldPassword);
+
+        if (modifyRsData.isFail()) {
+            return rq.historyBack(modifyRsData);
+        }
+        return rq.redirectWithMsg("/", modifyRsData);
     }
 
 }
