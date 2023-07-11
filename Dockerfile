@@ -3,7 +3,7 @@ FROM gradle:jdk17-alpine as builder
 WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY src/ ./src/
-RUN gradle clean build --no-daemon -x test
+RUN gradle clean build --no-daemon
 
 # Run Stage
 FROM openjdk:17-jdk-alpine
