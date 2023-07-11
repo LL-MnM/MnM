@@ -38,7 +38,8 @@
     </tr>
     <tr>
       <th>이메일</th>
-      <td th:text="${member.getEmail()}" colspan="2"></td>
+      <td th:if="${member.username.contains('KAKAO') || member.username.contains('NAVER') || member.username.contains('GOOGLE')}" colspan="2">없음, 회원정보를 수정하세요</td>
+      <td th:unless="${member.username.contains('KAKAO') || member.username.contains('NAVER') || member.username.contains('GOOGLE')}" th:text="${member.getEmail()}" colspan="2"></td>
     </tr>
     <tr>
       <th>이메일 인증 여부</th>
