@@ -33,36 +33,36 @@ public class MbtiQuestionController {
 
         model.addAttribute("paging", paging);
 
-        return "mbtiboard/mbtiquestion_list"; // 변경됨
+        return "mbtiboard/mbtiquestion_list";
     }
-    @GetMapping("/mbti/question/detail/{id}") // 변경됨
+    @GetMapping("/mbti/question/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, MbtiAnswerForm mbtianswerForm) {
         MbtiQuestion mbtiQuestion = mbtiQuestionService.getMbtiQuestion(id);
 
         model.addAttribute("mbtiQuestion", mbtiQuestion);
         model.addAttribute("mbtiAnswerForm", mbtianswerForm);
 
-        return "mbtiboard/mbtiquestion_detail"; // 변경됨
+        return "mbtiboard/mbtiquestion_detail";
     }
-    @GetMapping("/mbti/question/create") // 변경됨
+    @GetMapping("/mbti/question/create")
     public String questionCreate(Model model) {
         model.addAttribute("mbtiQuestionForm", new MbtiQuestionForm());
 
-        return "mbtiboard/mbtiquestion_form"; // 변경됨
+        return "mbtiboard/mbtiquestion_form";
     }
 
-    @PostMapping("/mbti/question/create") // 변경됨
+    @PostMapping("/mbti/question/create")
     public String questionCreate(@Valid MbtiQuestionForm mbtiQuestionForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return "mbtiboard/mbtiquestion_form"; // 변경됨
+            return "mbtiboard/mbtiquestion_form";
         }
 
-        mbtiQuestionService.create(mbtiQuestionForm.getSubject() , mbtiQuestionForm.getContent(), rq.getMember());
+        mbtiQuestionService.create(mbtiQuestionForm.getSubject(), mbtiQuestionForm.getContent(), rq.getMember(), mbtiQuestionForm.getMbti());
 
-        return "redirect:/mbti/question/list"; // 변경됨
+        return "redirect:/mbti/question/list";
     }
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/mbti/question/modify/{id}") // 변경됨
+    @GetMapping("/mbti/question/modify/{id}")
     public String questionModify(MbtiQuestionForm mbtiQuestionForm, @PathVariable("id") Integer id) {
         MbtiQuestion mbtiQuestion = this.mbtiQuestionService.getMbtiQuestion(id);
         if (!mbtiQuestion.getMember().getUsername().equals(rq.getMember().getUsername())) {
@@ -70,24 +70,25 @@ public class MbtiQuestionController {
         }
         mbtiQuestionForm.setSubject(mbtiQuestion.getSubject());
         mbtiQuestionForm.setContent(mbtiQuestion.getContent());
-        return "mbtiboard/mbtiquestion_form"; // 변경됨
+        mbtiQuestionForm.setMbti(mbtiQuestion.getMbti());
+        return "mbtiboard/mbtiquestion_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/mbti/question/modify/{id}") // 변경됨
+    @PostMapping("/mbti/question/modify/{id}")
     public String questionModify(@Valid MbtiQuestionForm mbtiQuestionForm, BindingResult bindingResult,
                                  Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
-            return "mbtiboard/mbtiquestion_form"; // 변경됨
+            return "mbtiboard/mbtiquestion_form";
         }
         MbtiQuestion mbtiQuestion = this.mbtiQuestionService.getMbtiQuestion(id);
         if (!mbtiQuestion.getMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        this.mbtiQuestionService.modify(mbtiQuestion, mbtiQuestionForm.getSubject(), mbtiQuestionForm.getContent());
-        return String.format("redirect:/mbti/question/detail/%s", id); // 변경됨
+        this.mbtiQuestionService.modify(mbtiQuestion, mbtiQuestionForm.getSubject(), mbtiQuestionForm.getContent(), mbtiQuestionForm.getMbti());
+        return String.format("redirect:/mbti/question/detail/%s", id);
     }
-    @GetMapping("/mbti/question/delete/{id}") // 변경됨
+    @GetMapping("/mbti/question/delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
         MbtiQuestion mbtiQuestion = this.mbtiQuestionService.getMbtiQuestion(id);
@@ -98,9 +99,9 @@ public class MbtiQuestionController {
 
         mbtiQuestionService.delete(mbtiQuestion);
 
-        return "redirect:/mbti/question/list"; // 변경됨
+        return "redirect:/mbti/question/list";
     }
-    @GetMapping("/mbti/question/vote/{id}") // 변경됨
+    @GetMapping("/mbti/question/vote/{id}")
     @PreAuthorize("isAuthenticated()")
     public String questionVote(Principal principal, @PathVariable("id") Integer id) {
         MbtiQuestion mbtiQuestion = mbtiQuestionService.getMbtiQuestion(id);
@@ -110,6 +111,6 @@ public class MbtiQuestionController {
 
         mbtiQuestionService.vote(mbtiQuestion, voter);
 
-        return String.format("redirect:/mbti/question/detail/%d", id); // 변경됨
+        return String.format("redirect:/mbti/question/detail/%d", id);
     }
 }

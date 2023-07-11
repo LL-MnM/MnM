@@ -19,8 +19,9 @@
         <tr>
             <th class="w-1/6 text-center">번호</th>
             <th class="w-4/6">제목</th>
-            <th class="w-3/6">글쓴이</th>
+            <th class="w-1/6">글쓴이</th>
             <th class="w-1/6">작성일시</th>
+            <th class="w-1/6">MBTI</th>
             <th class="w-1/6">조회수</th>
         </tr>
         </thead>
@@ -37,6 +38,10 @@
             </td>
             <td class="w-1/6 text-gray-500">
                 <small th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+            </td>
+            <!-- 추가된 MBTI 셀 -->
+            <td class="w-1/6 text-gray-500">
+                <small th:text="${q.mbti}"></small>
             </td>
             <td class="w-1/6" th:text="${q.view}"></td>
         </tr>
