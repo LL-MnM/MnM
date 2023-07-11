@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{layout/layout.html}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body layout:fragment="content" class="flex flex-col items-center justify-center">
+<div class="container my-3">
+    <div class="flex my-3 w-full justify-between">
+        <form th:action="@{/mbti/question/list}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="kw" placeholder="검색어" th:value="${param.kw}">
+                <button type="submit" class="btn btn-outline-secondary">찾기</button>
+            </div>
+        </form>
+    </div>
+    <table class="table w-full">
+        <thead class="bg-dark text-white">
+        <tr>
+            <th class="w-1/6 text-center">번호</th>
+            <th class="w-4/6">제목</th>
+            <th class="w-3/6">글쓴이</th>
+            <th class="w-1/6">작성일시</th>
+            <th class="w-1/6">조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="q, loop: ${paging}">
+            <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
+            <td class="w-4/6">
+                <a th:text="${q.subject}" th:href="@{|/mbti/question/detail/${q.id}|}" class="text-primary-500"></a>
+                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
+                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}" th:text="${#lists.size(q.answerList)}"></span>
+            </td>
+            <td class="w-1/6 text-gray-500">
+                <small th:text="${q.member.username}"></small>
+            </td>
+            <td class="w-1/6 text-gray-500">
+                <small th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+            </td>
+            <td class="w-1/6" th:text="${q.view}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="flex justify-end mb-3">
+        <a th:href="@{/mbti/question/create}" class="btn btn-outline-primary">질문 등록하기</a>
+    </div>
+    <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
+        <ul class="pagination justify-content-center list-none flex">
+            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${paging.number == 0} ? 'disabled'">
+                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=0|}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.number - 1}|}">이전</a>
+            </li>
+            <li class="page-item bg-base-100 rounded-lg border border-black mx-2" th:classappend="${paging.number == page} ? 'active'"
+                th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number - 5 and page <= paging.number + 5}">
+                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${page}|}" th:text="${page}"></a>
+            </li>
+            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.number + 1}|}">다음</a>
+            </li>
+            <li class="page-item bg-base-100 rounded-lg border border-black" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                <a class="page-link px-4 py-2" th:href="@{|/mbti/question/list?page=${paging.totalPages - 1}|}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
