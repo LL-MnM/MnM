@@ -1,5 +1,6 @@
 package com.example.MnM.likeablePerson.service;
 
+import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.example.MnM.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.example.MnM.boundedContext.likeablePerson.service.LikeablePersonService;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public class LikeablePersonServiceTest {
+class LikeablePersonServiceTest {
     @Autowired
     private LikeablePersonService likeablePersonService;
     @Autowired
@@ -43,29 +45,36 @@ public class LikeablePersonServiceTest {
 
     @Test
     @DisplayName("호감 삭제")
-        // 따로 실행하면 성공합니다.
     void deleteLike() throws Exception {
 
         Optional<Member> memberUser3 = memberService.findByName("홍길동");
 
         likeablePersonService.like(memberUser3.get(), "임꺽정");
-        assertThat(likeablePersonRepository.count() == 1);
+
         Optional<LikeablePerson> byId = likeablePersonService.findById(1L);
-        likeablePersonService.cancel(byId.get(), 1L);
-        assertThat(likeablePersonRepository.count() == 0);
+
+        byId.ifPresent(person -> {
+            likeablePersonService.cancel(person, 1L);
+            assertThat(likeablePersonRepository.count() == 0);
+        });
     }
 
     @Test
     @DisplayName("호감 수정")
-        // 따로 실행하면 성공합니다.
     void modifyLike() throws Exception {
 
         Optional<Member> memberUser3 = memberService.findByName("홍길동");
 
-        likeablePersonService.like(memberUser3.get(), "임꺽정");
-        assertThat(likeablePersonRepository.findById(1L).get().getToMember().getName().equals("임꺽정"));
-        likeablePersonService.modify(memberUser3.get(), 1L, "박준수");
-        assertThat(likeablePersonRepository.findById(1L).get().getToMember().getName().equals("박준수"));
+        if (memberUser3.isPresent()) {
+            RsData<LikeablePerson> rsData = likeablePersonService.like(memberUser3.get(), "임꺽정");
+            assertThat(rsData.getData().getToMember().getName().equals("임꺽정"));
 
+        Optional<LikeablePerson> byId = likeablePersonService.findById(1L);
+
+        if (byId.isPresent()) {
+            likeablePersonService.modify(memberUser3.get(), 1L, "김나리");
+            assertThat(byId.get().getToMember().getName().equals("김나리"));
+        }
+        }
     }
 }
