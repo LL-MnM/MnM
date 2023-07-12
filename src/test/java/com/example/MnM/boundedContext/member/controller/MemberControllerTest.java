@@ -92,7 +92,7 @@ class MemberControllerTest {
                     .andExpect(handler().methodName("join"))
                     .andExpect(redirectedUrlPattern("/member/login?msg=**"));
 
-            assertThat(memberService.findByUsername("user10").isPresent()).isTrue();
+            assertThat(memberService.findByUserName("test001").isPresent()).isTrue();
         }
 
 
