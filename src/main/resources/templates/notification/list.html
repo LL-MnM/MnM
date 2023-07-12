@@ -25,12 +25,12 @@
                 <span class="notification-icon" style="font-size: 18px; color: #333;"></span>
                 <span class="notification-text" style="font-size: 14px; color: #555;"
                       th:text="${notification.getFromMember().getName() + '님이 채팅방을 생성하였습니다.'}"></span>
+                <a th:href="${notification.url}">채팅방으로 이동하기</a>
             </div>
         </div>
-
     </div>
 
-
+</div>
 </body>
 
 </html>

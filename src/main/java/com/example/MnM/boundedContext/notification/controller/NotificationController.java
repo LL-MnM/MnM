@@ -39,13 +39,14 @@ public class NotificationController {
 
     @PostMapping("/alarm/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String makeAlarmAndCreateRoom(Model model, @PathVariable Long id) {
-        notificationService.makeNotification(rq.getMember(), id);
+    public String makeNotificationAndCreateRoom(Model model, @PathVariable Long id) {
         // 방 생성
         String inviter = rq.getMember().getUsername(); // 알림 생성자를 방 초대자로 사용
         String invitee = memberRepository.findById(id).get().getUsername(); // 초대할 사용자를 정의
         String roomId = roomService.createSingleRoom(inviter, invitee);
+        String url = "/chat/room/" + roomId;
         model.addAttribute(roomId, "roomId");
+        notificationService.makeNotificationAndCreateRoom(rq.getMember(), id, url);
         return rq.redirectWithMsg("/chat/room/" + roomId, "채팅방이 생성되었습니다.");
     }
 }

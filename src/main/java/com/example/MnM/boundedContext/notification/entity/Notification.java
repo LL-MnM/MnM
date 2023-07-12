@@ -24,4 +24,6 @@ public class Notification extends BaseEntity {
     @ManyToOne
     @ToString.Exclude
     private Member fromMember; // 알람을 발생시킨 행위를 한 사람
+
+    private String url;
 }
