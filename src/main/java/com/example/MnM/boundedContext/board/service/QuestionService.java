@@ -26,14 +26,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public Page<Question> getList(int page, String kw) {
+    public Page<Question> getList(int page, String kw, String sort) {
 
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if (sort == null) {
+            sorts.add(Sort.Order.desc("createDate"));
+        } else {
+            switch (sort) {
+                case "latest":
+                    sorts.add(Sort.Order.desc("createDate"));
+                    break;
+                case "popular":
+                    sorts.add(Sort.Order.desc("view"));
+                    break;
+                case "least_popular":
+                    sorts.add(Sort.Order.asc("view"));
+                    break;
+                default:
+                    sorts.add(Sort.Order.desc("createDate"));
+                    break;
+            }
+        }
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-        if ( kw == null || kw.trim().length() == 0 ) {
+        if (kw == null || kw.trim().length() == 0) {
             return questionRepository.findAll(pageable);
         }
 
