@@ -4,6 +4,7 @@ import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
 import com.example.MnM.standard.util.Ut;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -120,6 +121,21 @@ public class Rq {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, auth);
+        }
+    }
+    public void deleteCooKie(){
+        String cookieName = "remember-me";
+        Cookie[] cookies =  req.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    resp.addCookie(cookie);
+                }
+            }
         }
     }
 }
