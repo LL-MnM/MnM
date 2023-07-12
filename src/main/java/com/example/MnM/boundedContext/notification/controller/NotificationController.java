@@ -1,10 +1,11 @@
 package com.example.MnM.boundedContext.notification.controller;
 
 import com.example.MnM.base.rq.Rq;
-import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.entity.Member;
+import com.example.MnM.boundedContext.member.repository.MemberRepository;
 import com.example.MnM.boundedContext.notification.entity.Notification;
 import com.example.MnM.boundedContext.notification.service.NotificationService;
+import com.example.MnM.boundedContext.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ import java.util.List;
 public class NotificationController {
     private final Rq rq;
     private final NotificationService notificationService;
+    private final MemberRepository memberRepository;
+    private final RoomService roomService;
 
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
@@ -36,8 +39,13 @@ public class NotificationController {
 
     @PostMapping("/alarm/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String makeAlarm(@PathVariable Long id) {
-        RsData<Notification> makeNotification = notificationService.makeNotification(rq.getMember(), id);
-        return rq.redirectWithMsg("/notification/list", makeNotification);
+    public String makeAlarmAndCreateRoom(Model model, @PathVariable Long id) {
+        notificationService.makeNotification(rq.getMember(), id);
+        // 방 생성
+        String inviter = rq.getMember().getUsername(); // 알림 생성자를 방 초대자로 사용
+        String invitee = memberRepository.findById(id).get().getUsername(); // 초대할 사용자를 정의
+        String roomId = roomService.createSingleRoom(inviter, invitee);
+        model.addAttribute(roomId, "roomId");
+        return rq.redirectWithMsg("/chat/room/" + roomId, "채팅방이 생성되었습니다.");
     }
 }
