@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -113,5 +114,12 @@ public class Rq {
 
     public HttpServletResponse getResp(){
         return this.resp;
+    }
+
+    public void sessionRefresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, auth);
+        }
     }
 }
