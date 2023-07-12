@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -141,6 +142,7 @@ public class MemberService {
                 .build();
         fileDelete(member.getUsername());
         memberRepository.save(deletedMember);
+
         return RsData.of("S-1", "회원탈퇴 성공");
     }
 
@@ -320,5 +322,13 @@ public class MemberService {
                 }
             }
         }
+    }
+
+    public void sessionRefresh(HttpServletRequest request, HttpServletResponse response){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
     }
 }
