@@ -22,16 +22,26 @@ const headers = {
     'roomStatus': roomStatus,
     "X-CSRF-TOKEN": csrfToken
 };
+const lowerStatus = roomStatus.toLowerCase();
 stompClient.connect(headers, function (frame) {
-    // 구독 설정
-    stompClient.subscribe('/group/chat/' + roomId, function (messageOutput) {
-        showMessageOutput(JSON.parse(messageOutput.body));
-    });
-    sendMessage(`${username}님이 입장하셨습니다.`, "ENTER");
+    // 구독 설정 roomStatus
+
+
+    if (lowerStatus === "group") {
+        stompClient.subscribe(`/chat/${lowerStatus}/${roomId}`, function (messageOutput) {
+            showMessageOutput(JSON.parse(messageOutput.body));
+        });
+    } else {
+        stompClient.subscribe(`/chat/${lowerStatus}/${roomId}`, function (messageOutput) {
+            showMessageOutput(JSON.parse(messageOutput.body));
+        });
+    }
+
+    sendMessage(`${username}님이 입장하셨습니다.`, "ENTER",lowerStatus);
 
     // Send 버튼 이벤트
     sendButton.addEventListener('click', function () {
-        sendMessage(messageInput.value, "SEND");
+        sendMessage(messageInput.value, "SEND",lowerStatus);
         messageInput.value = '';
     });
 
@@ -51,8 +61,8 @@ stompClient.connect(headers, function (frame) {
     });
 });
 
-function sendMessage(message, status) {
-    stompClient.send("/pub/chat/" + roomId, {},
+function sendMessage(message, status, toStatus) {
+    stompClient.send(`/pub/${toStatus}/${roomId}`, {},
         JSON.stringify({
             'roomId': roomId,
             'message': message,
@@ -185,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendExit() {
-    sendMessage(`${username}님이 나갔습니다.`, "EXIT");
+    sendMessage(`${username}님이 나갔습니다.`, "EXIT",lowerStatus);
 
 }
 function exitRoom() {
