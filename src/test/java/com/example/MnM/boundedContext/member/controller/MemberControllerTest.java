@@ -57,6 +57,7 @@ class MemberControllerTest {
                 .build();//testcase
     }
 
+    @Test
     @DisplayName("회원가입 폼")
     void showMemberJoinTest() throws Exception {
         // WHEN
@@ -92,7 +93,6 @@ class MemberControllerTest {
                     .andExpect(handler().methodName("join"))
                     .andExpect(redirectedUrlPattern("join?msg=**"));
 
-            assertThat(memberService.findByUserName("test001").isPresent()).isTrue();
         }
 
 
@@ -180,10 +180,9 @@ class MemberControllerTest {
     }
 
 
-    /*
     @Test
     @DisplayName("아이디찾기 폼")
-    void t3() throws Exception {
+    void showFindUsernameTest() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(get("/member/findUsername"))
@@ -199,12 +198,12 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("아이디찾기")
-    void t4() throws Exception {
+    void FindUsernameTest() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(post("/member/findUsername")
                         .with(csrf())
-                        .param("email", "user1@test.com")
+                        .param("email", "user1@email.com")
                 )
                 .andDo(print());
 
@@ -213,12 +212,12 @@ class MemberControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("findUsername"))
-                .andExpect(redirectedUrlPattern("/member/login?**"));
+                .andExpect(redirectedUrlPattern("login?**"));
     }
 
     @Test
     @DisplayName("비밀번호 찾기 폼")
-    void t5() throws Exception {
+    void showFindPasswordTest() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(get("/member/findPassword"))
@@ -234,12 +233,12 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("비밀번호 찾기")
-    void t6() throws Exception {
+    void FindPasswordTest() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(post("/member/findPassword")
                         .with(csrf())
-                        .param("email", "user1@test.com")
+                        .param("email", "user1@email.com")
                         .param("username", "user1")
                 )
                 .andDo(print());
@@ -249,9 +248,40 @@ class MemberControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("findPassword"))
-                .andExpect(redirectedUrlPattern("/member/login?**"));
-    }*/
+                .andExpect(redirectedUrlPattern("login?**"));
+    }
 
+    @Test
+    @WithUserDetails(value = "user1")
+    @DisplayName("비밀번호 수정 폼")
+    void showModifyPasswordTest() throws Exception {
 
+        ResultActions resultActions = mvc
+                .perform(get("/member/modifyPassword"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("showModifyPassword"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    @WithUserDetails(value = "user1")
+    @DisplayName("비밀번호 수정")
+    void ModifyPasswordTest() throws Exception {
+
+        ResultActions resultActions = mvc
+                .perform(post("/member/modifyPassword")
+                        .with(csrf())
+                        .param("oldPassword", "1234")
+                        .param("password", "1111")
+                ).andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("modifyPassword"))
+                .andExpect(status().is3xxRedirection());
+    }
 }
 

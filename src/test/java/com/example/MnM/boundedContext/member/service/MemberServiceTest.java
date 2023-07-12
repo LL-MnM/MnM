@@ -54,6 +54,8 @@ class MemberServiceTest {
                 .username("test1")
                 .password(passwordEncoder.encode("1234"))
                 .email("test1@test.com")
+                .locate("서울")
+                .introduce("안녕")
                 .profileImage(AppConfig.getDefaultURL())
                 .build();
         memberRepository.save(memberTest);
@@ -76,20 +78,21 @@ class MemberServiceTest {
 
     }
 
-    /*@Test
+    @Test
     @DisplayName("회원 수정")
     @Builder
     public void modifyTest() {
         Optional<Member> member = memberService.findByUserName("test1");
-        MemberDto memberDto = MemberDto.builder().username("modifytest1").password(passwordEncoder.encode("1234")).email("test010@test.com").build();
+        MemberDto memberDto = MemberDto.builder().locate("부산").introduce("반가워").build();
         memberService.modify(member.get(), memberDto);
 
-        Optional<Member> member1 = memberService.findByUserName("modifytest1");
+        Optional<Member> member1 = memberService.findByUserName("test1");
 
-        assertThat(member1.get().getUsername()).isEqualTo("modifytest1");
+        assertThat(member1.get().getLocate()).isEqualTo("부산");
+        assertThat(member1.get().getIntroduce()).isEqualTo("반가워");
 
 
-    }*/
+    }
 
     @Test
     @DisplayName("탈퇴")
