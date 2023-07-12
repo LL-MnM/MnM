@@ -1,6 +1,6 @@
 package com.example.MnM.base.objectStorage;
 
-import com.example.MnM.base.exception.InvalidImageFormatException;
+import com.example.MnM.base.exception.imageStorage.InvalidImageFormatException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

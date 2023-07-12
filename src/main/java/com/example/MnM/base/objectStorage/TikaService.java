@@ -1,6 +1,6 @@
 package com.example.MnM.base.objectStorage;
 
-import com.example.MnM.base.exception.InvalidImageFormatException;
+import com.example.MnM.base.exception.imageStorage.InvalidImageFormatException;
 import org.apache.tika.Tika;
 import org.apache.tika.mime.MediaType;
 import org.springframework.web.multipart.MultipartFile;

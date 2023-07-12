@@ -1,4 +1,4 @@
-package com.example.MnM.base.exception;
+package com.example.MnM.base.exception.imageStorage;
 
 public class InvalidImageFormatException extends RuntimeException {
     public InvalidImageFormatException() {
