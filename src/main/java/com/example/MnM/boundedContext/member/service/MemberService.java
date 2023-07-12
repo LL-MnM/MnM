@@ -303,25 +303,8 @@ public class MemberService {
         return RsData.of("S-1", "비밀번호가 변경되었습니다.");
     }
 
-
     public Optional<Member> findByEmail(String email) {
         return memberRepository.findByEmail(email);
-    }
-
-    public void deleteCooKie(HttpServletRequest request, HttpServletResponse response){
-        String cookieName = "remember-me";
-        Cookie[] cookies =  request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookieName.equals(cookie.getName())) {
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
     }
 
 }

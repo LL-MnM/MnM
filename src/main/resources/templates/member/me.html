@@ -9,11 +9,6 @@
 <body layout:fragment="content" class="flex-col flex items-center justify-center">
 
 <main class="pt-2 ">
-  <script>
-    function deleteUser() {
-      confirm('회원을 탈퇴 하시겠습니까?');
-    }
-  </script>
   <div class = "flex items-center justify-center">
     <div class="avatar">
       <div class="w-52 rounded flex items-center justify-center">
@@ -82,7 +77,8 @@
   <div class="flex justify-end gap-1">
     <a href="/member/modifyPassword" class="btn btn-secondary">비밀번호 변경하기</a>
     <a href="/member/editMyPage" class="btn btn-secondary"> 회원 수정 </a>
-    <a href="/member/delete" class="btn btn-secondary" onclick="deleteUser()"> 회원 탈퇴 </a>
+    <a href="/member/delete" class="btn btn-secondary" onclick="return confirm('모든 회원 정보가 삭제됩니다. 탈퇴하시겠습니까?') ? $(this).next().submit() : false;"> 회원 탈퇴 </a>
+
   </div>
   </div>
 </main>
