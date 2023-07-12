@@ -95,7 +95,6 @@ public class MemberController {
 
         RsData<Member> rsData = memberService.modify(member.get(), memberDto);
         //Todo : 사용자 정보 갱신
-        //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("me", "회원 정보를 수정하였습니다.");
     }
 
@@ -114,7 +113,6 @@ public class MemberController {
 
         RsData<Member> memberRsData= memberService.modifyProfile(member.get(), memberProfileDto);
         //Todo : 사용자 정보 갱신
-        //Todo : 쿠키 삭제 or 업데이트
         return rq.redirectWithMsg("me", memberRsData);
     }
 
