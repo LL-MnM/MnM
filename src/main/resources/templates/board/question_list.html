@@ -4,9 +4,8 @@
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/css/board.css"> <!-- 여기에 board.css 파일을 추가했습니다. -->
+    <link rel="stylesheet" href="/css/board.css">
     <script>
-        // 페이지를 새로 로드하고 정렬 값을 URL에 추가하는 함수
         function applySorting() {
             const sortSelect = document.getElementById('sortSelect');
             const sortBy = sortSelect.value;
@@ -28,7 +27,6 @@
             </div>
             <div class="flex justify-end items-center ms-4">
                 <label for="sortSelect" class="me-2"></label>
-                <!-- 변경 사항을 주의하세요: 문을 선택하면 applySorting 함수를 호출하도록 'onchange' 속성을 추가합니다 -->
                 <select name="sort" class="form-select me-2" id="sortSelect" onchange="applySorting()">
                     <option value="">기본 정렬</option>
                     <option value="latest">날짜 최신순</option>
