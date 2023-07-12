@@ -137,13 +137,13 @@ public class MemberController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/findUsername")
-    public String showFindUserId() {
+    public String showFindUsername() {
         return "member/findUsername";
     }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/findUsername")
-    public String findUserId(String email) {
+    public String findUsername(String email) {
         Member member = memberService.findByEmail(email).orElse(null);
 
         if (member == null) {
