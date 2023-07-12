@@ -27,8 +27,8 @@ public class MessageController {
     private final RoomService roomService;
     private final ApplicationEventPublisher publisher;
 
-    @MessageMapping("/chat/{roomId}")
-    @SendTo("/group/chat/{roomId}")
+    @MessageMapping("/group/{roomId}")
+    @SendTo("/chat/group/{roomId}")
     public ChatMessageDto sendGroup(@DestinationVariable String roomId, ChatMessageDto messageDto,
                                     Principal principal) {
 
@@ -48,8 +48,8 @@ public class MessageController {
         return messageDto;
     }
 
-    @MessageMapping("/singleChat/{roomId}")
-    @SendTo("/single/chat/{roomId}")
+    @MessageMapping("/single/{roomId}")
+    @SendTo("/chat/single/{roomId}")
     public ChatMessageDto sendOneToOne(@DestinationVariable String roomId, ChatMessageDto messageDto,
                                        Principal principal) {
 
