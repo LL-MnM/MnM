@@ -9,4 +9,7 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByToMember(Member toMember);
 
+    List<Notification> findByToMember_username(String username);
+
+    int countByToMemberAndReadDateIsNull(Member toMember);
 }

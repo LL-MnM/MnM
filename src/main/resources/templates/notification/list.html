@@ -20,8 +20,16 @@
         </div>
 
         <div th:each="notification : ${notifications}">
+
+            <span class="badge badge-primary"
+                  style="background-color: #f3f3f3; border: 1px solid #646464; color: #555;">
+                    <span th:text="${#temporals.format(notification.createDate, 'yy.MM.dd HH:mm')}"></span>
+                    <span>, <span th:text="${notification.createDateAfterStrHuman}"></span></span>
+            </span>
+            <i class="fa-solid fa-fire text-red-500" th:if="${notification.isHot()}"></i>
             <div class="flex items-center gap-2 mb-2 notification"
                  style="background-color: #f3f3f3; border-radius: 5px; padding: 10px;">
+
                 <span class="notification-text" style="font-size: 14px; color: #555;"
                       th:text="${notification.getFromMember().getName() + '님이 채팅방을 생성하였습니다.'}"></span>
                 <a style="color: #fff; background: #646464; font-size: 14px;

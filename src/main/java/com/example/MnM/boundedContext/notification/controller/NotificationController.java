@@ -32,6 +32,8 @@ public class NotificationController {
         Member member = rq.getMember();
         List<Notification> notifications = notificationService.findByToMember(member);
 
+        notificationService.markAsRead(notifications);
+
         model.addAttribute("notifications", notifications);
 
         return "notification/list";

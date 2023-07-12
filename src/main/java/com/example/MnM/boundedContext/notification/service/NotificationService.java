@@ -23,6 +23,14 @@ public class NotificationService {
         return notificationRepository.findByToMember(member);
     }
 
+    public List<Notification> findByToMember_username(String username) {
+        return notificationRepository.findByToMember_username(username);
+    }
+
+    public boolean countUnreadNotificationsByToMember(Member member) {
+        return notificationRepository.countByToMemberAndReadDateIsNull(member) > 0;
+    }
+
     @Transactional
     public RsData<Notification> makeNotificationAndCreateRoom(Member member, Long id, String url) {
 
@@ -37,5 +45,15 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         return RsData.of("S-1", "알림 메세지가 생성되었습니다.", notification);
+    }
+
+    @Transactional
+    public RsData markAsRead(List<Notification> notifications) {
+        notifications
+                .stream()
+                .filter(notification -> !notification.isRead())
+                .forEach(Notification::markAsRead);
+
+        return RsData.of("S-1", "읽음 처리 되었습니다.");
     }
 }
