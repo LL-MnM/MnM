@@ -20,7 +20,6 @@ public class MbtiQuestion extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    // 추가한 MBTI 유형 속성
     @Column
     private String mbti;
 
@@ -42,14 +41,13 @@ public class MbtiQuestion extends BaseEntity {
         this.subject = subject;
         this.content = content;
         this.member = member;
-        this.mbti = mbti; // MBTI 유형 설정
+        this.mbti = mbti;
     }
 
-    // MBTI 유형을 파라미터로 추가 (필요한 경우)
     public void updateQuestion(String subject, String content, String mbti) {
         this.subject = subject;
         this.content = content;
-        this.mbti = mbti; // MBTI 유형 업데이트
+        this.mbti = mbti;
     }
 
     public void addVoter(Member voter) {
