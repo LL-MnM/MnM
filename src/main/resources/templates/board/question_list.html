@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout.html}">
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        // 페이지를 새로 로드하고 정렬 값을 URL에 추가하는 함수
+        function applySorting() {
+            const sortSelect = document.getElementById('sortSelect');
+            const sortBy = sortSelect.value;
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', sortBy);
+
+            window.location.href = url.href;
+        }
+    </script>
 </head>
 <body layout:fragment="content" class="flex flex-col items-center justify-center">
 <div class="shadow-form container my-3 min-h-screen">
     <div class="flex my-3 w-full justify-between">
-        <form>
+        <form th:action="@{/mbti/question/list}" method="get" class="w-full flex">
             <div class="input-group">
                 <input type="text" class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}">
                 <a class="btn btn-secondary btn-outline-secondary">찾기</a>
+            </div>
+            <div class="flex justify-end items-center ms-4">
+                <label for="sortSelect" class="me-2">정렬 기준:</label>
+                <!-- 변경 사항을 주의하세요: 문을 선택하면 applySorting 함수를 호출하도록 'onchange' 속성을 추가합니다 -->
+                <select name="sort" class="form-select me-2" id="sortSelect" onchange="applySorting()">
+                    <option value="">기본 정렬</option>
+                    <option value="latest">날짜 최신순</option>
+                    <option value="popular">조회수 높은 순</option>
+                    <option value="least_popular">조회수 낮은 순</option>
+                </select>
             </div>
         </form>
     </div>

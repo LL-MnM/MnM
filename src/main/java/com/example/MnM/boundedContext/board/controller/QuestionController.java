@@ -28,8 +28,11 @@ public class QuestionController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/question/list")
-    public String list(Model model , @RequestParam(defaultValue = "0") int page,String kw) {
-        Page<Question> paging = questionService.getList(page, kw);
+    public String list(Model model,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(required = false) String kw,
+                       @RequestParam(required = false) String sort) {
+        Page<Question> paging = questionService.getList(page, kw, sort);
 
         model.addAttribute("paging", paging);
 
