@@ -1,4 +1,4 @@
-package com.example.MnM.base.exception;
+package com.example.MnM.base.exception.room;
 
 public class NotValidRoomException extends RuntimeException{
     public NotValidRoomException() {

@@ -1,8 +1,8 @@
 package com.example.MnM.boundedContext.room.service;
 
-import com.example.MnM.base.exception.NotFoundRoomException;
-import com.example.MnM.base.exception.NotRoomParticipants;
-import com.example.MnM.base.exception.OverCapacityRoomException;
+import com.example.MnM.base.exception.room.NotFoundRoomException;
+import com.example.MnM.base.exception.room.NotRoomParticipants;
+import com.example.MnM.base.exception.room.OverCapacityRoomException;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
 import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.repository.RoomRepository;
@@ -15,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 import static com.example.MnM.boundedContext.room.entity.RedisRoom.MEMBERS;

@@ -1,6 +1,6 @@
 package com.example.MnM.boundedContext.chat.service;
 
-import com.example.MnM.base.exception.NotFoundParticipantException;
+import com.example.MnM.base.exception.room.NotFoundParticipantException;
 import com.example.MnM.boundedContext.chat.infra.InspectSentimentService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.repository.MemberRepository;

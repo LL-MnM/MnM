@@ -2,6 +2,7 @@ package com.example.MnM.base.config;
 
 import com.example.MnM.base.redis.RedisInfo;
 import io.lettuce.core.ClientOptions;
+import io.lettuce.core.ReadFrom;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import io.lettuce.core.internal.HostAndPort;
@@ -49,7 +50,7 @@ public class RedisProdConfig {
 
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-//        redisTemplate.setEnableTransactionSupport(true);
+        redisTemplate.setEnableTransactionSupport(true);
 
         return redisTemplate;
     }
@@ -91,6 +92,7 @@ public class RedisProdConfig {
                 .commandTimeout(Duration.of(10, ChronoUnit.SECONDS))
                 .clientOptions(clientOptions)
                 .clientResources(clientResources)
+                .readFrom(ReadFrom.REPLICA_PREFERRED)
                 .build();
 
 

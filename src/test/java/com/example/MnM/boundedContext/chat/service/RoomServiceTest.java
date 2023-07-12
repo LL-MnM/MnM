@@ -1,7 +1,7 @@
 package com.example.MnM.boundedContext.chat.service;
 
-import com.example.MnM.base.exception.NotFoundRoomException;
-import com.example.MnM.base.exception.NotRoomParticipants;
+import com.example.MnM.base.exception.room.NotFoundRoomException;
+import com.example.MnM.base.exception.room.NotRoomParticipants;
 import com.example.MnM.boundedContext.room.entity.ChatRoom;
 import com.example.MnM.boundedContext.room.entity.RoomStatus;
 import com.example.MnM.boundedContext.room.repository.RoomRepository;

@@ -1,7 +1,6 @@
 package com.example.MnM.boundedContext.room.service;
 
-import com.example.MnM.base.exception.OverCapacityRoomException;
-import org.assertj.core.api.Assertions;
+import com.example.MnM.base.exception.room.OverCapacityRoomException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
