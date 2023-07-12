@@ -4,13 +4,13 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>어울리는 멤버를 추천해드립니다.</title>
+    <title>최고의 궁합을 추천해드립니다.</title>
 </head>
 
 
 <div class="flex-grow flex items-center justify-center" layout:fragment="content">
     <div class="shadow-form max-w-2xl w-full px-4">
-        <h1 class="text-3xl font-bold mb-4 text-center">어울리는 멤버 리스트</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center">최고의 궁합</h1>
 
         <div class="text-center" th:unless="${!#lists.isEmpty(mbtiForMember)}">
             <div class="text-gray-500 text-lg my-8">
@@ -18,18 +18,22 @@
             </div>
         </div>
 
-        <th:block th:each="member : ${mbtiForMember}">
-            <div class="flex items-center mb-2">
-                <ul>
-                    <li class="text-xl" th:text="${member.getName()}"></li>
-                </ul>
-                <form method="post" th:action="@{|/notification/alarm/${member.getId()}|}">
-                    <button type="submit">채팅하기</button>
-                </form>
-            </div>
-        </th:block>
+        <div class="flex items-center gap-2 mb-2 recommend"
+             style="background-color: #f3f3f3; border-radius: 5px; padding: 10px;"
+             th:each="member : ${mbtiForMember}">
+                <span class="recommend" style="font-size: 14px; color: #555;"
+                      th:text="${member.getName() + '님과 최고의 궁합입니다.'}">
+                </span>
+            <form method="post" th:action="@{|/notification/alarm/${member.getId()}|}">
+                <button style="color: #fff; background:#646464; font-size:14px; border-radius:0.5em;
+                padding:2px 2px; margin-left: 325px" type="submit">채팅방 생성하기
+                </button>
+            </form>
+        </div>
+
         <div class="flex justify-end mt-4">
-            <a class="text-black-500 hover:underline text-sm font-bold px-2 py-1" href="/">메인화면으로 돌아가기</a>
+            <a href="/" style="background:#646464; border-radius:0.5em; color: #fff; font-size:14px; padding:2px 2px;">메인화면으로
+                돌아가기</a>
         </div>
     </div>
 </div>
