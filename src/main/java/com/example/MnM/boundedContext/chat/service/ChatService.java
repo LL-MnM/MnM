@@ -34,9 +34,8 @@ public class ChatService {
     public void saveChatToDb(String roomSecretId) {
 
         List<Object> list = redisTemplate.opsForList().range(CHAT.getKey(roomSecretId), 0, -1);
-        Long roomSize = redisTemplate.opsForSet().size(MEMBERS.getKey(roomSecretId));
 
-        if (list.size() <= 5 || roomSize <= 1)
+        if (list.size() <= 5)
             return;
 
         StringBuilder sb = new StringBuilder();
