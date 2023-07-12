@@ -14,10 +14,18 @@
             </div>
         </form>
 
-        <!-- MBTI 필터 (오른쪽 위치) -->
-        <form th:action="@{/mbti/question/list}" method="get" class="w-1/2" id="mbtiFilterForm">
-            <div class="flex justify-end">
-                <select name="filterMbti" class="form-control" id="mbtiSelect">
+        <!-- 추가된 정렬 필터 코드와 MBTI 필터 코드 부분 -->
+        <form th:action="@{/mbti/question/list}" method="get" class="w-1/2" id="filterForm">
+            <div class="flex justify-end items-center">
+                <label for="sortSelect" class="me-2">정렬 기준:</label>
+                <select name="sort" class="form-select me-2" id="sortSelect">
+                    <option value="">기본 정렬</option>
+                    <option value="latest">날짜 최신순</option>
+                    <option value="popular">조회수 높은 순</option>
+                    <option value="least_popular">조회수 낮은 순</option>
+                </select>
+
+                <select name="filterMbti" class="form-select" id="mbtiSelect">
                     <option value="">전체 MBTI</option>
                     <option value="INFJ">INFJ</option>
                     <option value="INFP">INFP</option>
@@ -36,7 +44,7 @@
                     <option value="ESTJ">ESTJ</option>
                     <option value="ESTP">ESTP</option>
                 </select>
-                <button type="submit" class="btn btn-primary">필터</button>
+                <button type="submit" class="btn btn-primary ms-2">적용</button>
             </div>
         </form>
     </div>

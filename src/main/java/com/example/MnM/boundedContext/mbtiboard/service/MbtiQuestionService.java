@@ -25,9 +25,21 @@ import java.util.Optional;
 public class MbtiQuestionService {
     private final MbtiQuestionRepository mbtiQuestionRepository;
 
-    public Page<MbtiQuestion> getList(int page, String kw, String filterMbti) {
+    public Page<MbtiQuestion> getList(int page, String kw, String filterMbti, String sort) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if (sort != null && !sort.trim().isEmpty()) {
+            if (sort.equalsIgnoreCase("latest")) {
+                sorts.add(Sort.Order.desc("createDate"));
+            } else if (sort.equalsIgnoreCase("popular")) {
+                sorts.add(Sort.Order.desc("view"));
+            } else if (sort.equalsIgnoreCase("least_popular")) {
+                sorts.add(Sort.Order.asc("view"));
+            } else {
+                sorts.add(Sort.Order.desc("createDate")); // 기본 정렬 기준은 작성일로 설정하고, 수정할 수 있습니다.
+            }
+        } else {
+            sorts.add(Sort.Order.desc("createDate")); // 기본 정렬 기준 사용
+        }
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
