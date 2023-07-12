@@ -24,13 +24,14 @@ public class NotificationService {
     }
 
     @Transactional
-    public RsData<Notification> makeNotification(Member member, Long id) {
+    public RsData<Notification> makeNotificationAndCreateRoom(Member member, Long id, String url) {
 
         Optional<Member> toMember = memberRepository.findById(id);
         Notification notification = Notification
                 .builder()
                 .fromMember(member)
                 .toMember(toMember.get())
+                .url(url)
                 .build();
 
         notificationRepository.save(notification);
