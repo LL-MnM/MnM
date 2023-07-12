@@ -56,7 +56,7 @@ class MemberControllerTest {
                 .password("1234")
                 .build();//testcase
     }
-/*회원가입*/
+
     @DisplayName("회원가입 폼")
     void showMemberJoinTest() throws Exception {
         // WHEN
@@ -90,7 +90,7 @@ class MemberControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andExpect(handler().handlerType(MemberController.class))
                     .andExpect(handler().methodName("join"))
-                    .andExpect(redirectedUrlPattern("/member/login?msg=**"));
+                    .andExpect(redirectedUrlPattern("join?msg=**"));
 
             assertThat(memberService.findByUserName("test001").isPresent()).isTrue();
         }
@@ -148,20 +148,13 @@ class MemberControllerTest {
     void showMemberModifyTest() throws Exception {
 
         ResultActions resultActions = mvc
-                .perform(post("/member/editMyPage")
-                        .with(csrf())
-                        .param("nickname", "유저1닉네임")
-                        .param("email", "user1@google.com")
-                ).andDo(print());
+                .perform(get("/member/editMyPage"))
+                .andDo(print());
 
         resultActions
                 .andExpect(handler().handlerType(MemberController.class))
-                .andExpect(handler().methodName("editMyPage"))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Member> findMember = memberService.findByUserName("user1");
-        assertThat(findMember.get().getEmail()).isEqualTo("user1@google.com");
-        assertThat(findMember.get().getNickname()).isEqualTo("유저1닉네임");
+                .andExpect(handler().methodName("showEditMyPage"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test

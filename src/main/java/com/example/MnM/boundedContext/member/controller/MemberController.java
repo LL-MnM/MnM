@@ -76,7 +76,7 @@ public class MemberController {
 
         RsData<Member> rsData =  memberService.delete(member.get());
         memberService.deleteCooKie(rq.getReq(), rq.getResp());
-        memberService.sessionRefresh(rq.getReq(), rq.getResp());
+        rq.sessionRefresh(rq.getReq(), rq.getResp());
         return rq.redirectWithMsg("/", rsData);
     }
 
