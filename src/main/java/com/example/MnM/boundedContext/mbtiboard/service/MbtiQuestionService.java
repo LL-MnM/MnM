@@ -35,10 +35,10 @@ public class MbtiQuestionService {
             } else if (sort.equalsIgnoreCase("least_popular")) {
                 sorts.add(Sort.Order.asc("view"));
             } else {
-                sorts.add(Sort.Order.desc("createDate")); // 기본 정렬 기준은 작성일로 설정하고, 수정할 수 있습니다.
+                sorts.add(Sort.Order.desc("createDate"));
             }
         } else {
-            sorts.add(Sort.Order.desc("createDate")); // 기본 정렬 기준 사용
+            sorts.add(Sort.Order.desc("createDate"));
         }
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));

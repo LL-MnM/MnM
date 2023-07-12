@@ -40,7 +40,6 @@ public class AnswerService {
         answerRepository.delete(answer);
     }
     public void vote(Answer answer, Member voter) {
-        // 처음에 중복 투표를 확인한다.
         Optional<Vote> existingVote = answer.getVotes().stream()
                 .filter(vote -> vote.getMember().getNickname().equals(voter.getNickname())) // 이 부분은 회원의 고유 식별자에 따라 다를 수 있음
                 .findFirst();

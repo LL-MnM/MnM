@@ -17,32 +17,31 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MbtiAnswerService {
-    private final MbtiAnswerRepository mbtiAnswerRepository; // 변수명 수정
+    private final MbtiAnswerRepository mbtiAnswerRepository;
 
     public MbtiAnswer create(MbtiQuestion question, String content, Member member) {
         MbtiAnswer answer = new MbtiAnswer(content , LocalDateTime.now() , question, member);
-        mbtiAnswerRepository.save(answer); // 변수명 수정
+        mbtiAnswerRepository.save(answer);
 
         return answer;
     }
 
-    public MbtiAnswer getAnswer(Integer id) { // 타입 수정
-        Optional<MbtiAnswer> answer = mbtiAnswerRepository.findById(id); // 변수명 수정
+    public MbtiAnswer getAnswer(Integer id) {
+        Optional<MbtiAnswer> answer = mbtiAnswerRepository.findById(id);
         if (answer.isEmpty())
             throw new MbtiDataNotFoundException("answer not found");
         return answer.get();
     }
 
-    public void modify(MbtiAnswer answer, String content) { // 타입 수정
+    public void modify(MbtiAnswer answer, String content) {
         answer.updateAnswer(content);
     }
 
-    public void delete(MbtiAnswer answer) { // 타입 수정
-        mbtiAnswerRepository.delete(answer); // 변수명 수정
+    public void delete(MbtiAnswer answer) {
+        mbtiAnswerRepository.delete(answer);
     }
 
-    public void vote(MbtiAnswer answer, Member voter) { // 타입 수정
-        // 처음에 중복 투표를 확인한다.
+    public void vote(MbtiAnswer answer, Member voter) {
         Optional<MbtiVote> existingVote = answer.getVotes().stream()
                 .filter(vote -> vote.getMember().getNickname().equals(voter.getNickname())) // 이 부분은 회원의 고유 식별자에 따라 다를 수 있음
                 .findFirst();
