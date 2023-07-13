@@ -9,7 +9,7 @@
             <a href="/" class="btn btn-ghost normal-case text-xl">M&M</a>
         </div>
         <!--메뉴 구성-->
-        <div class="flex-grow-1">
+        <div>
             <ul class="menu menu-horizontal px-1">
 
                 <li tabindex="0">
@@ -21,8 +21,7 @@
                         </svg>
                     </a>
                     <ul class="p-2 bg-base-100">
-                        <li><a href="/mbtiTest">mbti검사</a></li>
-                        <li><a>mbti설명</a></li>
+                        <li sec:authorize="isAuthenticated()"><a href="/mbtiTest">mbti검사</a></li>
                     </ul>
                 </li>
 
@@ -94,7 +93,6 @@
                     </li>
                     <li th:if="${@rq.isLogout()}"><a href="/member/join">회원가입</a></li>
                     <li><a href="/about">소개</a></li>
-                    <li th:if="${@rq.isLogin()}"><a href="/notification/list">알림</a>
                 </ul>
             </div>
         </div>
