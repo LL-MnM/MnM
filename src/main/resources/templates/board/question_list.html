@@ -23,7 +23,7 @@
         <form th:action="@{/question/list}" method="get" class="w-full flex">
             <div class="input-group">
                 <input type="text" class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}">
-                <button type="submit" class="btn btn-secondary btn-outline-secondary">찾기</button>
+                <button type="submit" class="btn btn-outline-secondary">찾기</button>
             </div>
             <div class="flex justify-end items-center ms-4">
                 <label for="sortSelect" class="me-2"></label>
@@ -66,7 +66,7 @@
         </tbody>
     </table>
     <div class="flex justify-end mb-3">
-        <a th:href="@{/question/create}" class="btn btn-secondary">질문 등록하기</a>
+        <a th:href="@{/question/create}" class="btn btn-outline-secondary">질문 등록하기</a>
     </div>
     <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
         <ul class="pagination justify-content-center list-none flex">
