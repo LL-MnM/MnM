@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,8 @@ public class MbtiQuestion extends BaseEntity {
     private Member member;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MbtiQuestionVote> voters;
+    private Set<MbtiQuestionVote> voters = new HashSet<>();
+
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
@@ -51,8 +53,16 @@ public class MbtiQuestion extends BaseEntity {
     }
 
     public void addVoter(Member voter) {
+        if (alreadyVoted(voter)) {
+            throw new IllegalStateException("이미 투표한 회원입니다.");
+        }
+
         MbtiQuestionVote mbtiQuestionVote = new MbtiQuestionVote(this, voter);
         voters.add(mbtiQuestionVote);
+    }
+
+    public boolean alreadyVoted(Member voter) {
+        return voters.stream().anyMatch(vote -> vote.getVoter().equals(voter));
     }
 
     public void setView(int view) {

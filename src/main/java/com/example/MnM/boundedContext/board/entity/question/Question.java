@@ -47,6 +47,11 @@ public class Question extends BaseEntity {
     }
 
     public void addVoter(Member voter) {
+        for (QuestionVote questionVote : voters) {
+            if (questionVote.getVoter().getId().equals(voter.getId())) {
+                throw new IllegalStateException("이미 투표한 회원입니다.");
+            }
+        }
         QuestionVote questionVote = new QuestionVote(this, voter);
         voters.add(questionVote);
     }

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -106,14 +107,18 @@ public class QuestionController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("question/vote/{id}")
-    public String questionVote(Principal principal, @PathVariable("id") Integer id) {
+    public String questionVote(Principal principal, @PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Question question = questionService.getQuestion(id);
 
         String username = principal.getName();
         Member voter = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
-        questionService.vote(question, voter);
+        try {
+            questionService.vote(question, voter);
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "이미 투표한 회원입니다.");
+        }
 
-        return "redirect:/question/detail/%d".formatted(id);
+        return String.format("redirect:/question/detail/%d", id);
     }
 }

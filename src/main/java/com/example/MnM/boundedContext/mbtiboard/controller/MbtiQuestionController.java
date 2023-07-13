@@ -113,7 +113,11 @@ public class MbtiQuestionController {
         String username = principal.getName();
         Member voter = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
-        mbtiQuestionService.vote(mbtiQuestion, voter);
+        try {
+            mbtiQuestionService.vote(mbtiQuestion, voter);
+        } catch (IllegalStateException e) {
+
+        }
 
         return String.format("redirect:/mbti/question/detail/%d", id);
     }

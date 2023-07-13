@@ -107,6 +107,11 @@ public class MbtiQuestionService {
     }
 
     public void vote(MbtiQuestion question, Member voter) {
-        question.addVoter(voter);
+        try {
+            question.addVoter(voter);
+        } catch (IllegalStateException e) {
+
+            throw new IllegalStateException("이미 투표한 회원입니다.");
+        }
     }
 }

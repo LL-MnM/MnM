@@ -15,13 +15,17 @@ public class MbtiQuestionVote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private MbtiQuestion question; // 'Question'을 'MbtiQuestion'으로 수정
+    private MbtiQuestion question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voter_id")
     private Member voter;
 
-    public MbtiQuestionVote(MbtiQuestion question, Member voter) { // 생성자 파라미터 타입 수정
+    public MbtiQuestionVote(MbtiQuestion question, Member voter) {
+        if (question.alreadyVoted(voter)) { // 추가됨
+            throw new IllegalStateException("이미 투표한 회원입니다.");
+        }
+
         this.question = question;
         this.voter = voter;
     }
