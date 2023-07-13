@@ -7,8 +7,10 @@ import com.example.MnM.boundedContext.mbtiboard.entity.mbtiquestion.MbtiQuestion
 import com.example.MnM.boundedContext.mbtiboard.repository.MbtiAnswerRepository;
 import com.example.MnM.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -51,4 +53,10 @@ public class MbtiAnswerService {
         }
         answer.addVoter(voter);
     }
+    public void checkAuthority(MbtiAnswer answer, String username) {
+        if (!answer.getMember().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+    }
+
 }
