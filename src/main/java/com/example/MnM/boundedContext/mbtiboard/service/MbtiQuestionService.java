@@ -5,6 +5,7 @@ import com.example.MnM.boundedContext.mbtiboard.entity.mbtiquestion.MbtiDataNotF
 import com.example.MnM.boundedContext.mbtiboard.entity.mbtiquestion.MbtiQuestion;
 import com.example.MnM.boundedContext.mbtiboard.repository.MbtiQuestionRepository;
 import com.example.MnM.boundedContext.member.entity.Member;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public class MbtiQuestionService {
     public Page<MbtiQuestion> getList(int page, String kw, String filterMbti, String sort) {
         List<Sort.Order> sorts = new ArrayList<>();
 
-        if (sort != null && !sort.trim().isEmpty()) {
+        if (StringUtils.isNotBlank(sort)) {
             switch (sort.toLowerCase()) {
                 case "popular":
                     sorts.add(Sort.Order.desc("view"));
