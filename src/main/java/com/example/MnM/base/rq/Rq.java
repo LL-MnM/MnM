@@ -3,13 +3,12 @@ package com.example.MnM.base.rq;
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.example.MnM.boundedContext.member.service.MemberService;
+import com.example.MnM.boundedContext.notification.service.NotificationService;
 import com.example.MnM.standard.util.Ut;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,14 +23,16 @@ import java.util.Map;
 @RequestScope
 public class Rq {
     private final MemberService memberService;
+    private final NotificationService notificationService;
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
     private final User user;
     private Member member = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 
-    public Rq(MemberService memberService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(MemberService memberService, NotificationService notificationService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
+        this.notificationService = notificationService;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -109,23 +109,24 @@ public class Rq {
         return Ut.json.toStr(parameterMap);
     }
 
-    public HttpServletRequest getReq(){
+    public HttpServletRequest getReq() {
         return this.req;
     }
 
-    public HttpServletResponse getResp(){
+    public HttpServletResponse getResp() {
         return this.resp;
     }
 
-    public void sessionRefresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public void sessionRefresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, auth);
         }
     }
-    public void deleteCooKie(){
+
+    public void deleteCooKie() {
         String cookieName = "remember-me";
-        Cookie[] cookies =  req.getCookies();
+        Cookie[] cookies = req.getCookies();
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -137,5 +138,13 @@ public class Rq {
                 }
             }
         }
+    }
+
+    public boolean hasUnreadNotifications() {
+        if (isLogout()) return false;
+
+        Member actor = getMember();
+
+        return notificationService.countUnreadNotificationsByToMember(getMember());
     }
 }

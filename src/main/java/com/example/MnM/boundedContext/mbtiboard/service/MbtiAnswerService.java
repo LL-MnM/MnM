@@ -22,7 +22,7 @@ public class MbtiAnswerService {
     private final MbtiAnswerRepository mbtiAnswerRepository;
 
     public MbtiAnswer create(MbtiQuestion question, String content, Member member) {
-        MbtiAnswer answer = new MbtiAnswer(content , LocalDateTime.now() , question, member);
+        MbtiAnswer answer = new MbtiAnswer(content, LocalDateTime.now(), question, member);
         mbtiAnswerRepository.save(answer);
 
         return answer;
@@ -51,6 +51,7 @@ public class MbtiAnswerService {
         }
         answer.addVoter(voter);
     }
+
     public void checkAuthority(MbtiAnswer answer, String username) {
         if (!answer.getMember().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");

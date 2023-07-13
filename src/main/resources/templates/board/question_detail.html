@@ -3,8 +3,8 @@
       xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/layout.html}">
 <head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.4.0/dist/full.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.4.0/dist/full.css" rel="stylesheet"/>
 </head>
 <body layout:fragment="content" class="flex flex-col items-center justify-center">
 <div class="container mx-auto my-3 w-11/12">
@@ -12,25 +12,28 @@
     <div class="card my-4 p-4 bg-gray-100 shadow-md rounded-lg">
         <div class="card-text text-dark whitespace-pre-line m-4" th:text="${question.content}"></div>
         <div class="flex justify-end m-4">
-            <div th:if="${question.modifyDate != null}" class="badge badge-xs badge-light text-dark p-2 text-start mx-3">
+            <div class="badge badge-xs badge-light text-dark p-2 text-start mx-3"
+                 th:if="${question.modifyDate != null}">
                 <div class="mb-2"></div>
                 <div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
-            <div th:if="${question.modifyDate == null}" class="badge badge-xs bg-primary-500 text-white px-2 py-1 text-start">
+            <div class="badge badge-xs bg-primary-500 text-white px-2 py-1 text-start"
+                 th:if="${question.modifyDate == null}">
                 <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
         </div>
         <div class="my-3 m-4">
-            <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-xs btn-outline-secondary"
+            <a class="btn btn-xs btn-outline-secondary" onclick="return confirm('추천하시겠습니까?');"
                th:href="@{|/question/vote/${question.id}|}">
                 좋아요
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voters)}"></span>
             </a>
-            <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-xs btn-outline-secondary"
-               sec:authorize="isAuthenticated()"
+            <a class="btn btn-xs btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:href="@{|/question/modify/${question.id}|}"
                th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
                th:text="수정"></a>
-            <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/question/delete/${question.id}|}" class="btn btn-xs btn-outline-secondary" sec:authorize="isAuthenticated()"
+            <a class="btn btn-xs btn-outline-secondary" onclick="return confirm('정말로 삭제하시겠습니까?');"
+               sec:authorize="isAuthenticated()" th:href="@{|/question/delete/${question.id}|}"
                th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
                th:text="삭제"></a>
         </div>
@@ -39,24 +42,26 @@
 <h5 class="border-b-2 my-3 py-2 text-dark mx-auto w-11/12"
     th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
 
-<div th:id="|answer_${answer.id}|" class="card card-bordered my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${question.answerList}">
+<div class="card card-bordered my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${question.answerList}"
+     th:id="|answer_${answer.id}|">
     <div class="card-body p-4">
         <div class="card-text text-dark whitespace-pre-line m-4" th:text="${answer.content}"></div>
         <div class="flex justify-end m-4">
-            <div th:if="${answer.modifyDate != null}" class="badge badge-xs badge-light text-dark p-2 text-start mx-3">
+            <div class="badge badge-xs badge-light text-dark p-2 text-start mx-3" th:if="${answer.modifyDate != null}">
                 <div th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
-            <div th:if="${answer.modifyDate == null}" class="badge badge-xs bg-primary-500 text-white px-2 py-1 text-start">
+            <div class="badge badge-xs bg-primary-500 text-white px-2 py-1 text-start"
+                 th:if="${answer.modifyDate == null}">
                 <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
         </div>
         <div class="my-3 m-4">
-            <a onclick="return confirm('추천하시겠습니까?');" class="recommend btn btn-xs btn-outline-secondary"
+            <a class="recommend btn btn-xs btn-outline-secondary" onclick="return confirm('추천하시겠습니까?');"
                th:href="@{|/answer/vote/${answer.id}|}">
                 좋아요
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.votes)}"></span>
             </a>
-            <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-xs btn-outline-secondary"
+            <a class="btn btn-xs btn-outline-secondary" th:href="@{|/answer/modify/${answer.id}|}"
                sec:authorize="isAuthenticated()"
                th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
                th:text="수정"></a>
@@ -69,14 +74,17 @@
 </div>
 
 <!-- 답변 작성 -->
-<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3 w-11/12 mx-auto">
-    <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert" th:if="${#fields.hasAnyErrors()}">
-        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-red-700" />
+<form class="my-3 w-11/12 mx-auto" method="post" th:action="@{|/answer/create/${question.id}|}"
+      th:object="${answerForm}">
+    <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert"
+         th:if="${#fields.hasAnyErrors()}">
+        <div class="text-red-700" th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
     </div>
 
-    <textarea required maxlength="200" placeholder="200자 이하" th:field="*{content}" rows="10" class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full m-4"></textarea>
+    <textarea class="form-control resize-none border rounded-lg p-2 bg-gray-100 w-full m-4" maxlength="200" placeholder="200자 이하" required rows="10"
+              th:field="*{content}"></textarea>
     <div class="text-right">
-        <input type="submit" value="답변등록" class="btn btn-black ms-2">
+        <input class="btn btn-black ms-2" type="submit" value="답변등록">
     </div>
 </form>
 </div>

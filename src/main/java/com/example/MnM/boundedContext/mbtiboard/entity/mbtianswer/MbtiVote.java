@@ -2,12 +2,12 @@ package com.example.MnM.boundedContext.mbtiboard.entity.mbtianswer;
 
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@Entity(name="MbtiAnswerVote")
+@Entity(name = "MbtiAnswerVote")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

@@ -9,7 +9,6 @@ import com.example.MnM.boundedContext.mbtiboard.service.MbtiQuestionService;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -44,10 +42,11 @@ public class MbtiAnswerController {
             model.addAttribute("mbtiQuestionForm", mbtiQuestion);
             return "mbtiboard/mbtiquestion_detail";
         }
-        MbtiAnswer answer = mbtiAnswerService.create(mbtiQuestion, mbtiAnswerForm.getContent(),rq.getMember());
+        MbtiAnswer answer = mbtiAnswerService.create(mbtiQuestion, mbtiAnswerForm.getContent(), rq.getMember());
 
         return "redirect:/mbti/question/detail/%d#answer_%d".formatted(id, answer.getId());
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String answerModify(MbtiAnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
@@ -76,6 +75,7 @@ public class MbtiAnswerController {
 
         return "redirect:/mbti/question/detail/%d#answer_%d".formatted(mbtiAnswer.getQuestion().getId(), id);
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
@@ -87,6 +87,7 @@ public class MbtiAnswerController {
 
         return "redirect:/mbti/question/detail/%d".formatted(mbtiAnswer.getQuestion().getId());
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
     public String answerVote(Principal principal, @PathVariable("id") Integer id) {

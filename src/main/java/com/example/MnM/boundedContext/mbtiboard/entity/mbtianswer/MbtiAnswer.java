@@ -1,7 +1,6 @@
 package com.example.MnM.boundedContext.mbtiboard.entity.mbtianswer;
 
 import com.example.MnM.base.baseEntity.BaseEntity;
-import com.example.MnM.boundedContext.mbtiboard.entity.mbtianswer.MbtiVote;
 import com.example.MnM.boundedContext.mbtiboard.entity.mbtiquestion.MbtiQuestion;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
@@ -32,6 +31,8 @@ public class MbtiAnswer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_nickname")
     private Member member;
+    @OneToMany(mappedBy = "mbtiAnswer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MbtiVote> votes = new ArrayList<>();
 
     public MbtiAnswer(String content, LocalDateTime createDate, MbtiQuestion question, Member member) {
         this.content = content;
@@ -44,9 +45,6 @@ public class MbtiAnswer extends BaseEntity {
     public void updateAnswer(String content) {
         this.content = content;
     }
-
-    @OneToMany(mappedBy = "mbtiAnswer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MbtiVote> votes = new ArrayList<>();
 
     public void addVoter(Member voter) {
         MbtiVote newVote = new MbtiVote();

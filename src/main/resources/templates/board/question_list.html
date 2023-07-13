@@ -3,7 +3,9 @@
       layout:decorate="~{layout/layout.html}">
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css"
+          integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
     <script>
         function applySorting() {
             const sortSelect = document.getElementById('sortSelect');
@@ -19,14 +21,15 @@
 <body layout:fragment="content" class="flex flex-col items-center justify-center">
 <div class="shadow-form container my-3 min-h-screen">
     <div class="flex my-3 w-full justify-between">
-        <form th:action="@{/question/list}" method="get" class="w-full flex">
+        <form class="w-full flex" method="get" th:action="@{/question/list}">
             <div class="input-group">
-                <input type="text" class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}">
-                <button type="submit" class="btn btn-outline-secondary">찾기</button>
+                <input class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}"
+                       type="text">
+                <button class="btn btn-outline-secondary" type="submit">찾기</button>
             </div>
             <div class="flex justify-end items-center ms-4">
-                <label for="sortSelect" class="me-2"></label>
-                <select name="sort" class="form-select me-2" id="sortSelect" onchange="applySorting()">
+                <label class="me-2" for="sortSelect"></label>
+                <select class="form-select me-2" id="sortSelect" name="sort" onchange="applySorting()">
                     <option value="">기본 정렬</option>
                     <option value="latest">날짜 최신순</option>
                     <option value="popular">조회수 높은 순</option>
@@ -65,7 +68,7 @@
         </tbody>
     </table>
     <div class="flex justify-end mb-3">
-        <a th:href="@{/question/create}" class="btn btn-outline-secondary">질문 등록하기</a>
+        <a class="btn btn-outline-secondary" th:href="@{/question/create}">질문 등록하기</a>
     </div>
     <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
         <ul class="pagination justify-content-center list-none flex">

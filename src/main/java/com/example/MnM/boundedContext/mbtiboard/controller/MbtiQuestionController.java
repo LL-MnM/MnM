@@ -15,7 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -39,6 +42,7 @@ public class MbtiQuestionController {
 
         return "mbtiboard/mbtiquestion_list";
     }
+
     @GetMapping("/mbti/question/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, MbtiAnswerForm mbtianswerForm) {
         MbtiQuestion mbtiQuestion = mbtiQuestionService.getMbtiQuestion(id);
@@ -48,6 +52,7 @@ public class MbtiQuestionController {
 
         return "mbtiboard/mbtiquestion_detail";
     }
+
     @GetMapping("/mbti/question/create")
     public String questionCreate(Model model) {
         model.addAttribute("mbtiQuestionForm", new MbtiQuestionForm());
@@ -57,7 +62,7 @@ public class MbtiQuestionController {
 
     @PostMapping("/mbti/question/create")
     public String questionCreate(@Valid MbtiQuestionForm mbtiQuestionForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "mbtiboard/mbtiquestion_form";
         }
 
@@ -65,6 +70,7 @@ public class MbtiQuestionController {
 
         return "redirect:/mbti/question/list";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mbti/question/modify/{id}")
     public String questionModify(MbtiQuestionForm mbtiQuestionForm, @PathVariable("id") Integer id) {
@@ -92,6 +98,7 @@ public class MbtiQuestionController {
         this.mbtiQuestionService.modify(mbtiQuestion, mbtiQuestionForm.getSubject(), mbtiQuestionForm.getContent(), mbtiQuestionForm.getMbti());
         return String.format("redirect:/mbti/question/detail/%s", id);
     }
+
     @GetMapping("/mbti/question/delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
@@ -105,6 +112,7 @@ public class MbtiQuestionController {
 
         return "redirect:/mbti/question/list";
     }
+
     @GetMapping("/mbti/question/vote/{id}")
     @PreAuthorize("isAuthenticated()")
     public String questionVote(Principal principal, @PathVariable("id") Integer id) {

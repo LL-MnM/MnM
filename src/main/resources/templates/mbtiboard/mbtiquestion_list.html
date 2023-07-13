@@ -1,30 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
-      layout:decorate="~{layout/layout.html}">
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://java.sun.com/JSP/Page"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css" integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/DaisyUI/1.18.1/full.css"
+          integrity="sha512-8pigbmxc9MsxWxAEkz9QeaTctEv/ghC1J+GnfKE5zPvx9Rjw+9s/UF78V+Rcis7F/3u2b57Vn4MMG4YYKoLzJw=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
-<body layout:fragment="content" class="flex flex-col items-center justify-center">
+<body class="flex flex-col items-center justify-center" layout:fragment="content">
 <div class="shadow-form container my-3 min-h-screen">
     <div class="flex my-3 w-full justify-between">
-        <form th:action="@{/mbti/question/list}" method="get">
+        <form method="get" th:action="@{/mbti/question/list}">
             <div class="input-group">
-                <input type="text" class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}">
-                <button type="submit" class="btn btn-outline-secondary">찾기</button>
+                <input class="form-control border border-black" name="kw" placeholder="검색어" th:value="${param.kw}"
+                       type="text">
+                <button class="btn btn-outline-secondary" type="submit">찾기</button>
             </div>
         </form>
 
-        <form th:action="@{/mbti/question/list}" method="get" class="w-1/2" id="filterForm">
+        <form class="w-1/2" id="filterForm" method="get" th:action="@{/mbti/question/list}">
             <div class="flex justify-end items-center">
-                <label for="sortSelect" class="me-2"></label>
-                <select name="sort" class="form-select me-2" id="sortSelect">
+                <label class="me-2" for="sortSelect"></label>
+                <select class="form-select me-2" id="sortSelect" name="sort">
                     <option value="">기본 정렬</option>
                     <option value="latest">날짜 최신순</option>
                     <option value="popular">조회수 높은 순</option>
                     <option value="least_popular">조회수 낮은 순</option>
                 </select>
 
-                <select name="filterMbti" class="form-select" id="mbtiSelect">
+                <select class="form-select" id="mbtiSelect" name="filterMbti">
                     <option value="">전체 MBTI</option>
                     <option value="INFJ">INFJ</option>
                     <option value="INFP">INFP</option>
@@ -43,7 +46,7 @@
                     <option value="ESTJ">ESTJ</option>
                     <option value="ESTP">ESTP</option>
                 </select>
-                <button type="submit" class="btn btn-black ms-2 ms-2">적용</button>
+                <button class="btn btn-black ms-2 ms-2" type="submit">적용</button>
             </div>
         </form>
     </div>
@@ -60,11 +63,13 @@
         </thead>
         <tbody>
         <tr th:each="q, loop: ${paging}">
-            <td class="w-1/6 text-center" th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
+            <td class="w-1/6 text-center"
+                th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="w-4/6">
-                <a th:text="${q.subject}" th:href="@{|/mbti/question/detail/${q.id}|}" class="text-primary-600"></a>
+                <a class="text-primary-600" th:href="@{|/mbti/question/detail/${q.id}|}" th:text="${q.subject}"></a>
                 <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}">답변 갯수:</span>
-                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}" th:text="${#lists.size(q.answerList)}"></span>
+                <span class="text-danger small ms-2" th:if="${#lists.size(q.answerList) > 0}"
+                      th:text="${#lists.size(q.answerList)}"></span>
             </td>
             <td class="w-1/6 text-gray-500">
                 <small th:text="${q.member.username}"></small>
@@ -81,28 +86,37 @@
         </tbody>
     </table>
     <div class="flex justify-end mb-3">
-        <a th:href="@{/mbti/question/create}" class="btn btn-outline-primary">질문 등록하기</a>
+        <a class="btn btn-outline-primary" th:href="@{/mbti/question/create}">질문 등록하기</a>
     </div>
-    <nav th:if="${!paging.isEmpty()}" class="w-full max-w-lg mx-auto flex items-center justify-center">
+    <nav class="w-full max-w-lg mx-auto flex items-center justify-center" th:if="${!paging.isEmpty()}">
         <ul class="pagination justify-content-center list-none flex">
-            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${paging.number == 0} ? 'disabled'">
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500"
+                th:classappend="${paging.number == 0} ? 'disabled'">
                 <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=0|}">
                     <span>&laquo;</span>
                 </a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.number - 1}|}">이전</a>
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500"
+                th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500"
+                   th:href="@{|/mbti/question/list?page=${paging.number - 1}|}">이전</a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-primary-500 mx-2" th:classappend="${paging.number == page} ? 'active'"
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500 mx-2"
+                th:classappend="${paging.number == page} ? 'active'"
                 th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number - 5 and page <= paging.number + 5}">
-                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${page}|}" th:text="${page}"></a>
+                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${page}|}"
+                   th:text="${page}"></a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.number + 1}|}">다음</a>
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500"
+                th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500"
+                   th:href="@{|/mbti/question/list?page=${paging.number + 1}|}">다음</a>
             </li>
-            <li class="page-item bg-base-100 rounded-lg border border-primary-500" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
-                <a class="page-link px-4 py-2 text-primary-500" th:href="@{|/mbti/question/list?page=${paging.totalPages - 1}|}">
+            <li class="page-item bg-base-100 rounded-lg border border-primary-500"
+                th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                <a class="page-link px-4 py-2 text-primary-500"
+                   th:href="@{|/mbti/question/list?page=${paging.totalPages - 1}|}">
                     <span>&raquo;</span>
                 </a>
             </li>

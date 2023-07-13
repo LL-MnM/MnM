@@ -5,12 +5,11 @@ import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.board.entity.question.vote.QuestionVote;
 import com.example.MnM.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Set;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = true, of = "id")

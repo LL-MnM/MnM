@@ -6,7 +6,9 @@ import com.example.MnM.boundedContext.mbtiboard.entity.mbtiquestion.MbtiQuestion
 import com.example.MnM.boundedContext.mbtiboard.repository.MbtiQuestionRepository;
 import com.example.MnM.boundedContext.member.entity.Member;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
