@@ -53,9 +53,7 @@ public class MbtiAnswerController {
     public String answerModify(MbtiAnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
         MbtiAnswer mbtiAnswer = mbtiAnswerService.getAnswer(id);
 
-        if (!mbtiAnswer.getMember().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
+        mbtiAnswerService.checkAuthority(mbtiAnswer, principal.getName());
 
         answerForm.setContent(mbtiAnswer.getContent());
 
@@ -72,9 +70,7 @@ public class MbtiAnswerController {
 
         MbtiAnswer mbtiAnswer = mbtiAnswerService.getAnswer(id);
 
-        if (!mbtiAnswer.getMember().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
+        mbtiAnswerService.checkAuthority(mbtiAnswer, principal.getName());
 
         mbtiAnswerService.modify(mbtiAnswer, answerForm.getContent());
 
@@ -85,9 +81,7 @@ public class MbtiAnswerController {
     public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
         MbtiAnswer mbtiAnswer = mbtiAnswerService.getAnswer(id);
 
-        if (!mbtiAnswer.getMember().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
-        }
+        mbtiAnswerService.checkAuthority(mbtiAnswer, principal.getName());
 
         mbtiAnswerService.delete(mbtiAnswer);
 
