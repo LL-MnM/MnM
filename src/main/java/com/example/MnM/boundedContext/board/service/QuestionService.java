@@ -1,24 +1,23 @@
 package com.example.MnM.boundedContext.board.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import com.example.MnM.boundedContext.board.entity.question.DataNotFoundException;
 import com.example.MnM.boundedContext.board.entity.question.Question;
 import com.example.MnM.boundedContext.board.repository.QuestionRepository;
-import jakarta.persistence.criteria.*;
 import com.example.MnM.boundedContext.member.entity.Member;
+import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import com.example.MnM.boundedContext.board.entity.answer.Answer;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -26,14 +25,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public Page<Question> getList(int page, String kw) {
+    public Page<Question> getList(int page, String kw, String sort) {
 
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if (sort == null) {
+            sorts.add(Sort.Order.desc("createDate"));
+        } else {
+            switch (sort) {
+                case "latest":
+                    sorts.add(Sort.Order.desc("createDate"));
+                    break;
+                case "popular":
+                    sorts.add(Sort.Order.desc("view"));
+                    break;
+                case "least_popular":
+                    sorts.add(Sort.Order.asc("view"));
+                    break;
+                default:
+                    sorts.add(Sort.Order.desc("createDate"));
+                    break;
+            }
+        }
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-        if ( kw == null || kw.trim().length() == 0 ) {
+        if (kw == null || kw.trim().length() == 0) {
             return questionRepository.findAll(pageable);
         }
 
@@ -88,6 +104,11 @@ public class QuestionService {
         questionRepository.delete(question);
     }
     public void vote(Question question, Member voter) {
-        question.addVoter(voter);
+        try {
+            question.addVoter(voter);
+            questionRepository.save(question);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("이미 투표한 회원입니다.");
+        }
     }
 }

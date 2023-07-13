@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
-      layout:decorate="~{layout/layout.html}">
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://java.sun.com/JSP/Page"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css" rel="stylesheet"/>
@@ -13,15 +13,15 @@
     <h5 class="my-5 text-2xl font-semibold border-b-2 pb-2">답변 수정</h5>
 
     <form class="w-full max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="post" th:action
-          th:object="${answerForm}">
+          th:object="${mbtiAnswerForm}">
         <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert"
              th:if="${#fields.hasAnyErrors()}">
             <div class="text-red-700" th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
         </div>
 
         <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="content">내용:</label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" maxlength="200" placeholder="200자 이하" required
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="content">내용</label>
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" maxlength="200" placeholder="내용(200자 이하)" required
                       rows="5"
                       th:field="*{content}"></textarea>
         </div>

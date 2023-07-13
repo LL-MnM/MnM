@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://java.sun.com/JSP/Page"
       xmlns:sec="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{layout/layout.html}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@1.4.0/dist/full.css" rel="stylesheet"/>
 </head>
-<body layout:fragment="content" class="flex flex-col items-center justify-center">
+<body class="flex flex-col items-center justify-center" layout:fragment="content">
 <div class="container mx-auto my-3 w-11/12">
-    <h2 class="border-b-2 py-2 text-dark" th:text="${question.subject}"></h2>
+    <h2 class="border-b-2 py-2 text-dark" th:text="${mbtiQuestion.subject}"></h2>
     <div class="card my-4 p-4 bg-gray-100 shadow-md rounded-lg">
-        <div class="card-text text-dark whitespace-pre-line m-4" th:text="${question.content}"></div>
+        <div class="card-text text-dark whitespace-pre-line m-4" th:text="${mbtiQuestion.content}"></div>
         <div class="flex justify-end m-4">
             <div class="badge badge-xs badge-light text-dark p-2 text-start mx-3"
-                 th:if="${question.modifyDate != null}">
+                 th:if="${mbtiQuestion.modifyDate != null}">
                 <div class="mb-2"></div>
-                <div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                <div th:text="${#temporals.format(mbtiQuestion.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
             <div class="badge badge-xs bg-primary-500 text-white px-2 py-1 text-start"
-                 th:if="${question.modifyDate == null}">
-                <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                 th:if="${mbtiQuestion.modifyDate == null}">
+                <div th:text="${#temporals.format('yyyy-MM-dd HH:mm')}"></div>
             </div>
         </div>
         <div class="my-3 m-4">
             <a class="btn btn-xs btn-outline-secondary" onclick="return confirm('추천하시겠습니까?');"
-               th:href="@{|/question/vote/${question.id}|}">
+               th:href="@{|/mbti/question/vote/${mbtiQuestion.id}|}">
                 좋아요
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voters)}"></span>
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(mbtiQuestion.voters)}"></span>
             </a>
             <a class="btn btn-xs btn-outline-secondary" sec:authorize="isAuthenticated()"
-               th:href="@{|/question/modify/${question.id}|}"
-               th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
+               th:href="@{|/mbti/question/modify/${mbtiQuestion.id}|}"
+               th:if="${mbtiQuestion.member != null and #authentication.getPrincipal().getUsername() == mbtiQuestion.member.username}"
                th:text="수정"></a>
             <a class="btn btn-xs btn-outline-secondary" onclick="return confirm('정말로 삭제하시겠습니까?');"
-               sec:authorize="isAuthenticated()" th:href="@{|/question/delete/${question.id}|}"
-               th:if="${question.member != null and #authentication.getPrincipal().getUsername() == question.member.username}"
+               sec:authorize="isAuthenticated()" th:href="@{|/mbti/question/delete/${mbtiQuestion.id}|}"
+               th:if="${mbtiQuestion.member != null and #authentication.getPrincipal().getUsername() == mbtiQuestion.member.username}"
                th:text="삭제"></a>
         </div>
     </div>
 </div>
 <h5 class="border-b-2 my-3 py-2 text-dark mx-auto w-11/12"
-    th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    th:text="|${#lists.size(mbtiQuestion.answerList)}개의 답변이 있습니다.|"></h5>
 
-<div class="card card-bordered my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${question.answerList}"
+<div class="card card-bordered my-3 bg-gray-100 shadow-md rounded-lg w-11/12 mx-auto" th:each="answer : ${mbtiQuestion.answerList}"
      th:id="|answer_${answer.id}|">
     <div class="card-body p-4">
         <div class="card-text text-dark whitespace-pre-line m-4" th:text="${answer.content}"></div>
@@ -57,16 +57,16 @@
         </div>
         <div class="my-3 m-4">
             <a class="recommend btn btn-xs btn-outline-secondary" onclick="return confirm('추천하시겠습니까?');"
-               th:href="@{|/answer/vote/${answer.id}|}">
+               th:href="@{|/mbti/answer/vote/${answer.id}|}">
                 좋아요
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.votes)}"></span>
             </a>
-            <a class="btn btn-xs btn-outline-secondary" th:href="@{|/answer/modify/${answer.id}|}"
-               sec:authorize="isAuthenticated()"
+            <a class="btn btn-xs btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:href="@{|/mbti/answer/modify/${answer.id}|}"
                th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
                th:text="수정"></a>
-            <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/answer/delete/${answer.id}|}"
-               class="btn btn-xs btn-outline-secondary" sec:authorize="isAuthenticated()"
+            <a class="btn btn-xs btn-outline-secondary" onclick="return confirm('정말로 삭제하시겠습니까?');"
+               sec:authorize="isAuthenticated()" th:href="@{|/mbti/answer/delete/${answer.id}|}"
                th:if="${answer.member != null and #authentication.getPrincipal().getUsername() == answer.member.username}"
                th:text="삭제"></a>
         </div>
@@ -74,8 +74,8 @@
 </div>
 
 <!-- 답변 작성 -->
-<form class="my-3 w-11/12 mx-auto" method="post" th:action="@{|/answer/create/${question.id}|}"
-      th:object="${answerForm}">
+<form class="my-3 w-11/12 mx-auto" method="post" th:action="@{|/mbti/answer/create/${id}|}"
+      th:object="${mbtiAnswerForm}">
     <div class="bg-red-100 px-4 py-3 border border-red-400 rounded-lg mb-4" role="alert"
          th:if="${#fields.hasAnyErrors()}">
         <div class="text-red-700" th:each="err : ${#fields.allErrors()}" th:text="${err}"/>

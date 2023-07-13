@@ -15,8 +15,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -28,13 +32,17 @@ public class QuestionController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/question/list")
-    public String list(Model model , @RequestParam(defaultValue = "0") int page,String kw) {
-        Page<Question> paging = questionService.getList(page, kw);
+    public String list(Model model,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(required = false) String kw,
+                       @RequestParam(required = false) String sort) {
+        Page<Question> paging = questionService.getList(page, kw, sort);
 
         model.addAttribute("paging", paging);
 
         return "board/question_list";
     }
+
     @GetMapping("/question/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question question = questionService.getQuestion(id);
@@ -101,16 +109,21 @@ public class QuestionController {
 
         return "redirect:/";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("question/vote/{id}")
-    public String questionVote(Principal principal, @PathVariable("id") Integer id) {
+    public String questionVote(Principal principal, @PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Question question = questionService.getQuestion(id);
 
         String username = principal.getName();
         Member voter = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("회원 정보 없음"));
 
-        questionService.vote(question, voter);
+        try {
+            questionService.vote(question, voter);
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "이미 투표한 회원입니다.");
+        }
 
-        return "redirect:/question/detail/%d".formatted(id);
+        return String.format("redirect:/question/detail/%d", id);
     }
 }
