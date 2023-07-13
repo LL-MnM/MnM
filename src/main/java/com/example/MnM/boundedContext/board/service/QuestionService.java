@@ -105,6 +105,11 @@ public class QuestionService {
         questionRepository.delete(question);
     }
     public void vote(Question question, Member voter) {
-        question.addVoter(voter);
+        try {
+            question.addVoter(voter);
+            questionRepository.save(question);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("이미 투표한 회원입니다.");
+        }
     }
 }
