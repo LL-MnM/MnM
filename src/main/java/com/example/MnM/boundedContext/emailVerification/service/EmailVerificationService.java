@@ -63,7 +63,7 @@ public class EmailVerificationService {
             code = genEmailVerificationCode(memberId);
         }
 
-        return AppConfig.getSiteBaseUrl() + "/emailVerification/verify?memberId=%d&code=%s".formatted(memberId, code);
+        return AppConfig.getProdSite() + "/emailVerification/verify?memberId=%d&code=%s".formatted(memberId, code);
     }
 
     public String genEmailVerificationCode(long memberId) {

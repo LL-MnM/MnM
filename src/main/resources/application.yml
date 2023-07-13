@@ -80,6 +80,7 @@ custom:
   site:
     baseUrl: http://localhost:8080
     baseUrlWithPort: http://localhost:8080
+    prodSite: https://yhss.site
 
   cookie:
     tokenValiditySeconds: '#{60 * 60 * 24 * 3}'
