@@ -29,7 +29,7 @@ public class MbtiAnswer extends BaseEntity {
     @ToString.Exclude
     private MbtiQuestion question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_nickname")
     private Member member;
 

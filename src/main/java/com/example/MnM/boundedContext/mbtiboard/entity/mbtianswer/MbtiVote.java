@@ -18,15 +18,14 @@ public class MbtiVote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbtiAnswer_id")
     private MbtiAnswer mbtiAnswer; // 변수명 수정
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_nickname")
     private Member member;
 
-    // votes 필드와 관련된 코드를 삭제했습니다. 각 MbtiVote는 한 개의 MbtiAnswer와 연결됩니다.
 
     public void setMbtiAnswer(MbtiAnswer mbtiAnswer) {
         this.mbtiAnswer = mbtiAnswer;
