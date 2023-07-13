@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface MbtiAnswerRepository extends JpaRepository<MbtiAnswer, Integer> {
     @Transactional
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "ALTER TABLE mbti_answer AUTO_INCREMENT = 1", nativeQuery = true)
     void clearAutoIncrement();
 }

@@ -29,10 +29,8 @@ public class MbtiAnswerService {
     }
 
     public MbtiAnswer getAnswer(Integer id) {
-        Optional<MbtiAnswer> answer = mbtiAnswerRepository.findById(id);
-        if (answer.isEmpty())
-            throw new MbtiDataNotFoundException("answer not found");
-        return answer.get();
+        return mbtiAnswerRepository.findById(id)
+                .orElseThrow(() -> new MbtiDataNotFoundException("answer not found"));
     }
 
     public void modify(MbtiAnswer answer, String content) {
