@@ -27,15 +27,18 @@ public class MbtiQuestionService {
 
     public Page<MbtiQuestion> getList(int page, String kw, String filterMbti, String sort) {
         List<Sort.Order> sorts = new ArrayList<>();
+
         if (sort != null && !sort.trim().isEmpty()) {
-            if (sort.equalsIgnoreCase("latest")) {
-                sorts.add(Sort.Order.desc("createDate"));
-            } else if (sort.equalsIgnoreCase("popular")) {
-                sorts.add(Sort.Order.desc("view"));
-            } else if (sort.equalsIgnoreCase("least_popular")) {
-                sorts.add(Sort.Order.asc("view"));
-            } else {
-                sorts.add(Sort.Order.desc("createDate"));
+            switch (sort.toLowerCase()) {
+                case "popular":
+                    sorts.add(Sort.Order.desc("view"));
+                    break;
+                case "least_popular":
+                    sorts.add(Sort.Order.asc("view"));
+                    break;
+                default:
+                    sorts.add(Sort.Order.desc("createDate"));
+                    break;
             }
         } else {
             sorts.add(Sort.Order.desc("createDate"));
