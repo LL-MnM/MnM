@@ -267,7 +267,7 @@ public class MemberService {
                 <!DOCTYPE html>
                 <html>
                     <h1>임시 패스워드 : %s</h1>
-                    <a href="http://localhost:8080/usr/member/login" target="_blank">로그인 하러가기</a>
+                    <a href="https://yhss.site/member/login" target="_blank">로그인 하러가기</a>
                 </html>
                 """.formatted(tempPassword);
 

@@ -18,6 +18,9 @@ public class AppConfig {
     @Getter
     private static String defaultURL;
 
+    @Getter
+    private static String ProdSite;
+
     @Value("${custom.cookie.key}")
     public void setLikeablePersonFromMax(String key) {
         AppConfig.key = key;
@@ -67,6 +70,11 @@ public class AppConfig {
     @Value("${custom.site.defaultURL}")
     public void setdefaultURL(String defaultURL) {
         AppConfig.defaultURL = defaultURL;
+    }
+
+    @Value("${custom.site.prodSite}")
+    public void setProdSite(String ProdSite) {
+        AppConfig.ProdSite = ProdSite;
     }
 
 }
