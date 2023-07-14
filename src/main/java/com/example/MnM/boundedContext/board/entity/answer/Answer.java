@@ -43,7 +43,7 @@ public class Answer extends BaseEntity {
     }
 
     @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vote> votes = new ArrayList<>();
+    private final List<Vote> votes = new ArrayList<>();
 
     public void addVoter(Member voter) {
         Vote newVote = new Vote();
