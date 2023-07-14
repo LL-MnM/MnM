@@ -1,11 +1,12 @@
 package com.example.MnM.boundedContext.email.service;
 
 
-import com.example.MnM.base.appConfig.AppConfig;
+
 import com.example.MnM.base.rsData.RsData;
 import com.example.MnM.boundedContext.email.entity.SendEmailLog;
 import com.example.MnM.boundedContext.email.repository.SendEmailLogRepository;
-import com.example.MnM.boundedContext.emailSender.service.EmailSenderService;
+
+import com.example.MnM.boundedContext.emailVerification.service.EmailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;

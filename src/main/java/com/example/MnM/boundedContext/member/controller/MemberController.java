@@ -28,9 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final MemberMbtiService memberMbtiService;
     private final Rq rq;
-    private final ApplicationEventPublisher publisher;
 
 
     @PreAuthorize("isAnonymous()")
@@ -59,7 +57,7 @@ public class MemberController {
         return rq.redirectWithMsg("login", joinRs.getMsg());
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public String showMe(Model model) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -69,7 +67,7 @@ public class MemberController {
     }
 
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String MemberDelete() {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -80,7 +78,7 @@ public class MemberController {
         return rq.redirectWithMsg("/", rsData);
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/editMyPage")
     public String showEditMyPage(Model model) {
         Member member = rq.getMember();
@@ -88,7 +86,7 @@ public class MemberController {
         return "member/editMyPage";
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/editMyPage")
     public String editMyPage(@Valid MemberDto memberDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -98,7 +96,7 @@ public class MemberController {
         return rq.redirectWithMsg("me", "회원 정보를 수정하였습니다.");
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/editProfile")
     public String showEditProfile(Model model) {
         Member member = rq.getMember();
@@ -106,7 +104,7 @@ public class MemberController {
         return "member/editProfile";
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/editProfile")
     public String showEditProfile(@Valid MemberProfileDto memberProfileDto, BindingResult bindingResult) {
         Optional<Member> member = memberService.findByUserName(rq.getMember().getUsername());
@@ -116,13 +114,13 @@ public class MemberController {
         return rq.redirectWithMsg("me", memberRsData);
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/emailVerification")
     public String showEmailVerification() {
         return "member/emailVerification";
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/emailVerification")
     public String emailVerification(String email) {
         Member member = rq.getMember();
@@ -181,13 +179,13 @@ public class MemberController {
         return rq.redirectWithMsg("login", sendTempLoginPwToEmailResultData);
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modifyPassword")
     public String showModifyPassword() {
         return "member/modifyPassword";
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/modifyPassword")
     public String modifyPassword(String oldPassword, String password) {
         Member member = rq.getMember();
