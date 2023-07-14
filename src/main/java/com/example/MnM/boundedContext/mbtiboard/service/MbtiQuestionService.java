@@ -55,7 +55,7 @@ public class MbtiQuestionService {
     }
 
     private Specification<MbtiQuestion> search(String kw, String filterMbti) {
-        return (Specification<MbtiQuestion>) (root, query, criteriaBuilder) -> {
+        return (root, query, criteriaBuilder) -> {
             query.distinct(true);
             List<Predicate> predicates = new ArrayList<>();
 

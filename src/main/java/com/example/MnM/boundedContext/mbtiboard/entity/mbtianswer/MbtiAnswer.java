@@ -32,7 +32,7 @@ public class MbtiAnswer extends BaseEntity {
     @JoinColumn(name = "member_nickname")
     private Member member;
     @OneToMany(mappedBy = "mbtiAnswer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MbtiVote> votes = new ArrayList<>();
+    private final List<MbtiVote> votes = new ArrayList<>();
 
     public MbtiAnswer(String content, LocalDateTime createDate, MbtiQuestion question, Member member) {
         this.content = content;
